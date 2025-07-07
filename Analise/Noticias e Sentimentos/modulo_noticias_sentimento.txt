@@ -1,0 +1,23 @@
+📦 MÓDULO: Noticias Sentimento
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. ESTRUTURA COMPLETA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[Descrever em detalhe a estrutura técnica e funcional do módulo: fontes, inputs, outputs, integração com outros módulos]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2. FERRAMENTAL TÉCNICO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[Descrever as linguagens, bibliotecas, frameworks, pipelines, ferramentas externas utilizadas]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3. PROGRAMA DE CONSTRUÇÃO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[Sprints, roadmap, versão atual, etapas já finalizadas e etapas futuras]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4. APIs NECESSÁRIAS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[Lista de APIs externas e internas utilizadas no módulo, com justificativa de uso e fallback se houver]
+
+✔️ Módulo em conformidade com a arquitetura modular SPR
