@@ -1,0 +1,801 @@
+# ============================================================================
+# INSTALADOR COMPLETO SPR 1.1 - SISTEMA AUTOMATIZADO ROYAL AGRO
+# Versão: 1.0 - Data: 2025-07-08
+# Objetivo: Setup completo do ambiente SPR para operador Tarcis
+# ============================================================================
+
+param(
+    [switch]$SkipSoftware,
+    [switch]$SkipSSH,
+    [string]$GitHubToken = "",
+    [string]$DigitalOceanToken = ""
+)
+
+# Configurações globais
+$ErrorActionPreference = "Stop"
+$ProgressPreference = "SilentlyContinue"
+
+# Paths principais
+$SPR_ROOT = "C:\SPR 1.1"
+$REPO_DIR = "$SPR_ROOT\spr-main"
+$SSH_DIR = "$SPR_ROOT\.ssh"
+$LOG_FILE = "$SPR_ROOT\logs\setup.log"
+$REPO_URL = "https://github.com/royal-Agro/spr-main"
+
+# Configurações de ambiente
+$ENV_VARS = @{
+    "GITHUB_APP_ID" = "1548838"
+    "GITHUB_INSTALLATION_ID" = "74840214" 
+    "GITHUB_PRIVATE_KEY_PATH" = "C:\SPR 1.1\github_pulso_app.pem"
+    "WHATSAPP_KEY" = "sprwhatsapp"
+    "DIGITALOCEAN_SECRET" = "[INSIRA_SEU_SEGREDO_AQUI]"
+}
+
+# Cores para output
+$Colors = @{
+    Error = "Red"
+    Success = "Green" 
+    Warning = "Yellow"
+    Info = "Cyan"
+    Header = "Magenta"
+}
+
+# ============================================================================
+# FUNÇÕES UTILITÁRIAS
+# ============================================================================
+
+function Write-Header {
+    param([string]$Title)
+    Write-Host "`n$('='*80)" -ForegroundColor $Colors.Header
+    Write-Host $Title.PadLeft(($Title.Length + 80) / 2) -ForegroundColor $Colors.Header
+    Write-Host "$('='*80)" -ForegroundColor $Colors.Header
+}
+
+function Write-Log {
+    param([string]$Message, [string]$Level = "INFO")
+    $timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+    $logEntry = "[$timestamp] [$Level] $Message"
+    
+    # Output colorido no console
+    $color = switch ($Level) {
+        "ERROR" { $Colors.Error }
+        "SUCCESS" { $Colors.Success }
+        "WARNING" { $Colors.Warning }
+        default { $Colors.Info }
+    }
+    Write-Host $logEntry -ForegroundColor $color
+    
+    # Salva no arquivo de log
+    if (Test-Path $LOG_FILE) {
+        Add-Content -Path $LOG_FILE -Value $logEntry
+    }
+}
+
+function Test-Administrator {
+    $currentUser = [Security.Principal.WindowsIdentity]::GetCurrent()
+    $principal = New-Object Security.Principal.WindowsPrincipal($currentUser)
+    return $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+}
+
+function Show-Progress {
+    param([string]$Activity, [int]$Step, [int]$Total)
+    $percent = [math]::Round(($Step / $Total) * 100)
+    Write-Progress -Activity $Activity -Status "Etapa $Step de $Total" -PercentComplete $percent
+}
+
+# ============================================================================
+# INSTALAÇÃO DE SOFTWARE
+# ============================================================================
+
+function Install-Prerequisites {
+    Write-Log "Instalando pré-requisitos do sistema..." "INFO"
+    
+    # Instala Chocolatey se não existir
+    if (!(Get-Command choco -ErrorAction SilentlyContinue)) {
+        Write-Log "Instalando Chocolatey..."
+        Set-ExecutionPolicy Bypass -Scope Process -Force
+        [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072
+        iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+        refreshenv
+        Write-Log "Chocolatey instalado!" "SUCCESS"
+    }
+    
+    # Lista de software para instalar
+    $software = @(
+        @{Name="Git"; Package="git"; Command="git"},
+        @{Name="GitHub Desktop"; Package="github-desktop"; Command=$null},
+        @{Name="Python 3.12"; Package="python312"; Command="python"}
+    )
+    
+    foreach ($app in $software) {
+        if ($app.Command -and (Get-Command $app.Command -ErrorAction SilentlyContinue)) {
+            Write-Log "$($app.Name) já está instalado" "SUCCESS"
+            continue
+        }
+        
+        Write-Log "Instalando $($app.Name)..."
+        try {
+            choco install $app.Package -y --no-progress
+            Write-Log "$($app.Name) instalado com sucesso!" "SUCCESS"
+        } catch {
+            Write-Log "Erro ao instalar $($app.Name): $($_.Exception.Message)" "ERROR"
+            throw
+        }
+    }
+    
+    # Atualiza variáveis de ambiente
+    refreshenv
+}
+
+# ============================================================================
+# CONFIGURAÇÃO DO PROJETO
+# ============================================================================
+
+function Initialize-Project {
+    Write-Log "Inicializando estrutura do projeto..." "INFO"
+    
+    # Cria diretórios necessários
+    $directories = @($SPR_ROOT, "$SPR_ROOT\logs", $SSH_DIR)
+    foreach ($dir in $directories) {
+        if (!(Test-Path $dir)) {
+            New-Item -ItemType Directory -Path $dir -Force | Out-Null
+            Write-Log "Criado: $dir"
+        }
+    }
+    
+    # Inicializa arquivo de log
+    if (!(Test-Path $LOG_FILE)) {
+        "Iniciando log de instalação SPR 1.1 - $(Get-Date)" | Out-File -FilePath $LOG_FILE -Encoding UTF8
+    }
+}
+
+function Clone-Repository {
+    Write-Log "Clonando repositório SPR..." "INFO"
+    
+    if (Test-Path $REPO_DIR) {
+        Write-Log "Removendo instalação anterior..." "WARNING"
+        Remove-Item -Path $REPO_DIR -Recurse -Force
+    }
+    
+    try {
+        Set-Location $SPR_ROOT
+        git clone $REPO_URL
+        
+        if (!(Test-Path "$REPO_DIR\main.py")) {
+            throw "Arquivo main.py não encontrado no repositório"
+        }
+        
+        Write-Log "Repositório clonado com sucesso!" "SUCCESS"
+    } catch {
+        Write-Log "Erro ao clonar repositório: $($_.Exception.Message)" "ERROR"
+        throw
+    }
+}
+
+$privateKeyContent = @"
+-----BEGIN RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEAuwN6Mf6O4JKhk5FAGVK6UXqYYXsn3TI8vlpTOgA4KlEYmPZBd
+z6HkRZg4zKqC7hJwq+jN2+BRoKZQQ1h9SPcM0EqI3REJmdZVGmhdcnK+F8E49OAK
+kVcoqxGO4md6Db0bf06Vre4MEASkn1eFLdUyaLrpCdFppI7i2yKyUbI95I6/2JG8
+n6BztfFSSfsJPC3vboFoMUD3rjefBp1f8WYNwC0DdM6MBzVLJEFXNoz1GP8l/2bo
+PVAdlQUmVwQ+SflvS0czf/Fxj1CBgxj7OEW3BrRjRhiQ5FYkLBaRa1XQCDx8nbF5
+Vpj7JEFUjX9sxY4D1u1c0xzNklYXYtf8oqZcqQIDAQABAoIBAEALmnlm66rJGKaL
+lI6r2TfFiRT+dn2rKwB9wtsDZKVw6W7ZDtkMXN+ddKSNYDiWytRjRk0FgRyp4XQU
+p0n2cAz7NYyP2QqUQGFJ6A0rXYmi7//Qmk7X5oSP4WB9BDaGbqaONUXoycHcmGyN
++nP/FjybzTGiGFQCUH4AvSThZhAySE1kUE9ADeGfBJgpiYI+Zne0WqZ3OW67KLN0
+WD1e6P+vRfCzIUz5eZuZkK38F8ELTchJYEDzFhCHiRng+j5ZWeJQfBGiChYRAy5E
+Tx0VZ8osN73OceULlDtvjjFZ5E7osux9uES8sB2AdSn1rs5EZ2QKIlWwF+K5S3OV
+31bhQhECgYEA6KY7KnHhiETCcNBoMGJ1o8OjzKbRMq0VZ4yW4xSwj1nTfAQSCllW
++f45kGf3TLI9hxkpJdGZfLFZOMpVRJPyXeVrppMbA5AKYjwhG0q9hLPZ/f5JABHB
+qv4QUPkDrmeJuMDKzF72+BtONtFFbB6AAU2kxJPXqUOmUbB4mDdAn5cCgYEAzUoI
+kHbQGcYbPz+xdAmPu6kd5M9kjDsZvjPykjU2dPHT0bJHYsJbipYpC+xtVmvBvAzB
+RCPcmGBJ9f9XnpH4hZzjz4FomUvwrRRwYPMlnWNi4pkhP52FVjLgGdZ3Vi6XjLTl
+4DuRFiOel+MNIO4r12EqWfdl7lOLu6tWnsJmU6MCgYEArKUmuQ0Oc7H5BJAHJlvL
+3LsyVaXPV+rK1NqU4KAvUu0A0uUYIVYXZm7SVZAB4pIcdcy3HNaD95Q9M7kG04gE
+kZRPj1+YO4w4AyWybNRQnA0DMe3Wz1e6PaLo9WhM3Zhdy6N0d0toEPdRZIVrs7VE
+AeRVpmImGAv+keHGu+Mw+W0CgYBSgF7Qh7uQ9EulxslOPkBycsElLCZVf4MCJXND
+cczSyI08cYDPYhvFDI6xNuI6k8mkxDBo5kbwG4j4H3A8E47nh4jJ3XymG82IQY5Z
+1Uu3IGqFjsEk02KgGsxTYpyHE0BlW+ppDb7wJ0VL9cfEyTZ5fEmQKn9uLPmjW9E+
+FErD0QKBgBiChWx8i5pv8pM2PPXdysh+BIKm6B9G1A1UIsFQ5wnEmU/xB2OtHfAq
+x1yZy0ItmuD+gqO9H9l3H1AmdZZGyEMewMT6N9cQPhs1+a1J+kqKbOFrNEC0ceql
+XQm2pG6rgyxKM5PRXzWQkKYZKEkpikO1cGty5bD/9Xx9Nfs9uw3W
+-----END RSA PRIVATE KEY-----
+"@
+
+$privateKeyPath = "C:\SPR 1.1\github_pulso_app.pem"
+$privateKeyContent | Out-File -FilePath $privateKeyPath -Encoding ascii -Force
+
+function Create-EnvironmentFile {
+    Write-Log "Criando arquivo de configuração .env..." "INFO"
+    
+    $envContent = ""
+    foreach ($key in $ENV_VARS.Keys) {
+        $envContent += "$key=$($ENV_VARS[$key])`n"
+    }
+    
+    try {
+        $envContent | Out-File -FilePath "$REPO_DIR\.env" -Encoding UTF8 -NoNewline
+        Write-Log "Arquivo .env criado!" "SUCCESS"
+        
+        if ($envContent -match "\[INSIRA_SEU_SEGREDO_AQUI\]") {
+            Write-Log "LEMBRE-SE: Edite o .env e configure o DIGITALOCEAN_SECRET" "WARNING"
+        }
+    } catch {
+        Write-Log "Erro ao criar .env: $($_.Exception.Message)" "ERROR"
+        throw
+    }
+}
+
+function Install-PythonDependencies {
+    Write-Log "Instalando dependências Python..." "INFO"
+    
+    try {
+        Set-Location $REPO_DIR
+        
+        if (!(Test-Path "requirements.txt")) {
+            Write-Log "requirements.txt não encontrado!" "WARNING"
+            return
+        }
+        
+        # Atualiza pip e instala dependências
+        python -m pip install --upgrade pip --quiet
+        python -m pip install -r requirements.txt --quiet
+        
+        Write-Log "Dependências Python instaladas!" "SUCCESS"
+    } catch {
+        Write-Log "Erro ao instalar dependências: $($_.Exception.Message)" "ERROR"
+        throw
+    }
+}
+
+# ============================================================================
+# CONFIGURAÇÃO SSH
+# ============================================================================
+
+function Generate-SSHKeys {
+    Write-Log "Gerando chaves SSH..." "INFO"
+    
+    $keyPath = "$SSH_DIR\id_rsa"
+    
+    if (Test-Path $keyPath) {
+        Write-Log "Chaves SSH já existem" "SUCCESS"
+        return Get-Content "$keyPath.pub" -Raw
+    }
+    
+    try {
+        ssh-keygen -t rsa -b 4096 -f $keyPath -N '""' -C "spr-tarcis@royal-agro.com"
+        
+        $publicKey = Get-Content "$keyPath.pub" -Raw
+        Write-Log "Chaves SSH geradas com sucesso!" "SUCCESS"
+        return $publicKey.Trim()
+    } catch {
+        Write-Log "Erro ao gerar chaves SSH: $($_.Exception.Message)" "ERROR"
+        throw
+    }
+}
+
+function Configure-SSH {
+    param([string]$PublicKey)
+    
+    if (!$PublicKey) {
+        Write-Log "Chave pública não fornecida" "ERROR"
+        return @{GitHub=$false; DigitalOcean=$false}
+    }
+    
+    $results = @{GitHub=$false; DigitalOcean=$false}
+    
+    # Configura GitHub se token fornecido
+    if ($GitHubToken) {
+        Write-Log "Configurando chave SSH no GitHub..."
+        $results.GitHub = Set-GitHubSSHKey $GitHubToken $PublicKey
+    }
+    
+    # Configura DigitalOcean se token fornecido  
+    if ($DigitalOceanToken) {
+        Write-Log "Configurando chave SSH no DigitalOcean..."
+        $results.DigitalOcean = Set-DigitalOceanSSHKey $DigitalOceanToken $PublicKey
+    }
+    
+    return $results
+}
+
+function Set-GitHubSSHKey {
+    param([string]$Token, [string]$PublicKey)
+    
+    try {
+        $headers = @{
+            "Authorization" = "token $Token"
+            "Accept" = "application/vnd.github.v3+json"
+        }
+        
+        $body = @{
+            "title" = "SPR-1.1-$(Get-Date -Format 'yyyy-MM-dd')"
+            "key" = $PublicKey
+        } | ConvertTo-Json
+        
+        $response = Invoke-RestMethod -Uri "https://api.github.com/user/keys" -Method POST -Headers $headers -Body $body -ContentType "application/json"
+        Write-Log "Chave SSH adicionada ao GitHub! ID: $($response.id)" "SUCCESS"
+        return $true
+    } catch {
+        Write-Log "Erro GitHub SSH: $($_.Exception.Message)" "ERROR"
+        return $false
+    }
+}
+
+function Set-DigitalOceanSSHKey {
+    param([string]$Token, [string]$PublicKey)
+    
+    try {
+        $headers = @{
+            "Authorization" = "Bearer $Token"
+            "Content-Type" = "application/json"
+        }
+        
+        $body = @{
+            "name" = "SPR-1.1-$(Get-Date -Format 'yyyy-MM-dd')"
+            "public_key" = $PublicKey
+        } | ConvertTo-Json
+        
+        $response = Invoke-RestMethod -Uri "https://api.digitalocean.com/v2/account/keys" -Method POST -Headers $headers -Body $body
+        Write-Log "Chave SSH adicionada ao DigitalOcean! ID: $($response.ssh_key.id)" "SUCCESS"
+        return $true
+    } catch {
+        Write-Log "Erro DigitalOcean SSH: $($_.Exception.Message)" "ERROR"
+        return $false
+    }
+}
+
+# ============================================================================
+# CRIAÇÃO DE ATALHOS E DOCUMENTAÇÃO
+# ============================================================================
+
+function Create-DesktopShortcut {
+    Write-Log "Criando atalho no desktop..." "INFO"
+    
+    try {
+        # Script PowerShell para iniciar SPR
+        $startScript = @"
+Set-Location "$REPO_DIR"
+Write-Host "==============================================================" -ForegroundColor Green
+Write-Host "                    INICIANDO SPR 1.1" -ForegroundColor Green  
+Write-Host "==============================================================" -ForegroundColor Green
+Write-Host "Diretório: $REPO_DIR" -ForegroundColor Cyan
+Write-Host "Log: $LOG_FILE" -ForegroundColor Cyan
+Write-Host ""
+python main.py
+Write-Host ""
+Write-Host "Pressione qualquer tecla para fechar..." -ForegroundColor Yellow
+pause
+"@
+        
+        $scriptPath = "$SPR_ROOT\start_spr.ps1"
+        $startScript | Out-File -FilePath $scriptPath -Encoding UTF8
+        
+        # Cria atalho no desktop
+        $desktop = [Environment]::GetFolderPath("Desktop")
+        $shortcutPath = "$desktop\Abrir SPR.lnk"
+        
+        $shell = New-Object -ComObject WScript.Shell
+        $shortcut = $shell.CreateShortcut($shortcutPath)
+        $shortcut.TargetPath = "powershell.exe"
+        $shortcut.Arguments = "-ExecutionPolicy Bypass -File `"$scriptPath`""
+        $shortcut.WorkingDirectory = $REPO_DIR
+        $shortcut.IconLocation = "powershell.exe,0"
+        $shortcut.Description = "Inicia o sistema SPR 1.1 - Royal Agro"
+        $shortcut.Save()
+        
+        Write-Log "Atalho criado no desktop!" "SUCCESS"
+    } catch {
+        Write-Log "Erro ao criar atalho: $($_.Exception.Message)" "ERROR"
+    }
+}
+
+function Create-Documentation {
+    Write-Log "Gerando documentação..." "INFO"
+    
+    $documentation = @"
+# SISTEMA SPR 1.1 - GUIA RÁPIDO DE USO
+
+## 🚀 INÍCIO RÁPIDO
+1. Clique duas vezes no atalho "Abrir SPR" no desktop
+2. Aguarde o carregamento do sistema
+3. O sistema estará pronto para uso!
+
+## ⚙️ CONFIGURAÇÃO INICIAL (APENAS PRIMEIRA VEZ)
+
+### Configurar Variáveis de Ambiente
+- Abra o arquivo: C:\SPR 1.1\spr-main\.env
+- Substitua [INSIRA_SEU_SEGREDO_AQUI] pelo valor real do DIGITALOCEAN_SECRET
+- Salve o arquivo
+
+### Configurar Chaves SSH (se não foi automático)
+1. **GitHub:**
+   - Acesse: https://github.com/settings/ssh/new
+   - Cole a chave de: C:\SPR 1.1\.ssh\id_rsa.pub
+   
+2. **DigitalOcean:**
+   - Acesse: https://cloud.digitalocean.com/account/security
+   - Adicione a mesma chave SSH
+
+## 📁 ESTRUTURA DE ARQUIVOS
+
+```
+C:\SPR 1.1\
+├── spr-main\           # Código fonte do projeto
+│   ├── main.py        # Arquivo principal
+│   ├── .env           # Configurações
+│   └── requirements.txt
+├── .ssh\              # Chaves SSH
+│   ├── id_rsa         # Chave privada
+│   └── id_rsa.pub     # Chave pública
+├── logs\              # Logs do sistema
+│   └── setup.log      # Log de instalação
+└── start_spr.ps1      # Script de inicialização
+
+```
+
+## 🔧 COMANDOS ÚTEIS
+
+### Verificar Sistema
+```powershell
+# Execute no PowerShell como administrador
+cd "C:\SPR 1.1"
+python -c "import sys; print(f'Python: {sys.version}')"
+git --version
+ssh -T git@github.com
+```
+
+### Atualizar Projeto
+```powershell
+cd "C:\SPR 1.1\spr-main"
+git pull origin main
+pip install -r requirements.txt
+```
+
+### Reinicializar SSH
+```powershell
+ssh-add "C:\SPR 1.1\.ssh\id_rsa"
+```
+
+## 🐛 SOLUÇÃO DE PROBLEMAS
+
+### Python não encontrado
+```powershell
+# Reinstalar Python
+choco install python312 -y
+refreshenv
+```
+
+### Erro de conexão SSH
+```powershell
+# Testar conexão
+ssh -T git@github.com -v
+```
+
+### Erro de dependências
+```powershell
+cd "C:\SPR 1.1\spr-main"
+pip install --upgrade pip
+pip install -r requirements.txt --force-reinstall
+```
+
+### Logs e Diagnóstico
+- **Log de instalação:** C:\SPR 1.1\logs\setup.log
+- **Log do sistema:** Executado no terminal ao iniciar
+- **Teste completo:** Execute o script de verificação
+
+## 📞 SUPORTE
+
+1. Verifique os logs primeiro
+2. Teste os comandos básicos (Python, Git, SSH)  
+3. Consulte a documentação do repositório
+4. Entre em contato com a equipe de TI
+
+## 🔄 ROTINA DIÁRIA
+
+1. **Iniciar:** Clique no atalho "Abrir SPR"
+2. **Trabalhar:** Use o sistema normalmente
+3. **Parar:** Pressione Ctrl+C no terminal
+4. **Verificar:** Logs ficam salvos automaticamente
+
+---
+**Instalação realizada em:** $(Get-Date -Format "dd/MM/yyyy HH:mm")
+**Versão:** SPR 1.1
+**Operador:** Tarcis
+**Empresa:** Royal Agro
+"@
+    
+    try {
+        $documentation | Out-File -FilePath "$SPR_ROOT\GUIA_DE_USO.md" -Encoding UTF8
+        Write-Log "Documentação criada!" "SUCCESS"
+    } catch {
+        Write-Log "Erro ao criar documentação: $($_.Exception.Message)" "ERROR"
+    }
+}
+
+# ============================================================================
+# VERIFICAÇÃO DO SISTEMA
+# ============================================================================
+
+function Test-Installation {
+    Write-Log "Verificando instalação..." "INFO"
+    
+    $tests = @()
+    
+    # Teste 1: Estrutura de arquivos
+    $files = @(
+        "$SPR_ROOT",
+        "$REPO_DIR\main.py", 
+        "$REPO_DIR\.env",
+        "$SSH_DIR\id_rsa.pub"
+    )
+    
+    $filesOK = $true
+    foreach ($file in $files) {
+        if (Test-Path $file) {
+            Write-Log "✓ $file" "SUCCESS"
+        } else {
+            Write-Log "✗ $file" "ERROR" 
+            $filesOK = $false
+        }
+    }
+    $tests += @{Name="Arquivos"; Status=$filesOK}
+    
+    # Teste 2: Software
+    $commands = @("git", "python", "ssh")
+    $softwareOK = $true
+    foreach ($cmd in $commands) {
+        if (Get-Command $cmd -ErrorAction SilentlyContinue) {
+            Write-Log "✓ $cmd disponível" "SUCCESS"
+        } else {
+            Write-Log "✗ $cmd não encontrado" "ERROR"
+            $softwareOK = $false
+        }
+    }
+    $tests += @{Name="Software"; Status=$softwareOK}
+    
+    # Teste 3: Python packages
+    try {
+        Set-Location $REPO_DIR
+        $packages = python -m pip list 2>$null
+        if ($packages) {
+            Write-Log "✓ Python packages OK" "SUCCESS"
+            $pythonOK = $true
+        } else {
+            Write-Log "✗ Erro ao verificar packages" "ERROR"
+            $pythonOK = $false
+        }
+    } catch {
+        Write-Log "✗ Erro Python: $($_.Exception.Message)" "ERROR"
+        $pythonOK = $false
+    }
+    $tests += @{Name="Python"; Status=$pythonOK}
+    
+    return $tests
+}
+
+# ============================================================================
+# FUNÇÃO PRINCIPAL
+# ============================================================================
+
+function Main {
+    $startTime = Get-Date
+    
+    Write-Header "INSTALADOR AUTOMÁTICO SPR 1.1 - ROYAL AGRO"
+    Write-Host "Operador: Tarcis" -ForegroundColor $Colors.Info
+    Write-Host "Data: $(Get-Date -Format 'dd/MM/yyyy HH:mm')" -ForegroundColor $Colors.Info
+    Write-Host "Objetivo: Setup completo do ambiente SPR" -ForegroundColor $Colors.Info
+    
+    # Verifica permissões
+    if (!(Test-Administrator)) {
+        Write-Log "ERRO: Execute como Administrador!" "ERROR"
+        Write-Host "`nPara executar como administrador:" -ForegroundColor $Colors.Warning
+        Write-Host "1. Clique com botão direito no PowerShell" -ForegroundColor $Colors.Warning  
+        Write-Host "2. Selecione 'Executar como administrador'" -ForegroundColor $Colors.Warning
+        pause
+        exit 1
+    }
+    
+    try {
+        $totalSteps = 8
+        $currentStep = 0
+        
+        # Etapa 1: Inicialização
+        Show-Progress "Configurando SPR 1.1" (++$currentStep) $totalSteps
+        Initialize-Project
+        
+        # Etapa 2: Software (opcional)
+        if (!$SkipSoftware) {
+            Show-Progress "Instalando software" (++$currentStep) $totalSteps
+            Install-Prerequisites
+        } else {
+            Write-Log "Pulando instalação de software (--SkipSoftware)" "WARNING"
+            $currentStep++
+        }
+        
+        # Etapa 3: Repositório
+        Show-Progress "Clonando repositório" (++$currentStep) $totalSteps
+        Clone-Repository
+        
+        # Etapa 4: Configuração
+        Show-Progress "Criando configurações" (++$currentStep) $totalSteps
+        Create-EnvironmentFile
+        
+        # Etapa 5: Dependências Python
+        Show-Progress "Instalando dependências Python" (++$currentStep) $totalSteps
+        Install-PythonDependencies
+        
+        # Etapa 6: SSH (opcional)
+        Show-Progress "Configurando SSH" (++$currentStep) $totalSteps
+        $publicKey = ""
+        $sshResults = @{GitHub=$false; DigitalOcean=$false}
+        
+        if (!$SkipSSH) {
+            $publicKey = Generate-SSHKeys
+            $sshResults = Configure-SSH $publicKey
+        } else {
+            Write-Log "Pulando configuração SSH (--SkipSSH)" "WARNING"
+        }
+        
+        # Etapa 7: Atalhos
+        Show-Progress "Criando atalhos" (++$currentStep) $totalSteps
+        Create-DesktopShortcut
+        
+        # Etapa 8: Documentação e verificação
+        Show-Progress "Finalizando" (++$currentStep) $totalSteps
+        Create-Documentation
+        $testResults = Test-Installation
+        
+        # Limpa barra de progresso
+        Write-Progress -Activity "Configurando SPR 1.1" -Completed
+        
+        # Resultado final
+        $endTime = Get-Date
+        $duration = ($endTime - $startTime).TotalMinutes
+        
+        Write-Header "INSTALAÇÃO CONCLUÍDA COM SUCESSO!"
+        
+        Write-Host "⏱️  Tempo total: $([math]::Round($duration, 1)) minutos" -ForegroundColor $Colors.Success
+        Write-Host "📁 Instalado em: $SPR_ROOT" -ForegroundColor $Colors.Success
+        Write-Host "🚀 Atalho criado: Desktop\Abrir SPR.lnk" -ForegroundColor $Colors.Success
+        
+        # Status dos testes
+        Write-Host "`n📋 VERIFICAÇÃO DO SISTEMA:" -ForegroundColor $Colors.Header
+        $allTestsOK = $true
+        foreach ($test in $testResults) {
+            if ($test.Status) {
+                Write-Host "  ✅ $($test.Name)" -ForegroundColor $Colors.Success
+            } else {
+                Write-Host "  ❌ $($test.Name)" -ForegroundColor $Colors.Error
+                $allTestsOK = $false
+            }
+        }
+        
+        # Status SSH
+        Write-Host "`n🔐 STATUS SSH:" -ForegroundColor $Colors.Header
+        if ($SkipSSH) {
+            Write-Host "  ⏭️  Configuração SSH pulada" -ForegroundColor $Colors.Warning
+        } else {
+            Write-Host "  $(if($sshResults.GitHub){'✅'}else{'❌'}) GitHub" -ForegroundColor $(if($sshResults.GitHub){$Colors.Success}else{$Colors.Error})
+            Write-Host "  $(if($sshResults.DigitalOcean){'✅'}else{'❌'}) DigitalOcean" -ForegroundColor $(if($sshResults.DigitalOcean){$Colors.Success}else{$Colors.Error})
+        }
+        
+        # Próximos passos
+        Write-Host "`n📝 PRÓXIMOS PASSOS:" -ForegroundColor $Colors.Header
+        
+        $steps = @()
+        
+        # Verificar se precisa configurar .env
+        if ($ENV_VARS.DIGITALOCEAN_SECRET -eq "[INSIRA_SEU_SEGREDO_AQUI]") {
+            $steps += "1. 📝 Editar arquivo .env com DIGITALOCEAN_SECRET correto"
+        }
+        
+        # Verificar se precisa configurar SSH manualmente
+        if (!$SkipSSH -and (!$sshResults.GitHub -or !$sshResults.DigitalOcean)) {
+            if (!$sshResults.GitHub) {
+                $steps += "2. 🔑 Adicionar chave SSH ao GitHub: https://github.com/settings/ssh/new"
+            }
+            if (!$sshResults.DigitalOcean) {
+                $steps += "3. 🔑 Adicionar chave SSH ao DigitalOcean: https://cloud.digitalocean.com/account/security"
+            }
+        }
+        
+        $steps += "4. 🚀 Usar atalho 'Abrir SPR' no desktop para iniciar o sistema"
+        
+        foreach ($step in $steps) {
+            Write-Host "  $step" -ForegroundColor $Colors.Info
+        }
+        
+        # Arquivos importantes
+        Write-Host "`n📂 ARQUIVOS IMPORTANTES:" -ForegroundColor $Colors.Header
+        $files = @(
+            "📋 Guia de uso: $SPR_ROOT\GUIA_DE_USO.md",
+            "⚙️  Configurações: $REPO_DIR\.env", 
+            "🔑 Chave SSH: $SSH_DIR\id_rsa.pub",
+            "📄 Logs: $LOG_FILE"
+        )
+        
+        foreach ($file in $files) {
+            Write-Host "  $file" -ForegroundColor $Colors.Info
+        }
+        
+        # Chave SSH se necessário
+        if (!$SkipSSH -and $publicKey -and (!$sshResults.GitHub -or !$sshResults.DigitalOcean)) {
+            Write-Host "`n🔑 CHAVE SSH PÚBLICA (copie e cole nos serviços):" -ForegroundColor $Colors.Header
+            Write-Host $publicKey -ForegroundColor White
+        }
+        
+        # Status final
+        if ($allTestsOK) {
+            Write-Host "`n🎉 SISTEMA PRONTO PARA USO!" -ForegroundColor $Colors.Success
+            Write-Host "   Use o atalho 'Abrir SPR' no desktop" -ForegroundColor $Colors.Success
+        } else {
+            Write-Host "`n⚠️  SISTEMA INSTALADO COM AVISOS" -ForegroundColor $Colors.Warning
+            Write-Host "   Verifique os itens marcados com ❌ acima" -ForegroundColor $Colors.Warning
+        }
+        
+    } catch {
+        Write-Log "ERRO CRÍTICO: $($_.Exception.Message)" "ERROR"
+        Write-Log "Stack trace: $($_.ScriptStackTrace)" "ERROR"
+        
+        Write-Host "`n💥 INSTALAÇÃO FALHOU!" -ForegroundColor $Colors.Error
+        Write-Host "📄 Verifique o log completo: $LOG_FILE" -ForegroundColor $Colors.Error
+        Write-Host "🔄 Tente executar novamente ou entre em contato com suporte" -ForegroundColor $Colors.Error
+        
+        throw
+    }
+    
+    Write-Host "`n" -NoNewline
+    Write-Host "Pressione qualquer tecla para finalizar..." -ForegroundColor $Colors.Info
+    pause
+}
+
+# ============================================================================
+# EXECUÇÃO
+# ============================================================================
+
+# Banner de início
+Clear-Host
+Write-Host @"
+
+ ███████ ██████  ██████      ██     ██ 
+ ██      ██   ██ ██   ██    ███    ███ 
+ ███████ ██████  ██████      ██     ██ 
+      ██ ██      ██   ██     ██     ██ 
+ ███████ ██      ██   ██     ██     ██ 
+                                        
+ ██████   ██████  ██    ██  █████  ██      
+ ██   ██ ██    ██  ██  ██  ██   ██ ██      
+ ██████  ██    ██   ████   ███████ ██      
+ ██   ██ ██    ██    ██    ██   ██ ██      
+ ██   ██  ██████     ██    ██   ██ ███████ 
+                                           
+  █████   ██████  ██████   ██████  
+ ██   ██ ██       ██   ██ ██    ██ 
+ ███████ ██   ███ ██████  ██    ██ 
+ ██   ██ ██    ██ ██   ██ ██    ██ 
+ ██   ██  ██████  ██   ██  ██████  
+
+"@ -ForegroundColor $Colors.Header
+
+Write-Host "Sistema de Automação Completa - Versão 1.0" -ForegroundColor $Colors.Info
+Write-Host "Desenvolvido para Royal Agro - Operador Tarcis" -ForegroundColor $Colors.Info
+Write-Host ""
+
+# Solicita tokens se não fornecidos via parâmetros
+if (!$GitHubToken -and !$DigitalOceanToken -and !$SkipSSH) {
+    Write-Host "🔐 CONFIGURAÇÃO AUTOMÁTICA SSH (OPCIONAL)" -ForegroundColor $Colors.Warning
+    Write-Host "Para configurar automaticamente as chaves SSH, forneça os tokens:" -ForegroundColor $Colors.Warning
+    Write-Host ""
+    
+    $GitHubToken = Read-Host "GitHub Personal Access Token (opcional, ENTER para pular)"
+    if ($GitHubToken.Trim() -eq "") { $GitHubToken = "" }
+    
+    $DigitalOceanToken = Read-Host "DigitalOcean API Token (opcional, ENTER para pular)" 
+    if ($DigitalOceanToken.Trim() -eq "") { $DigitalOceanToken = "" }
+    
+    Write-Host ""
+}
+
+# Executa instalação principal
+Main
