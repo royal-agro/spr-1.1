@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'agro-green': '#2d5016',
+                        'agro-light': '#4a7c59',
+                        'agro-bg': '#f8fffe',
+                        'agro-accent': '#8bc34a'
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-agro-bg min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b-2 border-agro-green">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <img src="/assets/imagens_royal/logo-1.png" alt="Logo SPR" class="h-10 w-auto mr-3" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjAiIGN5PSIyMCIgcj0iMjAiIGZpbGw9IiMyZDUwMTYiLz4KPHRleHQgeD0iMjAiIHk9IjI1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmb250LXdlaWdodD0iYm9sZCI+U1BSPC90ZXh0Pgo8L3N2Zz4K'">
+                    <div>
+                        <h1 class="text-xl font-bold text-agro-green">SPR 1.1</h1>
+                        <p class="text-sm text-gray-600">Sistema de Produção Rural</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="hidden md:flex items-center space-x-2">
+                        <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                        <span class="text-sm text-gray-600">{{ system_status.status|title }}</span>
+                    </div>
+                    <span class="text-sm text-gray-500">{{ system_status.last_update }}</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Hero Section -->
+        <div class="relative bg-gradient-to-r from-agro-green to-agro-light rounded-lg p-8 mb-8 text-white overflow-hidden">
+            <div class="absolute inset-0 opacity-10">
+                <img src="/assets/imagens_royal/fundo-1.jpg" alt="Fundo" class="w-full h-full object-cover" onerror="this.style.display='none'">
+            </div>
+            <div class="relative z-10">
+                <h2 class="text-3xl font-bold mb-4">Bem-vindo ao SPR 1.1</h2>
+                <p class="text-lg opacity-90 mb-6">Sistema completo de monitoramento e análise para produção rural</p>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center">
+                        <p class="text-sm opacity-75">NDVI Atual</p>
+                        <p class="text-2xl font-bold">{{ quick_stats.ndvi_last }}</p>
+                    </div>
+                    <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center">
+                        <p class="text-sm opacity-75">Temperatura</p>
+                        <p class="text-2xl font-bold">{{ quick_stats.temp_atual }}</p>
+                    </div>
+                    <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center">
+                        <p class="text-sm opacity-75">USD/BRL</p>
+                        <p class="text-2xl font-bold">{{ quick_stats.usd_brl }}</p>
+                    </div>
+                    <div class="bg-white bg-opacity-20 rounded-lg p-4 text-center">
+                        <p class="text-sm opacity-75">Último Relatório</p>
+                        <p class="text-lg font-bold">{{ quick_stats.last_report }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Functions Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <!-- NDVI Card -->
+            <a href="/ndvi" class="group bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden">
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="bg-green-100 p-3 rounded-lg">
+                            <i class="fas fa-seedling text-2xl text-agro-green"></i>
+                        </div>
+                        <img src="/assets/imagens_royal/ndvi-1.png" alt="NDVI" class="w-12 h-12 object-cover rounded" onerror="this.style.display='none'">
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Ver NDVI</h3>
+                    <p class="text-gray-600 text-sm mb-4">Análise de índice de vegetação por diferença normalizada</p>
+                    <div class="flex items-center text-agro-green text-sm font-medium">
+                        <span>Acessar análise</span>
+                        <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Clima Card -->
+            <a href="/clima" class="group bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden">
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="bg-blue-100 p-3 rounded-lg">
+                            <i class="fas fa-cloud-sun text-2xl text-blue-600"></i>
+                        </div>
+                        <img src="/assets/imagens_royal/clima-1.png" alt="Clima" class="w-12 h-12 object-cover rounded" onerror="this.style.display='none'">
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Ver Clima</h3>
+                    <p class="text-gray-600 text-sm mb-4">Monitoramento meteorológico em tempo real</p>
+                    <div class="flex items-center text-agro-green text-sm font-medium">
+                        <span>Ver previsão</span>
+                        <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Câmbio Card -->
+            <a href="/cambio" class="group bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden">
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="bg-yellow-100 p-3 rounded-lg">
+                            <i class="fas fa-dollar-sign text-2xl text-yellow-600"></i>
+                        </div>
+                        <div class="text-2xl">💱</div>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Ver Câmbio</h3>
+                    <p class="text-gray-600 text-sm mb-4">Cotações de moedas e commodities</p>
+                    <div class="flex items-center text-agro-green text-sm font-medium">
+                        <span>Ver cotações</span>
+                        <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Relatório Card -->
+            <a href="/relatorio" class="group bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden">
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="bg-purple-100 p-3 rounded-lg">
+                            <i class="fas fa-file-alt text-2xl text-purple-600"></i>
+                        </div>
+                        <div class="text-2xl">📊</div>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Gerar Relatório da Soja</h3>
+                    <p class="text-gray-600 text-sm mb-4">Relatórios completos de produção</p>
+                    <div class="flex items-center text-agro-green text-sm font-medium">
+                        <span>Gerar relatório</span>
+                        <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Status Card -->
+            <a href="/status" class="group bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden">
+                <div class="p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="bg-green-100 p-3 rounded-lg">
+                            <i class="fas fa-server text-2xl text-green-600"></i>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse mr-2"></div>
+                            <span class="text-sm text-green-600">Online</span>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Status do Sistema</h3>
+                    <p class="text-gray-600 text-sm mb-4">Monitoramento e diagnóstico do sistema</p>
+                    <div class="flex items-center text-agro-green text-sm font-medium">
+                        <span>Ver status</span>
+                        <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Quick Access Card -->
+            <div class="bg-gradient-to-br from-agro-accent to-agro-light rounded-lg p-6 text-white">
+                <div class="flex items-center mb-4">
+                    <i class="fas fa-tachometer-alt text-2xl mr-3"></i>
+                    <h3 class="text-xl font-semibold">Acesso Rápido</h3>
+                </div>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm">Módulos Ativos</span>
+                        <span class="font-bold">{{ system_status.active_modules|length }}</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm">Alertas</span>
+                        <span class="font-bold">{{ system_status.alerts }}</span>
+                    </div>
+                    <div class="pt-2">
+                        <button onclick="location.reload()" class="w-full bg-white bg-opacity-20 hover:bg-opacity-30 rounded-lg py-2 px-4 text-sm font-medium transition-colors">
+                            <i class="fas fa-sync-alt mr-2"></i>Atualizar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer Info -->
+        <div class="bg-white rounded-lg shadow-sm p-6">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <h4 class="font-semibold text-gray-800">SPR 1.1 - Sistema de Produção Rural</h4>
+                    <p class="text-sm text-gray-600">Interface NSPR - Módulo 1</p>
+                </div>
+                <div class="text-center md:text-right">
+                    <p class="text-sm text-gray-600">Desenvolvido para produtores rurais</p>
+                    <p class="text-xs text-gray-500">Versão 1.1.0 - {{ system_status.last_update }}</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Scripts -->
+    <script>
+        // Auto-refresh status every 30 seconds
+        setInterval(async () => {
+            try {
+                const response = await fetch('/api/stats');
+                const data = await response.json();
+                // Update quick stats if needed
+                console.log('Status atualizado:', data);
+            } catch (error) {
+                console.log('Erro ao atualizar status:', error);
+            }
+        }, 30000);
+
+        // Add loading states to links
+        document.querySelectorAll('a[href^="/"]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (this.getAttribute('href') !== '#') {
+                    this.classList.add('opacity-75');
+                    this.innerHTML += ' <i class="fas fa-spinner fa-spin ml-2"></i>';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
