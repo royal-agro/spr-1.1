@@ -1,0 +1,10 @@
+﻿services:
+  spr:
+    build: .
+    container_name: spr
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    restart: always
+    command: ['python', 'main.py']

@@ -1,0 +1,10 @@
+﻿.env
+token.json
+__pycache__/
+*.pyc
+*.log
+.vscode/
+.idea/
+node_modules/
+.DS_Store
+*.sqlite

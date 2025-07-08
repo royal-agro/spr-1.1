@@ -1,0 +1,23 @@
+{
+  "app_id": "123456",
+  "installation_id": "987654321",
+  "client_id": "Iv1.1234567890abcdef",
+  "client_secret": "abcdef1234567890abcdef1234567890abcdef12",
+  "webhook_secret": "webhook_secret_aqui",
+  "private_key_path": "github_pulso_app.pem",
+  "app_name": "SPR Pulso Bot",
+  "owner": "royal-Agro",
+  "repository": "spr-main",
+  "description": "GitHub App para sincronização automática do SPR 1.1",
+  "permissions": {
+    "contents": "write",
+    "metadata": "read",
+    "pull_requests": "write"
+  },
+  "events": [
+    "push",
+    "pull_request"
+  ],
+  "created_at": "2025-07-07T00:00:00Z",
+  "updated_at": "2025-07-07T00:00:00Z"
+}
