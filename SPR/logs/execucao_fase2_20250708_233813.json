@@ -1,0 +1,19 @@
+{
+  "timestamp_inicio": "2025-07-08T23:38:13.587776",
+  "fontes_coletadas": [
+    "B3",
+    "INMET",
+    "CONAB"
+  ],
+  "arquivos_salvos": [
+    "C:\\Users\\carlo\\Documents\\GitHub\\spr-1.1\\SPR\\data\\raw\\20250708\\precos_b3_20250708_233813.csv",
+    "C:\\Users\\carlo\\Documents\\GitHub\\spr-1.1\\SPR\\data\\raw\\20250708\\clima_inmet_20250708_233813.csv",
+    "C:\\Users\\carlo\\Documents\\GitHub\\spr-1.1\\SPR\\data\\raw\\20250708\\relatorios_conab_20250708_233813.csv"
+  ],
+  "erros": [],
+  "status": "sucesso_completo",
+  "timestamp_fim": "2025-07-08T23:38:13.620769",
+  "total_fontes": 3,
+  "total_arquivos": 3,
+  "total_erros": 0
+}
