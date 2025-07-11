@@ -1,0 +1,63 @@
+# Multi-stage build para produção do SPR WhatsApp
+FROM node:18-alpine AS frontend-builder
+
+# Instalar dependências do frontend
+WORKDIR /app/frontend
+COPY frontend/package*.json ./
+RUN npm ci --only=production
+
+# Copiar código do frontend e fazer build
+COPY frontend/ ./
+RUN npm run build
+
+# Stage para WhatsApp Server
+FROM node:18-alpine AS whatsapp-server
+
+# Instalar dependências do sistema
+RUN apk add --no-cache \
+    chromium \
+    nss \
+    freetype \
+    freetype-dev \
+    harfbuzz \
+    ca-certificates \
+    ttf-freefont \
+    && rm -rf /var/cache/apk/*
+
+# Configurar Chromium
+ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \
+    PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium-browser
+
+# Criar usuário não-root
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S whatsapp -u 1001
+
+# Configurar diretório de trabalho
+WORKDIR /app
+
+# Copiar package.json dos serviços
+COPY whatsapp_server/package*.json ./whatsapp_server/
+COPY package*.json ./
+
+# Instalar dependências
+RUN cd whatsapp_server && npm ci --only=production
+
+# Copiar código dos serviços
+COPY whatsapp_server/ ./whatsapp_server/
+COPY --from=frontend-builder /app/frontend/build ./frontend/build
+
+# Criar diretórios necessários
+RUN mkdir -p /app/whatsapp_server/sessions \
+    /app/whatsapp_server/media \
+    /app/whatsapp_server/logs \
+    /app/whatsapp_server/qrcodes \
+    && chown -R whatsapp:nodejs /app
+
+# Mudar para usuário não-root
+USER whatsapp
+
+# Expor portas
+EXPOSE 3000 3001 3002 3003
+
+# Comando de inicialização
+CMD ["node", "whatsapp_server/server.js"] 

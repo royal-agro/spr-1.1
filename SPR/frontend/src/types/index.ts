@@ -15,46 +15,46 @@ export interface WhatsAppContact {
   id: string;
   name: string;
   phone: string;
-  avatar?: string;
-  isOnline: boolean;
-  lastSeen: Date;
-  isBlocked: boolean;
-  tags: string[];
+  phoneNumber: string;
+  profilePic?: string;
+  status?: string;
+  lastSeen?: Date;
+  isOnline?: boolean;
 }
 
 export interface WhatsAppMessage {
   id: string;
-  contactId: string;
   content: string;
-  type: 'text' | 'image' | 'document' | 'audio' | 'video';
   timestamp: Date;
-  status: 'sent' | 'delivered' | 'read' | 'failed';
   isFromMe: boolean;
+  type: 'text' | 'image' | 'audio' | 'video' | 'document';
+  status: 'sent' | 'delivered' | 'read' | 'failed';
   mediaUrl?: string;
   fileName?: string;
   fileSize?: number;
-  replyTo?: string;
 }
 
 export interface WhatsAppChat {
   id: string;
   contact: WhatsAppContact;
   messages: WhatsAppMessage[];
+  lastMessage?: WhatsAppMessage;
   unreadCount: number;
-  lastMessage: WhatsAppMessage;
+  isArchived: boolean;
   isPinned: boolean;
-  isMuted: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface WhatsAppGroup {
   id: string;
   name: string;
-  description?: string;
-  avatar?: string;
   participants: WhatsAppContact[];
-  admins: string[];
-  createdAt: Date;
-  isActive: boolean;
+  messages: WhatsAppMessage[];
+  lastMessage?: WhatsAppMessage;
+  unreadCount: number;
+  isArchived?: boolean;
+  isPinned?: boolean;
 }
 
 // Tipos para Dashboard

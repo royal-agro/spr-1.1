@@ -1,8 +1,12 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { AppState, AppSettings, User } from '@/types';
+import { AppState, AppSettings, User } from '../types';
 
 interface AppStore extends AppState {
+  // Navigation
+  currentPage: string;
+  setCurrentPage: (page: string) => void;
+  
   // Actions
   setUser: (user: User | null) => void;
   setAuthenticated: (isAuthenticated: boolean) => void;
@@ -42,6 +46,7 @@ export const useAppStore = create<AppStore>()(
       isLoading: false,
       error: null,
       settings: defaultSettings,
+      currentPage: 'dashboard',
 
       // Actions
       setUser: (user) => set({ user }),
@@ -51,6 +56,8 @@ export const useAppStore = create<AppStore>()(
       setLoading: (isLoading) => set({ isLoading }),
       
       setError: (error) => set({ error }),
+      
+      setCurrentPage: (currentPage) => set({ currentPage }),
       
       updateSettings: (newSettings) => 
         set((state) => ({
@@ -76,6 +83,7 @@ export const useAppStore = create<AppStore>()(
         user: state.user,
         isAuthenticated: state.isAuthenticated,
         settings: state.settings,
+        currentPage: state.currentPage,
       }),
     }
   )

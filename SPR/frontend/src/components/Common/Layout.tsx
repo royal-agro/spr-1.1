@@ -1,155 +1,135 @@
-import React, { useState } from 'react';
-import { 
-  Bars3Icon, 
-  XMarkIcon,
-  ChatBubbleLeftRightIcon,
-  ChartBarIcon,
-  CogIcon,
-  BellIcon,
-  UserCircleIcon
-} from '@heroicons/react/24/outline';
-import { Link, useLocation } from 'react-router-dom';
+import React from 'react';
+import { useAppStore } from '../../store/useAppStore';
+import { useLicenseInfo } from '../../store/useLicenseStore';
+import LicenseStatus from '../License/LicenseStatus';
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-  const location = useLocation();
+  const { currentPage, setCurrentPage } = useAppStore();
+  const { isActivated } = useLicenseInfo();
 
-  const navigation = [
-    { name: 'Dashboard', href: '/', icon: ChartBarIcon },
-    { name: 'WhatsApp', href: '/whatsapp', icon: ChatBubbleLeftRightIcon },
-    { name: 'Configurações', href: '/settings', icon: CogIcon },
+  const menuItems = [
+    { id: 'dashboard', label: 'Dashboard', icon: '📊' },
+    { id: 'whatsapp', label: 'WhatsApp', icon: '💬' },
+    { id: 'agenda', label: 'Agenda', icon: '📅' },
+    { id: 'settings', label: 'Configurações', icon: '⚙️' }
   ];
 
-  const isActive = (path: string) => {
-    return location.pathname === path;
-  };
-
   return (
-    <div className="flex h-screen bg-gray-100">
-      {/* Sidebar para mobile */}
-      <div className={`fixed inset-0 z-40 lg:hidden ${sidebarOpen ? 'block' : 'hidden'}`}>
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-75" onClick={() => setSidebarOpen(false)} />
-        <div className="relative flex w-64 flex-col bg-white">
-          <div className="flex h-16 items-center justify-between px-4">
-            <img
-              className="h-8 w-auto"
-              src="/assets/logos/logo-royal.png"
-              alt="Royal Negócios Agrícolas"
-            />
-            <button
-              type="button"
-              className="text-gray-400 hover:text-gray-600"
-              onClick={() => setSidebarOpen(false)}
-            >
-              <XMarkIcon className="h-6 w-6" />
-            </button>
-          </div>
-          <nav className="flex-1 space-y-1 px-2 py-4">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md ${
-                  isActive(item.href)
-                    ? 'bg-primary-100 text-primary-900'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                }`}
-                onClick={() => setSidebarOpen(false)}
-              >
-                <item.icon className="mr-3 h-6 w-6" />
-                {item.name}
-              </Link>
-            ))}
-          </nav>
-        </div>
-      </div>
-
-      {/* Sidebar para desktop */}
-      <div className="hidden lg:flex lg:w-64 lg:flex-col lg:fixed lg:inset-y-0">
-        <div className="flex flex-col flex-grow bg-white border-r border-gray-200">
-          <div className="flex items-center h-16 px-4">
-            <img
-              className="h-8 w-auto"
-              src="/assets/logos/logo-royal.png"
-              alt="Royal Negócios Agrícolas"
-            />
-            <span className="ml-2 text-xl font-bold text-gray-900">SPR 1.1</span>
-          </div>
-          <nav className="flex-1 px-2 py-4 space-y-1">
-            {navigation.map((item) => (
-              <Link
-                key={item.name}
-                to={item.href}
-                className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md ${
-                  isActive(item.href)
-                    ? 'bg-primary-100 text-primary-900'
-                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                }`}
-              >
-                <item.icon className="mr-3 h-6 w-6" />
-                {item.name}
-              </Link>
-            ))}
-          </nav>
-        </div>
-      </div>
-
-      {/* Conteúdo principal */}
-      <div className="flex flex-1 flex-col lg:pl-64">
-        {/* Header */}
-        <div className="sticky top-0 z-10 flex h-16 bg-white shadow">
-          <button
-            type="button"
-            className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500 lg:hidden"
-            onClick={() => setSidebarOpen(true)}
-          >
-            <Bars3Icon className="h-6 w-6" />
-          </button>
-          <div className="flex flex-1 justify-between px-4">
-            <div className="flex flex-1">
-              {/* Título da página atual */}
-              <div className="flex items-center">
-                <h1 className="text-lg font-semibold text-gray-900">
-                  {navigation.find(item => item.href === location.pathname)?.name || 'SPR 1.1'}
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <header className="bg-white shadow-sm border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            {/* Logo */}
+            <div className="flex items-center">
+              <div className="flex-shrink-0">
+                <img
+                  className="h-8 w-auto"
+                  src="/assets/logos/logo-royal.png"
+                  alt="SPR - Sistema Preditivo Royal"
+                />
+              </div>
+              <div className="ml-3">
+                <h1 className="text-xl font-semibold text-gray-900">
+                  SPR
                 </h1>
+                <p className="text-xs text-gray-500">
+                  Sistema Preditivo Royal
+                </p>
               </div>
             </div>
-            <div className="ml-4 flex items-center md:ml-6">
-              {/* Notificações */}
-              <button
-                type="button"
-                className="bg-white p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-              >
-                <BellIcon className="h-6 w-6" />
-              </button>
 
-              {/* Menu do usuário */}
-              <div className="ml-3 relative">
-                <div>
-                  <button
-                    type="button"
-                    className="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-                    id="user-menu-button"
-                  >
-                    <UserCircleIcon className="h-8 w-8 text-gray-400" />
-                  </button>
-                </div>
+            {/* Navigation */}
+            <nav className="hidden md:flex space-x-8">
+              {menuItems.map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => setCurrentPage(item.id as any)}
+                  className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors ${
+                    currentPage === item.id
+                      ? 'border-blue-500 text-blue-600'
+                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  }`}
+                >
+                  <span className="mr-2">{item.icon}</span>
+                  {item.label}
+                </button>
+              ))}
+            </nav>
+
+            {/* License Status */}
+            <div className="flex items-center space-x-4">
+              <LicenseStatus showInHeader={true} />
+              
+              {/* User Menu */}
+              <div className="relative">
+                <button className="flex items-center space-x-2 text-sm text-gray-700 hover:text-gray-900">
+                  <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  </div>
+                </button>
               </div>
             </div>
           </div>
         </div>
+      </header>
 
-        {/* Conteúdo da página */}
-        <main className="flex-1 overflow-y-auto">
-          <div className="py-6">
-            {children}
+      {/* Mobile Navigation */}
+      <div className="md:hidden bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex space-x-8 py-3 overflow-x-auto">
+            {menuItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setCurrentPage(item.id as any)}
+                className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium whitespace-nowrap transition-colors ${
+                  currentPage === item.id
+                    ? 'bg-blue-100 text-blue-700'
+                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
+                }`}
+              >
+                <span>{item.icon}</span>
+                <span>{item.label}</span>
+              </button>
+            ))}
           </div>
-        </main>
+        </div>
       </div>
+
+      {/* License Warning Banner */}
+      {!isActivated && (
+        <div className="bg-yellow-50 border-b border-yellow-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <svg className="w-5 h-5 text-yellow-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+                <span className="text-sm text-yellow-800">
+                  Sistema não ativado. Algumas funcionalidades podem estar limitadas.
+                </span>
+              </div>
+              <button
+                onClick={() => setCurrentPage('settings')}
+                className="text-sm bg-yellow-600 text-white px-3 py-1 rounded hover:bg-yellow-700 transition-colors"
+              >
+                Ativar Agora
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {children}
+      </main>
     </div>
   );
 };

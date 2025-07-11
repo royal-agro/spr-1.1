@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Common/Layout';
 import Dashboard from './pages/Dashboard';
 import WhatsAppPage from './pages/WhatsAppPage';
+import WhatsAppReportsPage from './pages/WhatsAppReportsPage';
 import Settings from './pages/Settings';
 import { Toaster } from 'react-hot-toast';
 import './App.css';
@@ -15,6 +16,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/whatsapp" element={<WhatsAppPage />} />
+            <Route path="/whatsapp/reports" element={<WhatsAppReportsPage />} />
             <Route path="/settings" element={<Settings />} />
           </Routes>
         </Layout>

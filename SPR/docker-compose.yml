@@ -1,0 +1,127 @@
+version: '3.8'
+
+services:
+  # Servidor WhatsApp Node.js
+  whatsapp-server:
+    build: 
+      context: ./whatsapp_server
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - DEBUG=false
+    volumes:
+      - ./whatsapp_server/sessions:/app/sessions
+      - ./whatsapp_server/logs:/app/logs
+      - ./whatsapp_server/media:/app/media
+      - ./whatsapp_server/qrcodes:/app/qrcodes
+    restart: unless-stopped
+    networks:
+      - spr-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Backend Python SPR
+  spr-backend:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - SPR_ENVIRONMENT=production
+      - DEBUG=false
+      - WHATSAPP_SERVER_URL=http://whatsapp-server:3000
+      - DATABASE_URL=postgresql://spr_user:spr_password@postgres:5432/spr_db
+    depends_on:
+      - whatsapp-server
+      - postgres
+    volumes:
+      - ./logs:/app/logs
+      - ./data:/app/data
+    restart: unless-stopped
+    networks:
+      - spr-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Frontend React
+  spr-frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    environment:
+      - REACT_APP_API_URL=http://your-droplet-ip:8000
+      - REACT_APP_WHATSAPP_URL=http://your-droplet-ip:3000
+    depends_on:
+      - spr-backend
+    restart: unless-stopped
+    networks:
+      - spr-network
+
+  # Banco de Dados PostgreSQL
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_DB=spr_db
+      - POSTGRES_USER=spr_user
+      - POSTGRES_PASSWORD=spr_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: unless-stopped
+    networks:
+      - spr-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U spr_user -d spr_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "443:443"
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+    depends_on:
+      - spr-frontend
+      - spr-backend
+      - whatsapp-server
+    restart: unless-stopped
+    networks:
+      - spr-network
+
+  # Redis para Cache
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    networks:
+      - spr-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+volumes:
+  postgres_data:
+  ssl_certs:
+
+networks:
+  spr-network:
+    driver: bridge 

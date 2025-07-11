@@ -246,9 +246,9 @@ class SPRWhatsAppServer {
 
     async getSojaResponse() {
         const currentDate = new Date().toLocaleDateString('pt-BR');
-        const currentPrice = (Math.random() * 20 + 140).toFixed(2); // Preço simulado
+        const currentPrice = (Math.random() * 20 + 130).toFixed(2);
         const trend = Math.random() > 0.5 ? 'Alta' : 'Baixa';
-        const percentage = (Math.random() * 5).toFixed(1);
+        const percentage = (Math.random() * 3).toFixed(1);
 
         return `🌱 *SOJA - Previsão SPR*
 
@@ -262,7 +262,7 @@ class SPRWhatsAppServer {
 • Clima: Favorável
 • Demanda: Crescente
 
-📱 *SPR - Sistema de Previsão Rural*
+📱 *SPR - Sistema Preditivo Royal*
 Digite *AJUDA* para mais opções`;
     }
 
@@ -284,7 +284,7 @@ Digite *AJUDA* para mais opções`;
 • Exportações: Crescentes
 • Consumo interno: Estável
 
-📱 *SPR - Sistema de Previsão Rural*`;
+📱 *SPR - Sistema Preditivo Royal*`;
     }
 
     async getCafeResponse() {
@@ -305,7 +305,7 @@ Digite *AJUDA* para mais opções`;
 • Mercado internacional: Volátil
 • Qualidade: Premium
 
-📱 *SPR - Sistema de Previsão Rural*`;
+📱 *SPR - Sistema Preditivo Royal*`;
     }
 
     async getBoiResponse() {
@@ -326,7 +326,7 @@ Digite *AJUDA* para mais opções`;
 • Demanda: Crescente
 • Exportações: Favoráveis
 
-📱 *SPR - Sistema de Previsão Rural*`;
+📱 *SPR - Sistema Preditivo Royal*`;
     }
 
     async getAlgodaoResponse() {
@@ -347,11 +347,11 @@ Digite *AJUDA* para mais opções`;
 • Clima: Favorável
 • Qualidade: Excelente
 
-📱 *SPR - Sistema de Previsão Rural*`;
+📱 *SPR - Sistema Preditivo Royal*`;
     }
 
     getHelpResponse() {
-        return `🤖 *SPR - Sistema de Previsão Rural*
+        return `🤖 *SPR - Sistema Preditivo Royal*
 
 📋 *Comandos disponíveis:*
 
@@ -373,7 +373,7 @@ Sistema inteligente de previsão de preços para commodities agrícolas, desenvo
     }
 
     getGenericResponse() {
-        return `🌱 *SPR - Sistema de Previsão Rural*
+        return `🌱 *SPR - Sistema Preditivo Royal*
 
 Olá! Sou o assistente do SPR, seu sistema de previsão de preços agrícolas.
 
@@ -472,17 +472,151 @@ Ou digite *AJUDA* para ver todos os comandos disponíveis.
         // Enviar mensagem
         this.app.post('/api/send', async (req, res) => {
             try {
-                const { number, message } = req.body;
+                const { number, message, type = 'text' } = req.body;
                 
                 if (!number || !message) {
                     return res.status(400).json({ error: 'Número e mensagem são obrigatórios' });
                 }
 
                 const messageId = await this.sendMessage(number, message);
-                res.json({ success: true, messageId });
+                res.json({ 
+                    success: true, 
+                    messageId,
+                    contact: number,
+                    status: 'sent',
+                    timestamp: new Date().toISOString()
+                });
                 
             } catch (error) {
-                res.status(500).json({ error: error.message });
+                res.status(500).json({ 
+                    success: false,
+                    error: error.message,
+                    timestamp: new Date().toISOString()
+                });
+            }
+        });
+
+        // Enviar mídia
+        this.app.post('/api/send-media', async (req, res) => {
+            try {
+                const { number, media, caption = '', type = 'image' } = req.body;
+                
+                if (!number || !media) {
+                    return res.status(400).json({ error: 'Número e mídia são obrigatórios' });
+                }
+
+                // Verificar se é URL ou arquivo local
+                let mediaMessage;
+                if (media.startsWith('http://') || media.startsWith('https://')) {
+                    // URL externa
+                    mediaMessage = await MessageMedia.fromUrl(media);
+                } else if (media.startsWith('data:')) {
+                    // Base64
+                    const [mimeType, data] = media.split(',');
+                    const mime = mimeType.split(':')[1].split(';')[0];
+                    mediaMessage = new MessageMedia(mime, data);
+                } else {
+                    // Arquivo local
+                    const fs = require('fs');
+                    const path = require('path');
+                    
+                    if (!fs.existsSync(media)) {
+                        return res.status(400).json({ error: 'Arquivo não encontrado' });
+                    }
+                    
+                    mediaMessage = MessageMedia.fromFilePath(media);
+                }
+
+                const sent = await this.client.sendMessage(number, mediaMessage, { caption });
+                
+                logger.info(`📎 Mídia enviada para ${number}: ${type}`);
+                
+                this.io.emit('message_sent', {
+                    id: sent.id.id,
+                    to: number,
+                    type: type,
+                    caption: caption,
+                    timestamp: Date.now()
+                });
+
+                res.json({ 
+                    success: true, 
+                    messageId: sent.id.id,
+                    contact: number,
+                    status: 'sent',
+                    type: type,
+                    timestamp: new Date().toISOString()
+                });
+                
+            } catch (error) {
+                logger.error('❌ Erro ao enviar mídia:', error);
+                res.status(500).json({ 
+                    success: false,
+                    error: error.message,
+                    timestamp: new Date().toISOString()
+                });
+            }
+        });
+
+        // Broadcast para múltiplos contatos
+        this.app.post('/api/broadcast', async (req, res) => {
+            try {
+                const { contacts, message, type = 'text' } = req.body;
+                
+                if (!contacts || !Array.isArray(contacts) || contacts.length === 0) {
+                    return res.status(400).json({ error: 'Lista de contatos é obrigatória' });
+                }
+                
+                if (!message) {
+                    return res.status(400).json({ error: 'Mensagem é obrigatória' });
+                }
+
+                const results = [];
+                
+                for (const contact of contacts) {
+                    try {
+                        const messageId = await this.sendMessage(contact, message);
+                        results.push({
+                            contact: contact,
+                            success: true,
+                            messageId: messageId,
+                            status: 'sent'
+                        });
+                        
+                        // Delay entre envios para evitar spam
+                        await new Promise(resolve => setTimeout(resolve, 1000));
+                        
+                    } catch (error) {
+                        results.push({
+                            contact: contact,
+                            success: false,
+                            error: error.message,
+                            status: 'failed'
+                        });
+                    }
+                }
+                
+                const successful = results.filter(r => r.success).length;
+                const failed = results.filter(r => !r.success).length;
+                
+                logger.info(`📢 Broadcast concluído: ${successful} enviados, ${failed} falharam`);
+                
+                res.json({
+                    success: true,
+                    total: contacts.length,
+                    successful: successful,
+                    failed: failed,
+                    results: results,
+                    timestamp: new Date().toISOString()
+                });
+                
+            } catch (error) {
+                logger.error('❌ Erro no broadcast:', error);
+                res.status(500).json({ 
+                    success: false,
+                    error: error.message,
+                    timestamp: new Date().toISOString()
+                });
             }
         });
 
@@ -711,7 +845,7 @@ Ou digite *AJUDA* para ver todos os comandos disponíveis.
             await this.client.initialize();
             
             // Iniciar servidor HTTP
-            const PORT = process.env.PORT || 3000;
+            const PORT = process.env.PORT || 3001;
             this.server.listen(PORT, () => {
                 logger.info(`🌐 Servidor rodando na porta ${PORT}`);
                 logger.info(`📱 Interface: http://localhost:${PORT}`);

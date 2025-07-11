@@ -1,0 +1,314 @@
+# 📦 SPR 1.1 - GitHub Actions Deploy Workflow
+name: Deploy SPR WhatsApp to DigitalOcean
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+env:
+  DROPLET_NAME: spr-whatsapp-server
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Run Tests
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    
+    - name: Run tests
+      run: |
+        cd SPR
+        pytest tests/ --cov=app --cov-fail-under=80
+    
+    - name: Upload coverage reports
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./coverage.xml
+        flags: unittests
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    name: Build Docker Images
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+    
+    - name: Log in to Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Extract metadata (tags, labels)
+      id: meta-backend
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=sha
+          type=raw,value=latest,enable={{is_default_branch}}
+    
+    - name: Extract metadata WhatsApp
+      id: meta-whatsapp
+      uses: docker/metadata-action@v5
+      with:
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-whatsapp
+        tags: |
+          type=ref,event=branch
+          type=ref,event=pr
+          type=sha
+          type=raw,value=latest,enable={{is_default_branch}}
+    
+    - name: Build and push Backend
+      uses: docker/build-push-action@v5
+      with:
+        context: ./SPR
+        file: ./SPR/Dockerfile
+        push: true
+        tags: ${{ steps.meta-backend.outputs.tags }}
+        labels: ${{ steps.meta-backend.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+    
+    - name: Build and push WhatsApp Server
+      uses: docker/build-push-action@v5
+      with:
+        context: ./SPR/whatsapp_server
+        file: ./SPR/whatsapp_server/Dockerfile
+        push: true
+        tags: ${{ steps.meta-whatsapp.outputs.tags }}
+        labels: ${{ steps.meta-whatsapp.outputs.labels }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+
+  deploy:
+    needs: [test, build]
+    runs-on: ubuntu-latest
+    name: Deploy to DigitalOcean
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Install doctl
+      uses: digitalocean/action-doctl@v2
+      with:
+        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+    
+    - name: Set up SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.DROPLET_IP }} >> ~/.ssh/known_hosts
+    
+    - name: Get Droplet IP
+      run: |
+        DROPLET_IP=$(doctl compute droplet list --format Name,PublicIPv4 --no-header | grep "$DROPLET_NAME" | awk '{print $2}')
+        echo "DROPLET_IP=$DROPLET_IP" >> $GITHUB_ENV
+        echo "Droplet IP: $DROPLET_IP"
+    
+    - name: Create Droplet if not exists
+      run: |
+        if ! doctl compute droplet list --format Name --no-header | grep -q "$DROPLET_NAME"; then
+          echo "Creating new droplet..."
+          doctl compute droplet create $DROPLET_NAME \
+            --size s-2vcpu-4gb \
+            --image docker-20-04 \
+            --region nyc1 \
+            --ssh-keys ${{ secrets.SSH_KEY_ID }} \
+            --enable-monitoring \
+            --enable-ipv6 \
+            --wait
+          
+          # Get new IP
+          DROPLET_IP=$(doctl compute droplet list --format Name,PublicIPv4 --no-header | grep "$DROPLET_NAME" | awk '{print $2}')
+          echo "DROPLET_IP=$DROPLET_IP" >> $GITHUB_ENV
+          
+          # Wait for SSH
+          echo "Waiting for SSH to be available..."
+          while ! ssh -o ConnectTimeout=5 -o StrictHostKeyChecking=no root@$DROPLET_IP "echo 'SSH ready'" 2>/dev/null; do
+            sleep 5
+          done
+        fi
+    
+    - name: Setup Server
+      run: |
+        ssh -o StrictHostKeyChecking=no root@$DROPLET_IP << 'EOF'
+          # Update system
+          apt-get update && apt-get upgrade -y
+          
+          # Install dependencies
+          apt-get install -y curl git nginx certbot python3-certbot-nginx
+          
+          # Configure firewall
+          ufw allow OpenSSH
+          ufw allow 80
+          ufw allow 443
+          ufw --force enable
+          
+          # Install Docker Compose if not exists
+          if ! command -v docker-compose &> /dev/null; then
+            curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+            chmod +x /usr/local/bin/docker-compose
+          fi
+          
+          # Create project directory
+          mkdir -p /opt/spr
+          cd /opt/spr
+          
+          # Create necessary directories
+          mkdir -p sessions logs media qrcodes data ssl
+        EOF
+    
+    - name: Deploy Application
+      run: |
+        # Create production docker-compose
+        cat > docker-compose.prod.yml << EOF
+        version: '3.8'
+        
+        services:
+          whatsapp-server:
+            image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-whatsapp:latest
+            ports:
+              - "3000:3000"
+            environment:
+              - NODE_ENV=production
+              - PORT=3000
+              - DEBUG=false
+            volumes:
+              - ./sessions:/app/sessions
+              - ./logs:/app/logs
+              - ./media:/app/media
+              - ./qrcodes:/app/qrcodes
+            restart: unless-stopped
+            networks:
+              - spr-network
+        
+          spr-backend:
+            image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend:latest
+            ports:
+              - "8000:8000"
+            environment:
+              - SPR_ENVIRONMENT=production
+              - DEBUG=false
+              - WHATSAPP_SERVER_URL=http://whatsapp-server:3000
+            depends_on:
+              - whatsapp-server
+            volumes:
+              - ./logs:/app/logs
+              - ./data:/app/data
+            restart: unless-stopped
+            networks:
+              - spr-network
+        
+          nginx:
+            image: nginx:alpine
+            ports:
+              - "80:80"
+              - "443:443"
+            volumes:
+              - ./nginx.conf:/etc/nginx/nginx.conf
+              - ./ssl:/etc/nginx/ssl
+            depends_on:
+              - whatsapp-server
+              - spr-backend
+            restart: unless-stopped
+            networks:
+              - spr-network
+        
+        networks:
+          spr-network:
+            driver: bridge
+        EOF
+        
+        # Copy files to server
+        scp -o StrictHostKeyChecking=no docker-compose.prod.yml root@$DROPLET_IP:/opt/spr/docker-compose.yml
+        scp -o StrictHostKeyChecking=no SPR/nginx.conf root@$DROPLET_IP:/opt/spr/
+        
+        # Deploy on server
+        ssh -o StrictHostKeyChecking=no root@$DROPLET_IP << EOF
+          cd /opt/spr
+          
+          # Login to GitHub Container Registry
+          echo ${{ secrets.GITHUB_TOKEN }} | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
+          
+          # Pull latest images
+          docker-compose pull
+          
+          # Stop existing services
+          docker-compose down
+          
+          # Start services
+          docker-compose up -d
+          
+          # Check status
+          docker-compose ps
+          
+          # Show logs
+          docker-compose logs --tail=50
+        EOF
+    
+    - name: Health Check
+      run: |
+        echo "Waiting for services to be ready..."
+        sleep 30
+        
+        # Check if services are healthy
+        for i in {1..10}; do
+          if curl -f http://$DROPLET_IP/health; then
+            echo "✅ Services are healthy!"
+            break
+          fi
+          echo "⏳ Waiting for services... (attempt $i/10)"
+          sleep 10
+        done
+    
+    - name: Notify Success
+      run: |
+        echo "🎉 Deploy successful!"
+        echo "🌐 WhatsApp Interface: http://$DROPLET_IP"
+        echo "🔧 API Backend: http://$DROPLET_IP/api"
+        echo "📊 Health Check: http://$DROPLET_IP/health"
+
+  notify:
+    needs: [deploy]
+    runs-on: ubuntu-latest
+    name: Notify Deployment
+    if: always()
+    
+    steps:
+    - name: Notify Success
+      if: needs.deploy.result == 'success'
+      run: |
+        echo "✅ SPR WhatsApp deployed successfully!"
+        echo "Access: http://${{ env.DROPLET_IP }}"
+    
+    - name: Notify Failure
+      if: needs.deploy.result == 'failure'
+      run: |
+        echo "❌ SPR WhatsApp deployment failed!"
+        echo "Check logs for details." 
