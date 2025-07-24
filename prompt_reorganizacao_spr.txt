@@ -1,0 +1,56 @@
+# Reorganização da Estrutura do Projeto SPR
+
+Preciso reorganizar meu projeto Python seguindo a estrutura da Opção 2 (mais organizada). Atualmente tenho:
+
+## Estrutura Atual:
+```
+SPR/
+├── main.py (na raiz)
+├── app/
+│   ├── __init__.py
+│   └── core.py
+├── tests/
+│   └── test_main.py
+├── Analise/
+├── Precificacao/
+├── Suporte_Tecnico/
+├── requirements.txt
+└── outros arquivos...
+```
+
+## Estrutura Desejada:
+```
+SPR/
+├── app/
+│   ├── __init__.py
+│   ├── main.py
+│   ├── analise/
+│   │   ├── __init__.py
+│   │   └── (módulos da pasta Analise/)
+│   ├── precificacao/
+│   │   ├── __init__.py
+│   │   └── (módulos da pasta Precificacao/)
+│   └── suporte_tecnico/
+│       ├── __init__.py
+│       └── (módulos da pasta Suporte_Tecnico/)
+├── tests/
+│   ├── __init__.py
+│   ├── test_main.py
+│   └── (outros testes)
+├── requirements.txt
+└── README.md
+```
+
+## Tarefas necessárias:
+
+1. **Mover main.py da raiz para app/**
+2. **Renomear e mover pastas:**
+   - `Analise/` → `app/analise/`
+   - `Precificacao/` → `app/precificacao/`
+   - `Suporte_Tecnico/` → `app/suporte_tecnico/`
+3. **Criar arquivos __init__.py em todas as subpastas**
+4. **Ajustar todos os imports nos arquivos movidos**
+5. **Atualizar tests/test_main.py para importar de app.main**
+6. **Garantir que pytest funcione com: `python -m pytest tests/ --cov=app --cov-fail-under=80`**
+
+Por favor, execute essa reorganização completa, garantindo que todos os imports sejam atualizados corretamente e que não haja perda de funcionalidade.
