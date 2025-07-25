@@ -3,24 +3,34 @@ Módulo core do SPR 1.1
 Contém as funcionalidades principais do sistema
 """
 
-class SPRCore:
-    def __init__(self):
-        self.modules = {
-            'analise': {},
-            'precificacao': {},
-            'suporte_tecnico': {}
-        }
-    
-    def init_modules(self):
-        """
-        Inicializa todos os módulos do sistema
-        """
-        # TODO: Implementar inicialização dos módulos
-        pass
-    
-    def validate_environment(self):
-        """
-        Valida o ambiente e suas dependências
-        """
-        # TODO: Implementar validação do ambiente
-        return True 
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+import os
+
+from app.routers import previsao, dashboard
+
+app = FastAPI(
+    title="SPR API",
+    description="API do Sistema Preditivo Royal",
+    version="1.1"
+)
+
+# Configurar CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Em produção, especifique as origens permitidas
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Registrar rotas
+app.include_router(previsao.router)
+app.include_router(dashboard.router)
+
+# Configurar porta
+port = int(os.getenv("PORT", 8000))
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run(app, host="0.0.0.0", port=port) 

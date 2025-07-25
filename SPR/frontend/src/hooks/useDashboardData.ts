@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useWhatsAppStore } from '../store/useWhatsAppStore';
 import { DashboardMetrics } from '../types';
+import { config } from '../config';
 
 interface DashboardData extends DashboardMetrics {
   connectionStatus: 'connecting' | 'connected' | 'disconnected' | 'error';
@@ -261,13 +262,13 @@ export const useDashboardData = () => {
       setError(null);
 
       // Buscar status do servidor
-      const statusResponse = await fetch('http://localhost:3001/api/status');
+      const statusResponse = await fetch(`${config.api.baseUrl}/api/status`);
       const statusData = await statusResponse.json();
 
       // Buscar métricas específicas se disponível
       let serverMetrics = {};
       try {
-        const metricsResponse = await fetch('http://localhost:3001/api/metrics');
+        const metricsResponse = await fetch(`${config.api.baseUrl}/api/metrics`);
         if (metricsResponse.ok) {
           const metricsData = await metricsResponse.json();
           serverMetrics = metricsData.metrics || {};
