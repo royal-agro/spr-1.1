@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { useAppStore } from '../../store/useAppStore';
 import { useLicenseInfo } from '../../store/useLicenseStore';
 import LicenseStatus from '../License/LicenseStatus';
@@ -8,15 +9,21 @@ interface LayoutProps {
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const { currentPage, setCurrentPage } = useAppStore();
+  const location = useLocation();
   const { isActivated } = useLicenseInfo();
 
   const menuItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: '📊' },
-    { id: 'whatsapp', label: 'WhatsApp', icon: '💬' },
-    { id: 'agenda', label: 'Agenda', icon: '📅' },
-    { id: 'settings', label: 'Configurações', icon: '⚙️' }
+    { id: 'dashboard', label: 'Dashboard', icon: '📊', path: '/' },
+    { id: 'whatsapp', label: 'WhatsApp', icon: '💬', path: '/whatsapp' },
+    { id: 'agenda', label: 'Agenda', icon: '📅', path: '/agenda' },
+    { id: 'settings', label: 'Configurações', icon: '⚙️', path: '/settings' }
   ];
+
+  const isCurrentPath = (path: string) => {
+    if (path === '/' && location.pathname === '/') return true;
+    if (path !== '/' && location.pathname.startsWith(path)) return true;
+    return false;
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -46,18 +53,18 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             {/* Navigation */}
             <nav className="hidden md:flex space-x-8">
               {menuItems.map((item) => (
-                <button
+                <Link
                   key={item.id}
-                  onClick={() => setCurrentPage(item.id as any)}
+                  to={item.path}
                   className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium transition-colors ${
-                    currentPage === item.id
+                    isCurrentPath(item.path)
                       ? 'border-blue-500 text-blue-600'
                       : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                   }`}
                 >
                   <span className="mr-2">{item.icon}</span>
                   {item.label}
-                </button>
+                </Link>
               ))}
             </nav>
 
@@ -85,18 +92,18 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex space-x-8 py-3 overflow-x-auto">
             {menuItems.map((item) => (
-              <button
+              <Link
                 key={item.id}
-                onClick={() => setCurrentPage(item.id as any)}
+                to={item.path}
                 className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium whitespace-nowrap transition-colors ${
-                  currentPage === item.id
+                  isCurrentPath(item.path)
                     ? 'bg-blue-100 text-blue-700'
                     : 'text-gray-500 hover:text-gray-700 hover:bg-gray-100'
                 }`}
               >
                 <span>{item.icon}</span>
                 <span>{item.label}</span>
-              </button>
+              </Link>
             ))}
           </div>
         </div>
@@ -115,12 +122,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   Sistema não ativado. Algumas funcionalidades podem estar limitadas.
                 </span>
               </div>
-              <button
-                onClick={() => setCurrentPage('settings')}
+              <Link
+                to="/settings"
                 className="text-sm bg-yellow-600 text-white px-3 py-1 rounded hover:bg-yellow-700 transition-colors"
               >
                 Ativar Agora
-              </button>
+              </Link>
             </div>
           </div>
         </div>
