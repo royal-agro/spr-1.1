@@ -1,0 +1,305 @@
+{
+  "spr_multi_agent_system": {
+    "version": "1.0",
+    "project_context": {
+      "name": "Sistema Preditivo Royal (SPR)",
+      "stack": {
+        "backend": "FastAPI/Python",
+        "frontend": "React/TypeScript",
+        "database": "PostgreSQL",
+        "cache": "Redis",
+        "container": "Docker",
+        "integration": "WhatsApp Business"
+      },
+      "domain": "Agronegócio/Commodities"
+    },
+    "agents": {
+      "database_engineer": {
+        "id": "db_eng",
+        "name": "Database Engineer PostgreSQL",
+        "role": "Especialista em PostgreSQL, schemas e performance",
+        "technologies": ["PostgreSQL", "Redis", "SQL", "Database Design"],
+        "responsibilities": [
+          "Otimizar schemas para dados de commodities",
+          "Gerenciar migrações e performance",
+          "Implementar indexação para consultas de mercado",
+          "Trabalhar com cache Redis"
+        ],
+        "file_patterns": [
+          "database/**/*",
+          "*.sql",
+          "migrations/**/*",
+          "docker-compose.yml"
+        ],
+        "apis_focus": [
+          "Database optimization",
+          "Query performance",
+          "Schema design"
+        ]
+      },
+      "backend_python": {
+        "id": "py_eng",
+        "name": "Backend Engineer Python/FastAPI",
+        "role": "Especialista em FastAPI e análise de commodities",
+        "technologies": ["FastAPI", "Python", "Pandas", "NumPy", "Uvicorn"],
+        "responsibilities": [
+          "Desenvolver APIs REST para dados de mercado",
+          "Implementar módulos de precificação",
+          "Integrar com dados governamentais",
+          "Otimizar algoritmos de previsão"
+        ],
+        "file_patterns": [
+          "app/**/*.py",
+          "precificacao/**/*.py",
+          "analise/**/*.py",
+          "dados_governo/**/*.py",
+          "requirements.txt"
+        ],
+        "apis_focus": [
+          "Commodity pricing APIs",
+          "Market analysis endpoints",
+          "Government data integration"
+        ]
+      },
+      "frontend_react": {
+        "id": "fe_eng",
+        "name": "Frontend Engineer React/TypeScript",
+        "role": "Especialista em React, dashboards e visualizações",
+        "technologies": ["React", "TypeScript", "Tailwind CSS", "Chart.js", "Zustand"],
+        "responsibilities": [
+          "Desenvolver interfaces para dashboards",
+          "Implementar componentes de charts",
+          "Criar interfaces WhatsApp Business",
+          "Otimizar performance frontend"
+        ],
+        "file_patterns": [
+          "frontend/src/**/*",
+          "frontend/package.json",
+          "frontend/tsconfig.json",
+          "*.tsx",
+          "*.css"
+        ],
+        "apis_focus": [
+          "Dashboard components",
+          "Chart visualizations",
+          "Real-time data display"
+        ]
+      },
+      "whatsapp_specialist": {
+        "id": "wa_spec",
+        "name": "WhatsApp Integration Specialist",
+        "role": "Especialista em WhatsApp Business e automação",
+        "technologies": ["Node.js", "Express", "WebSocket", "WhatsApp Web Client"],
+        "responsibilities": [
+          "Desenvolver integrações WhatsApp Business",
+          "Implementar automação de mensagens",
+          "Criar sistemas de notificação",
+          "Gerenciar campanhas e grupos"
+        ],
+        "file_patterns": [
+          "services/whatsapp_*",
+          "routers/**/*",
+          "backend_server_fixed.js",
+          "whatsapp_server/**/*"
+        ],
+        "apis_focus": [
+          "WhatsApp message automation",
+          "Contact management",
+          "Campaign systems"
+        ]
+      },
+      "business_intelligence": {
+        "id": "bi_analyst",
+        "name": "Business Intelligence & Analytics",
+        "role": "Especialista em análise de dados agrícolas",
+        "technologies": ["Python", "Pandas", "Chart.js", "SQL", "Data Analysis"],
+        "responsibilities": [
+          "Desenvolver dashboards de análise",
+          "Criar relatórios automatizados",
+          "Implementar alertas de preços",
+          "Análise de sentimento de notícias"
+        ],
+        "file_patterns": [
+          "analise/**/*",
+          "dashboard_interativo.py",
+          "relatorios_mercadologicos.py",
+          "alertas_automatizados.py"
+        ],
+        "apis_focus": [
+          "Market analytics",
+          "Price alerts",
+          "Report generation"
+        ]
+      },
+      "agritech_data": {
+        "id": "agri_data",
+        "name": "AgriTech Data Specialist",
+        "role": "Especialista em dados governamentais e climáticos",
+        "technologies": ["Python", "APIs", "IBGE", "INMET", "Data Pipelines"],
+        "responsibilities": [
+          "Integrar APIs governamentais",
+          "Processar dados de clima e NDVI",
+          "Desenvolver modelos de previsão climática",
+          "Criar pipelines de ingestão"
+        ],
+        "file_patterns": [
+          "dados_governo/**/*",
+          "ingestao/**/*",
+          "ibge.py",
+          "inmet_*.py"
+        ],
+        "apis_focus": [
+          "Government data integration",
+          "Weather data processing",
+          "Agricultural indices"
+        ]
+      },
+      "devops_infrastructure": {
+        "id": "devops",
+        "name": "DevOps & Infrastructure",
+        "role": "Especialista em containers e deploy",
+        "technologies": ["Docker", "Docker Compose", "Nginx", "PostgreSQL", "Redis"],
+        "responsibilities": [
+          "Gerenciar containers Docker",
+          "Configurar ambiente de produção",
+          "Implementar CI/CD",
+          "Monitorar performance"
+        ],
+        "file_patterns": [
+          "docker-compose*.yml",
+          "Dockerfile*",
+          "deploy_*.sh",
+          "nginx.conf",
+          "config/**/*"
+        ],
+        "apis_focus": [
+          "Infrastructure automation",
+          "Container orchestration",
+          "Deployment pipelines"
+        ]
+      },
+      "qa_testing": {
+        "id": "qa_test",
+        "name": "QA & Testing Agent",
+        "role": "Especialista em testes para sistemas agrícolas",
+        "technologies": ["Python pytest", "Jest", "React Testing Library", "API Testing"],
+        "responsibilities": [
+          "Criar testes para APIs de preços",
+          "Testar integrações WhatsApp",
+          "Validar dashboards React",
+          "Testes de carga"
+        ],
+        "file_patterns": [
+          "tests/**/*",
+          "**/*test.py",
+          "**/*test.tsx",
+          "**/*spec.js"
+        ],
+        "apis_focus": [
+          "API testing automation",
+          "Frontend component testing",
+          "Integration testing"
+        ]
+      },
+      "product_manager": {
+        "id": "pm",
+        "name": "Product Manager Agronegócio",
+        "role": "Gestão de produto para agronegócio",
+        "technologies": ["Product Strategy", "Agile", "Analytics", "Market Research"],
+        "responsibilities": [
+          "Definir roadmap de funcionalidades",
+          "Priorizar features baseadas no mercado",
+          "Coordenar desenvolvimento",
+          "Definir métricas de sucesso"
+        ],
+        "file_patterns": [
+          "docs/**/*",
+          "README*.md",
+          "ROADMAP.md",
+          "*.md"
+        ],
+        "apis_focus": [
+          "Product strategy",
+          "Feature prioritization",
+          "Market analysis"
+        ]
+      },
+      "financial_modeling": {
+        "id": "fin_model",
+        "name": "Financial Modeling & Pricing",
+        "role": "Especialista em modelos financeiros e precificação",
+        "technologies": ["Python", "NumPy", "SciPy", "Machine Learning", "Financial Models"],
+        "responsibilities": [
+          "Desenvolver modelos de precificação",
+          "Implementar análise de risco",
+          "Criar simuladores de cenários",
+          "Otimizar algoritmos de trading"
+        ],
+        "file_patterns": [
+          "precificacao/**/*",
+          "previsao_precos_*.py",
+          "models/**/*",
+          "cambio.py"
+        ],
+        "apis_focus": [
+          "Pricing algorithms",
+          "Risk analysis",
+          "Market simulation"
+        ]
+      }
+    },
+    "collaboration_matrix": {
+      "primary_interactions": {
+        "backend_python + database_engineer": "API performance optimization",
+        "frontend_react + backend_python": "Data flow and API integration",
+        "whatsapp_specialist + backend_python": "Message automation triggers",
+        "business_intelligence + agritech_data": "Data analysis and reporting",
+        "devops_infrastructure + all": "Deployment and monitoring"
+      },
+      "secondary_interactions": {
+        "qa_testing + all_developers": "Quality assurance validation",
+        "product_manager + all": "Feature planning and coordination",
+        "financial_modeling + business_intelligence": "Advanced analytics"
+      }
+    },
+    "development_workflow": {
+      "sprint_planning": [
+        "product_manager: Define priorities",
+        "backend_python + frontend_react: Estimate complexity",
+        "database_engineer: Evaluate schema impact",
+        "whatsapp_specialist: Consider integrations"
+      ],
+      "development_flow": [
+        "database_engineer: Create/update schemas",
+        "backend_python: Develop APIs and business logic",
+        "frontend_react: Implement interfaces",
+        "whatsapp_specialist: Integrate automation",
+        "qa_testing: Validate end-to-end"
+      ],
+      "deployment_flow": [
+        "devops_infrastructure: Prepare environment",
+        "qa_testing: Integration tests",
+        "devops_infrastructure: Production deploy",
+        "business_intelligence: Monitor metrics"
+      ]
+    },
+    "metrics_and_kpis": {
+      "database_engineer": {
+        "target": "Query time < 100ms for historical data",
+        "kpi": "Database performance optimization"
+      },
+      "backend_python": {
+        "target": "API response time < 200ms",
+        "kpi": "99.9% uptime for pricing APIs"
+      },
+      "frontend_react": {
+        "target": "Lighthouse score > 90",
+        "kpi": "Load time < 2s, mobile-first"
+      },
+      "whatsapp_specialist": {
+        "target": "80% automation of price notifications",
+        "kpi": "95% delivery rate, < 1s response"
+      }
+    }
+  }
+}
