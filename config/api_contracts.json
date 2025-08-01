@@ -1,0 +1,378 @@
+{
+  "api_version": "v1",
+  "base_url": "http://localhost:8000/api/v1",
+  "contracts": {
+    "database_service": {
+      "name": "Database Service Contract",
+      "base_path": "/database",
+      "endpoints": {
+        "health": {
+          "method": "GET",
+          "path": "/health",
+          "description": "Database health check",
+          "response_schema": {
+            "status": "string",
+            "timestamp": "datetime",
+            "connections": "integer"
+          }
+        },
+        "commodity_prices": {
+          "method": "GET",
+          "path": "/prices/{commodity}",
+          "description": "Get commodity price history",
+          "parameters": {
+            "commodity": "string",
+            "date_from": "date",
+            "date_to": "date",
+            "limit": "integer"
+          },
+          "response_schema": {
+            "commodity": "string",
+            "prices": [
+              {
+                "date": "date",
+                "price": "decimal",
+                "volume": "integer",
+                "source": "string"
+              }
+            ]
+          }
+        },
+        "market_data": {
+          "method": "POST",
+          "path": "/market-data",
+          "description": "Insert market data",
+          "request_schema": {
+            "commodity": "string",
+            "price": "decimal",
+            "volume": "integer",
+            "timestamp": "datetime",
+            "source": "string"
+          }
+        }
+      }
+    },
+    "pricing_service": {
+      "name": "Pricing & Prediction Service Contract",
+      "base_path": "/pricing",
+      "endpoints": {
+        "predict_price": {
+          "method": "POST",
+          "path": "/predict",
+          "description": "Predict commodity price",
+          "request_schema": {
+            "commodity": "string",
+            "prediction_days": "integer",
+            "model_type": "string",
+            "factors": {
+              "weather": "object",
+              "demand": "decimal",
+              "supply": "decimal"
+            }
+          },
+          "response_schema": {
+            "commodity": "string",
+            "current_price": "decimal",
+            "predictions": [
+              {
+                "date": "date",
+                "predicted_price": "decimal",
+                "confidence": "decimal",
+                "factors_impact": "object"
+              }
+            ],
+            "model_accuracy": "decimal"
+          }
+        },
+        "price_alerts": {
+          "method": "POST",
+          "path": "/alerts",
+          "description": "Create price alert",
+          "request_schema": {
+            "commodity": "string",
+            "threshold_price": "decimal",
+            "condition": "string",
+            "notification_channels": ["string"]
+          }
+        }
+      }
+    },
+    "whatsapp_service": {
+      "name": "WhatsApp Integration Service Contract",
+      "base_path": "/whatsapp",
+      "endpoints": {
+        "send_message": {
+          "method": "POST",
+          "path": "/send",
+          "description": "Send WhatsApp message",
+          "request_schema": {
+            "to": "string",
+            "message": "string",
+            "type": "string",
+            "attachments": ["object"]
+          },
+          "response_schema": {
+            "message_id": "string",
+            "status": "string",
+            "timestamp": "datetime"
+          }
+        },
+        "broadcast": {
+          "method": "POST",
+          "path": "/broadcast",
+          "description": "Broadcast message to groups",
+          "request_schema": {
+            "groups": ["string"],
+            "message": "string",
+            "schedule": "datetime",
+            "template": "string"
+          }
+        },
+        "webhook": {
+          "method": "POST",
+          "path": "/webhook",
+          "description": "WhatsApp webhook endpoint",
+          "request_schema": {
+            "from": "string",
+            "message": "string",
+            "timestamp": "datetime",
+            "message_type": "string"
+          }
+        }
+      }
+    },
+    "data_ingestion_service": {
+      "name": "External Data Ingestion Service Contract",
+      "base_path": "/data",
+      "endpoints": {
+        "ingest_ibge": {
+          "method": "POST",
+          "path": "/ingest/ibge",
+          "description": "Ingest IBGE data",
+          "request_schema": {
+            "dataset": "string",
+            "date_range": {
+              "start": "date",
+              "end": "date"
+            },
+            "regions": ["string"]
+          }
+        },
+        "ingest_weather": {
+          "method": "POST",
+          "path": "/ingest/weather",
+          "description": "Ingest INMET weather data",
+          "request_schema": {
+            "stations": ["string"],
+            "date_range": {
+              "start": "date",
+              "end": "date"
+            },
+            "parameters": ["string"]
+          }
+        },
+        "data_status": {
+          "method": "GET",
+          "path": "/status",
+          "description": "Get data ingestion status",
+          "response_schema": {
+            "last_update": "datetime",
+            "sources": [
+              {
+                "name": "string",
+                "status": "string",
+                "last_sync": "datetime",
+                "records_count": "integer"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "analytics_service": {
+      "name": "Business Intelligence & Analytics Contract",
+      "base_path": "/analytics",
+      "endpoints": {
+        "market_report": {
+          "method": "GET",
+          "path": "/reports/market",
+          "description": "Generate market analysis report",
+          "parameters": {
+            "commodity": "string",
+            "period": "string",
+            "format": "string"
+          },
+          "response_schema": {
+            "report_id": "string",
+            "commodity": "string",
+            "period": "string",
+            "analysis": {
+              "price_trend": "string",
+              "volatility": "decimal",
+              "key_factors": ["string"],
+              "recommendations": ["string"]
+            },
+            "charts": ["object"]
+          }
+        },
+        "sentiment_analysis": {
+          "method": "POST",
+          "path": "/sentiment",
+          "description": "Analyze market sentiment from news",
+          "request_schema": {
+            "commodity": "string",
+            "news_sources": ["string"],
+            "date_range": {
+              "start": "date",
+              "end": "date"
+            }
+          },
+          "response_schema": {
+            "sentiment_score": "decimal",
+            "sentiment_trend": "string",
+            "key_topics": ["string"],
+            "news_impact": "decimal"
+          }
+        }
+      }
+    },
+    "notification_service": {
+      "name": "Notification Service Contract",
+      "base_path": "/notifications",
+      "endpoints": {
+        "send_alert": {
+          "method": "POST",
+          "path": "/alert",
+          "description": "Send notification alert",
+          "request_schema": {
+            "type": "string",
+            "priority": "string",
+            "message": "string",
+            "recipients": ["string"],
+            "channels": ["string"],
+            "metadata": "object"
+          }
+        },
+        "schedule_notification": {
+          "method": "POST",
+          "path": "/schedule",
+          "description": "Schedule future notification",
+          "request_schema": {
+            "notification": "object",
+            "schedule": "datetime",
+            "recurrence": "string"
+          }
+        }
+      }
+    }
+  },
+  "data_models": {
+    "commodity": {
+      "id": "uuid",
+      "name": "string",
+      "category": "string",
+      "unit": "string",
+      "market": "string",
+      "active": "boolean"
+    },
+    "price_point": {
+      "id": "uuid",
+      "commodity_id": "uuid",
+      "price": "decimal",
+      "volume": "integer", 
+      "timestamp": "datetime",
+      "source": "string",
+      "region": "string"
+    },
+    "weather_data": {
+      "id": "uuid",
+      "station_id": "string",
+      "timestamp": "datetime",
+      "temperature": "decimal",
+      "humidity": "decimal",
+      "precipitation": "decimal",
+      "wind_speed": "decimal"
+    },
+    "prediction": {
+      "id": "uuid",
+      "commodity_id": "uuid",
+      "model_type": "string",
+      "prediction_date": "date",
+      "predicted_price": "decimal",
+      "confidence": "decimal",
+      "factors": "json",
+      "created_at": "datetime"
+    },
+    "alert": {
+      "id": "uuid",
+      "user_id": "uuid",
+      "commodity_id": "uuid",
+      "threshold_price": "decimal",
+      "condition": "string",
+      "active": "boolean",
+      "notification_channels": ["string"]
+    }
+  },
+  "event_schemas": {
+    "price_updated": {
+      "event_type": "price_updated",
+      "timestamp": "datetime",
+      "data": {
+        "commodity": "string",
+        "old_price": "decimal",
+        "new_price": "decimal",
+        "change_percentage": "decimal"
+      }
+    },
+    "alert_triggered": {
+      "event_type": "alert_triggered",
+      "timestamp": "datetime",
+      "data": {
+        "alert_id": "uuid",
+        "commodity": "string",
+        "current_price": "decimal",
+        "threshold_price": "decimal",
+        "condition": "string"
+      }
+    },
+    "data_ingested": {
+      "event_type": "data_ingested",
+      "timestamp": "datetime",
+      "data": {
+        "source": "string",
+        "records_count": "integer",
+        "status": "string"
+      }
+    }
+  },
+  "authentication": {
+    "type": "JWT",
+    "header": "Authorization",
+    "prefix": "Bearer",
+    "expiration": 3600,
+    "refresh_endpoint": "/auth/refresh"
+  },
+  "error_responses": {
+    "400": {
+      "error": "Bad Request",
+      "message": "string",
+      "details": "object"
+    },
+    "401": {
+      "error": "Unauthorized",
+      "message": "Authentication required"
+    },
+    "403": {
+      "error": "Forbidden", 
+      "message": "Insufficient permissions"
+    },
+    "404": {
+      "error": "Not Found",
+      "message": "Resource not found"
+    },
+    "500": {
+      "error": "Internal Server Error",
+      "message": "An unexpected error occurred"
+    }
+  }
+}

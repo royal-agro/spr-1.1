@@ -1,0 +1,12 @@
+[2025-07-31 21:27:41] [INFO] Starting test: Backend Health (GET http://localhost:3002/api/health)
+[2025-07-31 21:27:41] [ERROR] Backend Health failed - HTTP 000, expected 200
+[2025-07-31 21:27:41] [INFO] Starting test: WhatsApp Status (GET http://localhost:3003/api/status)
+[2025-07-31 21:27:41] [ERROR] WhatsApp Status failed - HTTP 000, expected 200
+[2025-07-31 21:27:41] [INFO] Starting test: Frontend Load (GET http://localhost:3000/)
+[2025-07-31 21:27:41] [ERROR] Frontend Load failed - HTTP 000, expected 200
+[2025-07-31 21:27:56] [INFO] Starting test: Backend Health (GET http://localhost:3002/api/health)
+[2025-07-31 21:27:56] [ERROR] Backend Health failed - HTTP 000, expected 200
+[2025-07-31 21:27:56] [INFO] Starting test: WhatsApp Status (GET http://localhost:3003/api/status)
+[2025-07-31 21:27:56] [ERROR] WhatsApp Status failed - HTTP 000, expected 200
+[2025-07-31 21:27:56] [INFO] Starting test: Frontend Load (GET http://localhost:3000/)
+[2025-07-31 21:27:56] [ERROR] Frontend Load failed - HTTP 000, expected 200

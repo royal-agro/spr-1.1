@@ -23,10 +23,13 @@ import uvicorn
 import secrets
 
 # Import security modules
-from middleware.auth import auth_service, requires_auth, requires_permission, requires_role
-from middleware.validation import input_sanitizer, validate_request_data, WHATSAPP_MESSAGE_SCHEMA
-from middleware.webhook_security import webhook_verifier, verify_whatsapp_webhook
-from security.encryption import setup_encryption
+from .middleware.auth_fastapi import auth_service, requires_auth, requires_permission, requires_role, get_current_user
+from .middleware.validation_fastapi import input_sanitizer, validate_request_data, WHATSAPP_MESSAGE_SCHEMA
+from .middleware.webhook_security_fastapi import webhook_verifier, verify_whatsapp_webhook
+from .security.encryption import setup_encryption
+
+# Import routers
+from .routers import broadcast
 
 logging.basicConfig(
    level=logging.INFO,
@@ -135,16 +138,7 @@ async def security_middleware(request: Request, call_next):
 # Authentication setup
 security = HTTPBearer()
 
-async def get_current_user(credentials: HTTPAuthorizationCredentials = Security(security)):
-    """Get current authenticated user"""
-    try:
-        payload = auth_service.verify_token(credentials.credentials)
-        if not payload:
-            raise HTTPException(status_code=401, detail="Invalid or expired token")
-        return payload
-    except Exception as e:
-        logger.error(f"Authentication error: {e}")
-        raise HTTPException(status_code=401, detail="Authentication failed")
+# get_current_user is now imported from auth_fastapi
 
 # Health check endpoint (public)
 @app.get("/health")
@@ -266,6 +260,9 @@ async def get_metrics(current_user: dict = Depends(get_current_user)):
             "webhook_requests": 156
         }
     }
+
+# Include routers
+app.include_router(broadcast.router)
 
 class SPRSystem:
    def __init__(self):

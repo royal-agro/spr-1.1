@@ -167,7 +167,7 @@ class GovernmentData(Base):
     reference_period = Column(String(50))  # 2024/2025, Jan/2024, etc
     
     # Metadados detalhados
-    metadata = Column(JSON)  # Dados adicionais em JSON
+    data_metadata = Column(JSON)  # Dados adicionais em JSON
     
     # Controle
     timestamp = Column(DateTime(timezone=True), nullable=False, index=True)
@@ -252,3 +252,16 @@ class WhatsAppUser(Base):
     
     def __repr__(self):
         return f"<WhatsAppUser(phone='{self.phone_number}', name='{self.name}')>"
+
+
+# Importar modelos de broadcast
+from .broadcast_models import (
+    BroadcastGroup,
+    BroadcastCampaign, 
+    BroadcastApproval,
+    BroadcastRecipient,
+    BroadcastLog,
+    BroadcastStatus,
+    ApprovalStatus,
+    log_broadcast_action
+)

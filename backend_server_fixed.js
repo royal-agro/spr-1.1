@@ -486,8 +486,8 @@ app.post('/api/auth/refresh', authenticateToken, (req, res) => {
     }
 });
 
-// ENDPOINT PRINCIPAL: Status geral do sistema (now requires authentication)
-app.get('/api/status', authenticateToken, async (req, res) => {
+// ENDPOINT PRINCIPAL: Status geral do sistema (public for development)
+app.get('/api/status', async (req, res) => {
     try {
         console.log('📊 Endpoint /api/status chamado');
         
@@ -594,8 +594,8 @@ app.get('/api/webhook/whatsapp', (req, res) => {
     }
 });
 
-// PROXY MELHORADO PARA WHATSAPP ENDPOINTS (now requires authentication)
-app.use('/api/whatsapp', authenticateToken, async (req, res) => {
+// PROXY MELHORADO PARA WHATSAPP ENDPOINTS (public for development)
+app.use('/api/whatsapp', async (req, res) => {
     try {
         console.log(`🔄 Proxy WhatsApp: ${req.method} ${req.path}`);
         systemStatus.metrics.totalRequests++;

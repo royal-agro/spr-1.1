@@ -1,0 +1,244 @@
+{
+  "database_engineer": {
+    "name": "Database Engineer - PostgreSQL Specialist",
+    "tools": [
+      "postgresql-client",
+      "pgadmin4",
+      "redis-tools"
+    ],
+    "env_vars": {
+      "POSTGRES_DB": "spr_agritech",
+      "POSTGRES_USER": "spr_user",
+      "POSTGRES_PASSWORD": "spr_password",
+      "REDIS_URL": "redis://localhost:6379",
+      "DB_POOL_SIZE": "20"
+    },
+    "focus_directories": [
+      "database/",
+      "app/database/",
+      "docker-compose.yml"
+    ],
+    "port_mappings": {
+      "postgres": 5432,
+      "pgadmin": 5050,
+      "redis": 6379
+    }
+  },
+  "backend_python": {
+    "name": "Backend Engineer Python - FastAPI/AgriTech",
+    "tools": [
+      "python3.11",
+      "fastapi",
+      "uvicorn",
+      "pandas",
+      "requests"
+    ],
+    "env_vars": {
+      "PYTHONPATH": "/app",
+      "FASTAPI_ENV": "development",
+      "API_VERSION": "v1",
+      "WORKERS": "1"
+    },
+    "focus_directories": [
+      "app/",
+      "app/precificacao/",
+      "app/analise/",
+      "app/dados_governo/"
+    ],
+    "port_mappings": {
+      "backend": 8000,
+      "docs": 8000
+    }
+  },
+  "frontend_react": {
+    "name": "Frontend Engineer - React/TypeScript",
+    "tools": [
+      "node18",
+      "npm",
+      "typescript",
+      "tailwindcss",
+      "react-dev-tools"
+    ],
+    "env_vars": {
+      "REACT_APP_API_URL": "http://localhost:8000",
+      "REACT_APP_ENV": "development",
+      "GENERATE_SOURCEMAP": "true"
+    },
+    "focus_directories": [
+      "frontend/src/",
+      "frontend/src/components/",
+      "frontend/src/store/"
+    ],
+    "port_mappings": {
+      "frontend": 3000,
+      "storybook": 6006
+    }
+  },
+  "whatsapp_specialist": {
+    "name": "WhatsApp Integration Specialist",
+    "tools": [
+      "node18",
+      "puppeteer",
+      "socket.io",
+      "express"
+    ],
+    "env_vars": {
+      "WHATSAPP_SESSION_PATH": "./sessions",
+      "WHATSAPP_TIMEOUT": "60000",
+      "WEBHOOK_SECRET": "spr_webhook_secret"
+    },
+    "focus_directories": [
+      "app/services/whatsapp*",
+      "app/routers/",
+      "backend_server_fixed.js"
+    ],
+    "port_mappings": {
+      "whatsapp": 3001,
+      "webhook": 3002
+    }
+  },
+  "business_intelligence": {
+    "name": "Business Intelligence & Analytics Agent",
+    "tools": [
+      "python3.11",
+      "jupyter",
+      "plotly",
+      "dash",
+      "pandas"
+    ],
+    "env_vars": {
+      "JUPYTER_PORT": "8888",
+      "DASH_DEBUG": "true",
+      "ANALYTICS_CACHE_TTL": "3600"
+    },
+    "focus_directories": [
+      "app/analise/",
+      "data/",
+      "logs/"
+    ],
+    "port_mappings": {
+      "jupyter": 8888,
+      "dash": 8050
+    }
+  },
+  "agritech_data": {
+    "name": "AgriTech Data Specialist",
+    "tools": [
+      "python3.11",
+      "requests",
+      "pandas",
+      "geopandas",
+      "cron"
+    ],
+    "env_vars": {
+      "IBGE_API_KEY": "",
+      "INMET_API_KEY": "",
+      "B3_API_KEY": "",
+      "DATA_REFRESH_INTERVAL": "3600"
+    },
+    "focus_directories": [
+      "app/dados_governo/",
+      "app/ingestao/",
+      "data/raw/"
+    ],
+    "port_mappings": {
+      "data_api": 8001
+    }
+  },
+  "devops_infrastructure": {
+    "name": "DevOps & Infrastructure Agent",
+    "tools": [
+      "docker",
+      "docker-compose",
+      "nginx",
+      "certbot",
+      "prometheus"
+    ],
+    "env_vars": {
+      "DOCKER_BUILDKIT": "1",
+      "COMPOSE_DOCKER_CLI_BUILD": "1",
+      "NGINX_WORKER_PROCESSES": "auto"
+    },
+    "focus_directories": [
+      "docker-compose*.yml",
+      "Dockerfile*",
+      "scripts/",
+      "nginx.conf"
+    ],
+    "port_mappings": {
+      "nginx": 80,
+      "nginx_ssl": 443,
+      "prometheus": 9090
+    }
+  },
+  "qa_testing": {
+    "name": "QA & Testing Agent - AgriTech Focus",
+    "tools": [
+      "pytest",
+      "jest",
+      "cypress",
+      "newman",
+      "k6"
+    ],
+    "env_vars": {
+      "TEST_DATABASE_URL": "postgresql://test_user:test_pass@localhost:5433/test_db",
+      "CYPRESS_baseUrl": "http://localhost:3000",
+      "PYTEST_MARKERS": "unit,integration,e2e"
+    },
+    "focus_directories": [
+      "tests/",
+      "frontend/src/__tests__/",
+      "cypress/"
+    ],
+    "port_mappings": {
+      "test_db": 5433,
+      "cypress": 3100
+    }
+  },
+  "product_manager": {
+    "name": "Product Manager - Agronegócio",
+    "tools": [
+      "notion",
+      "linear",
+      "metabase",
+      "figma"
+    ],
+    "env_vars": {
+      "PRODUCT_METRICS_DASHBOARD": "http://localhost:3000/metrics",
+      "SLACK_WEBHOOK": "",
+      "SPRINT_DURATION": "14"
+    },
+    "focus_directories": [
+      "docs/",
+      "README*.md",
+      "ROADMAP.md"
+    ],
+    "port_mappings": {
+      "metrics": 3200
+    }
+  },
+  "financial_modeling": {
+    "name": "Financial Modeling & Pricing Agent",
+    "tools": [
+      "python3.11",
+      "scipy",
+      "scikit-learn",
+      "tensorflow",
+      "quantlib"
+    ],
+    "env_vars": {
+      "MODEL_CACHE_DIR": "./models",
+      "TRAINING_DATA_PATH": "./data/training",
+      "ML_MODEL_VERSION": "v1.0"
+    },
+    "focus_directories": [
+      "app/precificacao/",
+      "models/",
+      "data/training/"
+    ],
+    "port_mappings": {
+      "model_api": 8002,
+      "tensorboard": 6006
+    }
+  }
+}

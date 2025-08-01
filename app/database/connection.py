@@ -136,5 +136,14 @@ class DatabaseManager:
         return False
 
 
-# Instância global do gerenciador
-db_manager = DatabaseManager()
+# Instância global do gerenciador - forçar SQLite
+db_manager = DatabaseManager(database_url="sqlite:///spr_broadcast.db")
+
+# Funções de conveniência para compatibilidade
+def get_db_session() -> Generator[Session, None, None]:
+    """Função de conveniência para obter sessão de banco"""
+    return db_manager.get_db_session()
+
+def get_db() -> Generator[Session, None, None]:
+    """Alias para FastAPI dependency injection"""
+    yield from db_manager.get_db_session()

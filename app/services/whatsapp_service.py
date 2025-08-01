@@ -14,7 +14,7 @@ from cryptography.fernet import Fernet
 import websockets
 import base64
 import os
-from flask import current_app
+# from flask import current_app  # TODO: Remover dependência do Flask
 
 # Configurar logging
 logging.basicConfig(level=logging.INFO)

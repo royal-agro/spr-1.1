@@ -1,0 +1,12 @@
+[2025-07-31 21:27:45] [INFO] Testing HTTP endpoint: http://localhost:3002/api/health
+[2025-07-31 21:27:45] [SUCCESS] Backend is healthy - HTTP 00 in ms
+[2025-07-31 21:27:45] [INFO] Testing HTTP endpoint: http://localhost:3003/api/status
+[2025-07-31 21:27:45] [SUCCESS] WhatsApp is healthy - HTTP 00 in ms
+[2025-07-31 21:27:45] [INFO] Testing HTTP endpoint: http://localhost:3000
+[2025-07-31 21:27:46] [SUCCESS] Frontend is healthy - HTTP 00 in ms
+[2025-07-31 21:27:52] [INFO] Testing HTTP endpoint: http://localhost:3002/api/health
+[2025-07-31 21:27:52] [SUCCESS] Backend is healthy - HTTP 00 in ms
+[2025-07-31 21:27:52] [INFO] Testing HTTP endpoint: http://localhost:3003/api/status
+[2025-07-31 21:27:52] [SUCCESS] WhatsApp is healthy - HTTP 00 in ms
+[2025-07-31 21:27:52] [INFO] Testing HTTP endpoint: http://localhost:3000
+[2025-07-31 21:27:52] [SUCCESS] Frontend is healthy - HTTP 00 in ms
