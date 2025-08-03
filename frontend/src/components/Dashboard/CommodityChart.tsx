@@ -193,7 +193,7 @@ const CommodityChart: React.FC<CommodityChartProps> = ({ data }) => {
   return (
     <div className="w-full h-full">
       {/* Controles de Visualização */}
-      <div className="flex flex-wrap justify-between items-center mb-4 gap-4">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-4 gap-4">
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => setViewMode('normalized')}
@@ -227,36 +227,38 @@ const CommodityChart: React.FC<CommodityChartProps> = ({ data }) => {
           </button>
         </div>
         
-        {/* Seletor de Commodity */}
-        <div className="flex items-center space-x-2">
-          <label className="text-sm font-medium text-gray-700">Commodity:</label>
-          <select
-            value={selectedCommodity}
-            onChange={(e) => setSelectedCommodity(e.target.value)}
-            className="px-3 py-1 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="all">Todas</option>
-            {Object.keys(data).map(commodity => (
-              <option key={commodity} value={commodity}>
-                {getCommodityName(commodity)}
-              </option>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+          {/* Seletor de Commodity */}
+          <div className="flex items-center space-x-2">
+            <label className="text-sm font-medium text-gray-700">Commodity:</label>
+            <select
+              value={selectedCommodity}
+              onChange={(e) => setSelectedCommodity(e.target.value)}
+              className="px-3 py-1 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="all">Todas</option>
+              {Object.keys(data).map(commodity => (
+                <option key={commodity} value={commodity}>
+                  {getCommodityName(commodity)}
+                </option>
+              ))}
+            </select>
+          </div>
+          
+          {/* Legenda */}
+          <div className="flex flex-wrap gap-2 sm:gap-4">
+            {getVisibleCommodities().map(commodity => (
+              <div key={commodity} className="flex items-center space-x-2">
+                <div 
+                  className="w-3 h-3 rounded-full"
+                  style={{ backgroundColor: colors[commodity as keyof typeof colors] }}
+                />
+                <span className="text-xs sm:text-sm text-gray-600 capitalize">
+                  {getCommodityName(commodity)}
+                </span>
+              </div>
             ))}
-          </select>
-        </div>
-        
-        {/* Legenda */}
-        <div className="flex flex-wrap gap-4">
-          {getVisibleCommodities().map(commodity => (
-            <div key={commodity} className="flex items-center space-x-2">
-              <div 
-                className="w-3 h-3 rounded-full"
-                style={{ backgroundColor: colors[commodity as keyof typeof colors] }}
-              />
-              <span className="text-sm text-gray-600 capitalize">
-                {getCommodityName(commodity)}
-              </span>
-            </div>
-          ))}
+          </div>
         </div>
       </div>
 
@@ -281,7 +283,7 @@ const CommodityChart: React.FC<CommodityChartProps> = ({ data }) => {
       </div>
 
       {/* Gráfico SVG */}
-      <div className="relative w-full" style={{ height: 'calc(100% - 200px)' }}>
+      <div className="relative w-full h-64 sm:h-80 md:h-96 lg:h-[400px]">
         <svg 
           viewBox="0 0 100 100" 
           className="w-full h-full border border-gray-200 rounded-lg bg-gray-50"
@@ -383,15 +385,15 @@ const CommodityChart: React.FC<CommodityChartProps> = ({ data }) => {
       </div>
 
       {/* Resumo estatístico */}
-      <div className="mt-4 grid grid-cols-2 md:grid-cols-5 gap-2 text-xs">
+      <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 sm:gap-3">
         {getVisibleCommodities().map(commodity => {
           const info = data[commodity];
           return (
-            <div key={commodity} className="text-center p-2 bg-gray-50 rounded">
-              <div className="font-medium capitalize">
+            <div key={commodity} className="text-center p-2 sm:p-3 bg-gray-50 rounded-lg">
+              <div className="font-medium capitalize text-xs sm:text-sm">
                 {getCommodityName(commodity)}
               </div>
-              <div className={`text-sm ${info.variation >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+              <div className={`text-sm sm:text-base font-semibold ${info.variation >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                 {info.variation >= 0 ? '+' : ''}{info.variation.toFixed(2)}%
               </div>
               <div className="text-xs text-gray-500 mt-1">

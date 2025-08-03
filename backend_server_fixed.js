@@ -1,3 +1,6 @@
+// Configuração de ambiente
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -56,7 +59,7 @@ const generalLimiter = rateLimit({
     standardHeaders: true,
     legacyHeaders: false,
     handler: (req, res) => {
-        logger.warning(`Rate limit exceeded for IP: ${req.ip}`);
+        console.warn(`⚠️ Rate limit exceeded for IP: ${req.ip}`);
         res.status(429).json({
             error: 'Too many requests',
             retryAfter: Math.ceil(RATE_LIMIT_WINDOW / 1000),
@@ -104,7 +107,7 @@ app.use(cors({
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
         } else {
-            logger.warning(`CORS blocked origin: ${origin}`);
+            console.warn(`⚠️ CORS blocked origin: ${origin}`);
             callback(new Error('Not allowed by CORS'));
         }
     },
@@ -218,7 +221,7 @@ const authenticateAPIKey = (req, res, next) => {
     const validAPIKeys = (process.env.API_KEYS || '').split(',').filter(Boolean);
     
     if (!apiKey || !validAPIKeys.includes(apiKey)) {
-        logger.warning(`Invalid API key from IP: ${req.ip}`);
+        console.warn(`⚠️ Invalid API key from IP: ${req.ip}`);
         return res.status(401).json({
             error: 'Valid API key required',
             timestamp: new Date().toISOString()
@@ -250,7 +253,7 @@ const verifyWebhookSignature = (req, res, next) => {
         Buffer.from(expectedSignature, 'hex'),
         Buffer.from(receivedSignature, 'hex')
     )) {
-        logger.warning(`Invalid webhook signature from IP: ${req.ip}`);
+        console.warn(`⚠️ Invalid webhook signature from IP: ${req.ip}`);
         return res.status(401).json({
             error: 'Invalid webhook signature',
             timestamp: new Date().toISOString()
@@ -410,7 +413,7 @@ app.post('/api/auth/login', async (req, res) => {
         
         const userPasswordHash = validUsers[username];
         if (!userPasswordHash || !await bcrypt.compare(password, userPasswordHash)) {
-            logger.warning(`Failed login attempt for user: ${username} from IP: ${req.ip}`);
+            console.warn(`⚠️ Failed login attempt for user: ${username} from IP: ${req.ip}`);
             return res.status(401).json({
                 error: 'Invalid credentials',
                 timestamp: new Date().toISOString()
@@ -435,7 +438,7 @@ app.post('/api/auth/login', async (req, res) => {
             JWT_SECRET
         );
         
-        logger.info(`User ${username} logged in successfully from IP: ${req.ip}`);
+        console.log(`✅ User ${username} logged in successfully from IP: ${req.ip}`);
         
         res.json({
             success: true,
@@ -449,7 +452,7 @@ app.post('/api/auth/login', async (req, res) => {
         });
         
     } catch (error) {
-        logger.error('Login error:', error);
+        console.error('❌ Login error:', error);
         res.status(500).json({
             error: 'Authentication failed',
             timestamp: new Date().toISOString()
@@ -478,7 +481,7 @@ app.post('/api/auth/refresh', authenticateToken, (req, res) => {
         });
         
     } catch (error) {
-        logger.error('Token refresh error:', error);
+        console.error('❌ Token refresh error:', error);
         res.status(500).json({
             error: 'Token refresh failed',
             timestamp: new Date().toISOString()
@@ -532,7 +535,7 @@ app.get('/api/status', async (req, res) => {
 // WhatsApp webhook endpoint (external, requires signature verification)
 app.post('/api/webhook/whatsapp', verifyWebhookSignature, async (req, res) => {
     try {
-        logger.info('WhatsApp webhook received');
+        console.log('📥 WhatsApp webhook received');
         
         // Process webhook payload
         const payload = req.body;
@@ -553,7 +556,7 @@ app.post('/api/webhook/whatsapp', verifyWebhookSignature, async (req, res) => {
                         if (change.field === 'messages' && change.value.messages) {
                             // Process incoming messages
                             for (const message of change.value.messages) {
-                                logger.info(`Received message: ${message.id} from ${message.from}`);
+                                console.log(`📨 Received message: ${message.id} from ${message.from}`);
                                 // Here you would process the message
                             }
                         }
@@ -566,7 +569,7 @@ app.post('/api/webhook/whatsapp', verifyWebhookSignature, async (req, res) => {
         res.status(200).send('OK');
         
     } catch (error) {
-        logger.error('Webhook processing error:', error);
+        console.error('❌ Webhook processing error:', error);
         res.status(500).json({
             error: 'Webhook processing failed',
             timestamp: new Date().toISOString()
@@ -582,15 +585,92 @@ app.get('/api/webhook/whatsapp', (req, res) => {
         const challenge = req.query['hub.challenge'];
         
         if (mode === 'subscribe' && token === process.env.WHATSAPP_WEBHOOK_VERIFY_TOKEN) {
-            logger.info('WhatsApp webhook verified successfully');
+            console.log('✅ WhatsApp webhook verified successfully');
             res.status(200).send(challenge);
         } else {
-            logger.warning('WhatsApp webhook verification failed');
+            console.warn('⚠️ WhatsApp webhook verification failed');
             res.sendStatus(403);
         }
     } catch (error) {
-        logger.error('Webhook verification error:', error);
+        console.error('❌ Webhook verification error:', error);
         res.sendStatus(403);
+    }
+});
+
+// PROXY ESPECÍFICO PARA ENDPOINTS WHATSAPP CHAT E QR (public for development)
+app.get('/chat', async (req, res) => {
+    try {
+        console.log('🔄 Proxy WhatsApp Chat: GET /chat');
+        systemStatus.metrics.totalRequests++;
+        
+        const startTime = Date.now();
+        const targetUrl = `${WHATSAPP_SERVER_URL}/chat`;
+        
+        const response = await retryRequest(() => 
+            axiosInstance.get(targetUrl, {
+                headers: {
+                    'Accept': 'text/html',
+                    'X-Forwarded-For': req.ip
+                }
+            })
+        );
+        
+        // Calcular tempo de resposta
+        const responseTime = Date.now() - startTime;
+        systemStatus.metrics.responseTime = Math.round(
+            (systemStatus.metrics.responseTime * 0.9) + (responseTime * 0.1)
+        );
+        
+        // Retornar HTML diretamente
+        res.setHeader('Content-Type', 'text/html');
+        res.send(response.data);
+    } catch (error) {
+        console.error('❌ Erro no proxy WhatsApp Chat:', error.message);
+        systemStatus.metrics.failedRequests++;
+        
+        res.status(503).setHeader('Content-Type', 'text/html').send(`
+            <html>
+            <head><title>WhatsApp Chat - Indisponível</title></head>
+            <body>
+                <h1>Serviço WhatsApp Temporariamente Indisponível</h1>
+                <p>O servidor WhatsApp está offline. Tente novamente em alguns instantes.</p>
+                <p>Status: ${whatsappCircuitBreaker.state}</p>
+                <p><a href="javascript:window.location.reload()">Tentar Novamente</a></p>
+            </body>
+            </html>
+        `);
+    }
+});
+
+app.get('/api/qr', async (req, res) => {
+    try {
+        console.log('🔄 Proxy WhatsApp QR: GET /api/qr');
+        systemStatus.metrics.totalRequests++;
+        
+        const startTime = Date.now();
+        const targetUrl = `${WHATSAPP_SERVER_URL}/api/qr`;
+        
+        const response = await retryRequest(() => axiosInstance.get(targetUrl));
+        
+        // Calcular tempo de resposta
+        const responseTime = Date.now() - startTime;
+        systemStatus.metrics.responseTime = Math.round(
+            (systemStatus.metrics.responseTime * 0.9) + (responseTime * 0.1)
+        );
+        
+        res.json(response.data);
+    } catch (error) {
+        console.error('❌ Erro no proxy WhatsApp QR:', error.message);
+        systemStatus.metrics.failedRequests++;
+        
+        res.status(503).json({
+            qrCode: null,
+            connected: false,
+            error: 'WhatsApp Server indisponível',
+            circuitBreakerState: whatsappCircuitBreaker.state,
+            retryAfter: whatsappCircuitBreaker.state === 'OPEN' ? 30 : 5,
+            timestamp: new Date().toISOString()
+        });
     }
 });
 
@@ -1013,6 +1093,8 @@ app.use('*', (req, res) => {
             'GET /api/status - Status geral do sistema',
             'GET /api/health - Health check',
             'GET /api/metrics - Métricas detalhadas',
+            'GET /chat - Interface de Chat WhatsApp (proxy)',
+            'GET /api/qr - QR Code WhatsApp (proxy)',
             'GET /api/whatsapp/* - Endpoints do WhatsApp (proxy)',
             'POST /api/generate-message - Gerar mensagem com IA',
             'POST /api/analyze-sentiment - Análise de sentimento',
@@ -1053,6 +1135,8 @@ app.listen(PORT, async () => {
     console.log(`   ✅ GET  http://localhost:${PORT}/api/health`);
     console.log(`   📊 GET  http://localhost:${PORT}/api/status`);
     console.log(`   📈 GET  http://localhost:${PORT}/api/metrics`);
+    console.log(`   💬 GET  http://localhost:${PORT}/chat (WhatsApp Chat proxy)`);
+    console.log(`   📱 GET  http://localhost:${PORT}/api/qr (WhatsApp QR proxy)`);
     console.log(`   🤖 POST http://localhost:${PORT}/api/generate-message`);
     console.log(`   📱 *    http://localhost:${PORT}/api/whatsapp/* (proxy)`);
     

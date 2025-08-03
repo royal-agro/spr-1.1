@@ -325,67 +325,134 @@ export const useWhatsAppStore = create<WhatsAppStore>()(
           if (!get()._lockOperation('connect')) return;
           
           set({ isConnecting: true, connectionStatus: 'connecting' });
+          console.log('🔄 Iniciando conexão WhatsApp...');
           
-          try {
-            // Verificar status do servidor WhatsApp
-            const response = await fetch(`${config.whatsapp.apiUrl}/api/status`);
-            const data = await response.json();
-            
-            if (data.whatsappConnected) {
-              set({ 
-                connectionStatus: 'connected', 
-                isConnecting: false,
-                isConnected: true,
-                qrCode: null 
+          // Dynamic URL configuration with fallbacks
+          const whatsappUrls = [
+            config.whatsapp.apiUrl,
+            process.env.REACT_APP_WHATSAPP_URL || 'http://localhost:3003',
+            'http://localhost:3003',
+            'http://127.0.0.1:3003'
+          ].filter((url, index, self) => self.indexOf(url) === index); // Remove duplicates
+          
+          let lastError: Error | null = null;
+          
+          for (const baseUrl of whatsappUrls) {
+            try {
+              console.log(`🔄 Tentando conectar com ${baseUrl}...`);
+              
+              // Test connection first
+              const testResponse = await fetch(`${baseUrl}/api/status`, {
+                method: 'GET',
+                signal: AbortSignal.timeout(10000)
               });
-            } else {
-              // Tentar obter QR code
-              try {
-                const qrResponse = await fetch(`${config.whatsapp.apiUrl}/api/whatsapp/qr`);
-                const qrData = await qrResponse.json();
-                
-                if (qrData.qrCode) {
+              
+              if (!testResponse.ok) {
+                throw new Error(`Status check failed: ${testResponse.status}`);
+              }
+              
+              console.log(`✅ Conexão estabelecida com ${baseUrl}`);
+              
+              // Open chat page with QR Code in new window
+              const qrWindow = window.open(`${baseUrl}/chat`, '_blank', 'width=500,height=600');
+              
+              // Start connection process via API
+              const connectResponse = await fetch(`${baseUrl}/api/whatsapp/connect`, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                signal: AbortSignal.timeout(15000)
+              });
+              
+              if (!connectResponse.ok) {
+                console.warn(`API connect retornou: ${connectResponse.status}`);
+              }
+              
+              const connectData = await connectResponse.json();
+              console.log('🔄 Resposta da conexão:', connectData);
+              
+              // Check current status
+              const statusResponse = await fetch(`${baseUrl}/api/status`);
+              const statusData = await statusResponse.json();
+              
+              if (statusData.whatsappConnected) {
+                set({ 
+                  connectionStatus: 'connected', 
+                  isConnecting: false,
+                  isConnected: true,
+                  qrCode: null 
+                });
+                console.log('✅ WhatsApp já conectado!');
+              } else {
+                // Try to get QR code
+                try {
+                  const qrResponse = await fetch(`${baseUrl}/api/qr`);
+                  const qrData = await qrResponse.json();
+                  
+                  if (qrData.qrCode) {
+                    set({ 
+                      connectionStatus: 'connecting',
+                      isConnecting: false,
+                      isConnected: false,
+                      qrCode: qrData.qrCode 
+                    });
+                    console.log('📱 QR Code obtido, aguardando scan...');
+                  } else if (qrData.connected) {
+                    set({ 
+                      connectionStatus: 'connected', 
+                      isConnecting: false,
+                      isConnected: true,
+                      qrCode: null 
+                    });
+                    console.log('✅ WhatsApp conectado via status check!');
+                  } else {
+                    set({ 
+                      connectionStatus: 'disconnected',
+                      isConnecting: false,
+                      isConnected: false,
+                      qrCode: null 
+                    });
+                    console.log('⚠️ QR Code não disponível ainda...');
+                  }
+                } catch (qrError) {
+                  console.error('Erro ao obter QR code:', qrError);
                   set({ 
                     connectionStatus: 'connecting',
-                    isConnecting: false,
-                    isConnected: false,
-                    qrCode: qrData.qrCode 
-                  });
-                } else if (qrData.connected) {
-                  set({ 
-                    connectionStatus: 'connected', 
-                    isConnecting: false,
-                    isConnected: true,
-                    qrCode: null 
-                  });
-                } else {
-                  set({ 
-                    connectionStatus: 'disconnected',
                     isConnecting: false,
                     isConnected: false,
                     qrCode: null 
                   });
                 }
-              } catch (qrError) {
-                console.error('Erro ao obter QR code:', qrError);
-                set({ 
-                  connectionStatus: 'error',
-                  isConnecting: false,
-                  isConnected: false,
-                  qrCode: null 
-                });
+              }
+              
+              // Successfully connected to this URL, break the loop
+              break;
+              
+            } catch (error) {
+              console.error(`❌ Falha ao conectar com ${baseUrl}:`, error);
+              lastError = error instanceof Error ? error : new Error(String(error));
+              
+              // If this is not the last URL, try the next one
+              if (baseUrl !== whatsappUrls[whatsappUrls.length - 1]) {
+                console.log('🔄 Tentando próxima URL...');
+                continue;
               }
             }
-          } catch (error) {
-            console.error('Erro ao conectar WhatsApp:', error);
+          }
+          
+          // If we get here and still have an error, all URLs failed
+          if (lastError) {
+            console.error('❌ Todas as tentativas de conexão falharam:', lastError);
             set({ 
               connectionStatus: 'error', 
               isConnecting: false,
-              isConnected: false
+              isConnected: false,
+              qrCode: null
             });
-          } finally {
-            get()._unlockOperation('connect');
           }
+          
+          get()._unlockOperation('connect');
         },
 
         disconnectWhatsApp: () => {
@@ -421,18 +488,45 @@ export const useWhatsAppStore = create<WhatsAppStore>()(
 
           set({ chats: updatedChats });
 
-          // Enviar através do servidor WhatsApp real
+          // Enviar através do servidor WhatsApp real com fallback
           try {
-            const response = await fetch(`${config.whatsapp.apiUrl}/api/whatsapp/send`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                number: chatId,
-                message: content
-              })
-            });
+            const whatsappUrls = [
+              config.whatsapp.apiUrl,
+              process.env.REACT_APP_WHATSAPP_URL || 'http://localhost:3003',
+              'http://localhost:3003',
+              'http://127.0.0.1:3003'
+            ].filter((url, index, self) => self.indexOf(url) === index);
+            
+            let response: Response | null = null;
+            let lastError: Error | null = null;
+            
+            for (const baseUrl of whatsappUrls) {
+              try {
+                response = await fetch(`${baseUrl}/api/whatsapp/send`, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    number: chatId,
+                    message: content
+                  }),
+                  signal: AbortSignal.timeout(10000)
+                });
+                
+                if (response.ok) {
+                  console.log(`✅ Mensagem enviada via ${baseUrl}`);
+                  break;
+                }
+              } catch (error) {
+                console.warn(`⚠️ Falha ao enviar via ${baseUrl}:`, error);
+                lastError = error instanceof Error ? error : new Error(String(error));
+              }
+            }
+            
+            if (!response || !response.ok) {
+              throw lastError || new Error('Todos os servidores WhatsApp falharam');
+            }
 
             const result = await response.json();
             

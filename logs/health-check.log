@@ -1,12 +1,33 @@
-[2025-07-31 21:27:45] [INFO] Testing HTTP endpoint: http://localhost:3002/api/health
-[2025-07-31 21:27:45] [SUCCESS] Backend is healthy - HTTP 00 in ms
-[2025-07-31 21:27:45] [INFO] Testing HTTP endpoint: http://localhost:3003/api/status
-[2025-07-31 21:27:45] [SUCCESS] WhatsApp is healthy - HTTP 00 in ms
-[2025-07-31 21:27:45] [INFO] Testing HTTP endpoint: http://localhost:3000
-[2025-07-31 21:27:46] [SUCCESS] Frontend is healthy - HTTP 00 in ms
-[2025-07-31 21:27:52] [INFO] Testing HTTP endpoint: http://localhost:3002/api/health
-[2025-07-31 21:27:52] [SUCCESS] Backend is healthy - HTTP 00 in ms
-[2025-07-31 21:27:52] [INFO] Testing HTTP endpoint: http://localhost:3003/api/status
-[2025-07-31 21:27:52] [SUCCESS] WhatsApp is healthy - HTTP 00 in ms
-[2025-07-31 21:27:52] [INFO] Testing HTTP endpoint: http://localhost:3000
-[2025-07-31 21:27:52] [SUCCESS] Frontend is healthy - HTTP 00 in ms
+[2025-08-01 20:10:02] [INFO] Starting health check
+[2025-08-01 20:10:03] [INFO] Testing HTTP endpoint: http://localhost:3002/api/health
+[2025-08-01 20:10:03] [SUCCESS] Backend is healthy - HTTP 00 in ms
+[2025-08-01 20:10:03] [INFO] Testing HTTP endpoint: http://localhost:3002/api/status
+[2025-08-01 20:10:03] [SUCCESS] Backend Status is healthy - HTTP 00 in ms
+[2025-08-01 20:10:03] [INFO] Testing HTTP endpoint: http://localhost:3003/api/status
+[2025-08-01 20:10:03] [SUCCESS] WhatsApp Status is healthy - HTTP 00 in ms
+[2025-08-01 20:10:03] [INFO] Testing HTTP endpoint: http://localhost:3003/qr
+[2025-08-01 20:10:03] [SUCCESS] WhatsApp QR is healthy - HTTP 00 in ms
+[2025-08-01 20:10:03] [INFO] Testing HTTP endpoint: http://localhost:3000
+[2025-08-01 20:10:03] [SUCCESS] Frontend is healthy - HTTP 00 in ms
+[2025-08-01 20:10:04] [ERROR] Backend-Frontend connectivity failed
+[2025-08-01 20:10:04] [ERROR] WhatsApp-Backend connectivity failed
+[2025-08-01 20:10:04] [SUCCESS] CORS configuration OK
+[2025-08-01 20:10:06] [SUCCESS] Normal CPU usage: 5.7%
+[2025-08-01 20:10:06] [SUCCESS] Normal memory usage: 21%
+[2025-08-01 20:10:06] [SUCCESS] Adequate disk space: 1%
+[2025-08-01 20:10:06] [SUCCESS] Internet connectivity OK
+[2025-08-01 20:10:07] [INFO] Port 3002 is free (service may not be running)
+[2025-08-01 20:10:07] [INFO] Port 3003 is free (service may not be running)
+[2025-08-01 20:10:07] [INFO] Port 3000 is free (service may not be running)
+[2025-08-01 20:10:07] [SUCCESS] Node.js found: v24.4.1
+[2025-08-01 20:10:07] [SUCCESS] npm found: 11.4.2
+[2025-08-01 20:10:07] [SUCCESS] curl is available
+[2025-08-01 20:10:07] [INFO] jq not found but recommended
+[2025-08-01 20:10:07] [SUCCESS] Required file found: /home/cadu/projeto_SPR/backend_server_fixed.js
+[2025-08-01 20:10:07] [SUCCESS] Required file found: /home/cadu/projeto_SPR/whatsapp_server_real.js
+[2025-08-01 20:10:07] [SUCCESS] Required file found: /home/cadu/projeto_SPR/frontend/package.json
+[2025-08-01 20:10:07] [SUCCESS] Required file found: /home/cadu/projeto_SPR/package.json
+[2025-08-01 20:10:07] [WARNING] Backend dependencies not installed
+[2025-08-01 20:10:07] [WARNING] Frontend dependencies not installed
+[2025-08-01 20:10:07] [ERROR] System has critical issues requiring immediate attention
+[2025-08-01 20:10:07] [INFO] Health check completed - Critical: 2, Warnings: 2, Info: 4

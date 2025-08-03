@@ -1,0 +1,6 @@
+2025/08/02-14:47:05.762 6fb8 Reusing MANIFEST /home/cadu/projeto_SPR/sessions/session-spr_whatsapp/Default/Local Storage/leveldb/MANIFEST-000001
+2025/08/02-14:47:05.763 6fb8 Recovering log #3
+2025/08/02-14:47:05.763 6fb8 Reusing old log /home/cadu/projeto_SPR/sessions/session-spr_whatsapp/Default/Local Storage/leveldb/000003.log 
+2025/08/02-17:02:16.796 7116 Level-0 table #5: started
+2025/08/02-17:02:16.802 7116 Level-0 table #5: 21064 bytes OK
+2025/08/02-17:02:16.805 7116 Delete type=0 #3

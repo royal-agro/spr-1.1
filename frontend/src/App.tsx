@@ -1,27 +1,66 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Layout from './components/Common/Layout';
+import GentelellaLayout from './components/Layout/GentelellaLayout';
+import DashboardGentelella from './pages/DashboardGentelella';
 import Dashboard from './pages/Dashboard';
 import WhatsAppPage from './pages/WhatsAppPage';
 import WhatsAppReportsPage from './pages/WhatsAppReportsPage';
 import Settings from './pages/Settings';
 import AgendaPage from './pages/AgendaPage';
+import OfferBookPage from './pages/OfferBookPage';
+import BroadcastApprovalPage from './pages/BroadcastApprovalPage';
 import { Toaster } from 'react-hot-toast';
 import './App.css';
+import './styles/royal-theme.scss';
 
 const App: React.FC = () => {
   return (
     <Router>
       <div className="App">
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/whatsapp" element={<WhatsAppPage />} />
-            <Route path="/whatsapp/reports" element={<WhatsAppReportsPage />} />
-            <Route path="/agenda" element={<AgendaPage />} />
-            <Route path="/settings" element={<Settings />} />
-          </Routes>
-        </Layout>
+        <Routes>
+          {/* Nova rota principal com layout Gentelella */}
+          <Route path="/" element={<DashboardGentelella />} />
+          <Route path="/dashboard" element={<DashboardGentelella />} />
+          
+          {/* Rotas com layout Gentelella */}
+          <Route path="/whatsapp" element={
+            <GentelellaLayout currentPage="whatsapp">
+              <WhatsAppPage />
+            </GentelellaLayout>
+          } />
+          <Route path="/whatsapp/reports" element={
+            <GentelellaLayout currentPage="analytics">
+              <WhatsAppReportsPage />
+            </GentelellaLayout>
+          } />
+          <Route path="/agenda" element={
+            <GentelellaLayout currentPage="agenda">
+              <AgendaPage />
+            </GentelellaLayout>
+          } />
+          <Route path="/ofertas" element={
+            <GentelellaLayout currentPage="customers">
+              <OfferBookPage />
+            </GentelellaLayout>
+          } />
+          <Route path="/broadcast" element={
+            <GentelellaLayout currentPage="campaigns">
+              <BroadcastApprovalPage />
+            </GentelellaLayout>
+          } />
+          <Route path="/settings" element={
+            <GentelellaLayout currentPage="settings">
+              <Settings />
+            </GentelellaLayout>
+          } />
+          
+          {/* Rota de fallback para dashboard antigo (compatibilidade) */}
+          <Route path="/dashboard-legacy" element={
+            <GentelellaLayout currentPage="dashboard">
+              <Dashboard />
+            </GentelellaLayout>
+          } />
+        </Routes>
         <Toaster
           position="top-right"
           toastOptions={{

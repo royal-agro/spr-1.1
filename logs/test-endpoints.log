@@ -1,12 +1,50 @@
-[2025-07-31 21:27:41] [INFO] Starting test: Backend Health (GET http://localhost:3002/api/health)
-[2025-07-31 21:27:41] [ERROR] Backend Health failed - HTTP 000, expected 200
-[2025-07-31 21:27:41] [INFO] Starting test: WhatsApp Status (GET http://localhost:3003/api/status)
-[2025-07-31 21:27:41] [ERROR] WhatsApp Status failed - HTTP 000, expected 200
-[2025-07-31 21:27:41] [INFO] Starting test: Frontend Load (GET http://localhost:3000/)
-[2025-07-31 21:27:41] [ERROR] Frontend Load failed - HTTP 000, expected 200
-[2025-07-31 21:27:56] [INFO] Starting test: Backend Health (GET http://localhost:3002/api/health)
-[2025-07-31 21:27:56] [ERROR] Backend Health failed - HTTP 000, expected 200
-[2025-07-31 21:27:56] [INFO] Starting test: WhatsApp Status (GET http://localhost:3003/api/status)
-[2025-07-31 21:27:56] [ERROR] WhatsApp Status failed - HTTP 000, expected 200
-[2025-07-31 21:27:56] [INFO] Starting test: Frontend Load (GET http://localhost:3000/)
-[2025-07-31 21:27:56] [ERROR] Frontend Load failed - HTTP 000, expected 200
+[2025-08-02 15:20:56] [INFO] Starting endpoint tests
+[2025-08-02 15:20:56] [INFO] Starting test: Backend Health Check (GET http://localhost:3002/api/health)
+[2025-08-02 15:20:56] [SUCCESS] Backend Health Check passed - HTTP 200 in 2ms
+[2025-08-02 15:20:56] [WARNING] Backend Health Check - Health response may be incomplete
+[2025-08-02 15:20:56] [INFO] Starting test: Backend Status (GET http://localhost:3002/api/status)
+[2025-08-02 15:20:56] [SUCCESS] Backend Status passed - HTTP 200 in 4ms
+[2025-08-02 15:20:56] [SUCCESS] Backend Status - Status response is valid
+[2025-08-02 15:20:56] [INFO] Starting test: Backend Dashboard Data (GET http://localhost:3002/api/dashboard)
+[2025-08-02 15:20:56] [ERROR] Backend Dashboard Data failed - HTTP 404, expected 200
+[2025-08-02 15:20:56] [INFO] Starting test: Generate Message API (POST http://localhost:3002/api/generate-message)
+[2025-08-02 15:20:56] [ERROR] Generate Message API failed - HTTP 401, expected 200
+[2025-08-02 15:20:56] [INFO] Starting test: Backend Root (GET http://localhost:3002/)
+[2025-08-02 15:20:56] [SUCCESS] Backend Root passed - HTTP 404 in 3ms
+[2025-08-02 15:20:56] [INFO] Starting test: Backend CORS Preflight (OPTIONS http://localhost:3002/api/health)
+[2025-08-02 15:20:56] [SUCCESS] Backend CORS Preflight passed - HTTP 200 in 1ms
+[2025-08-02 15:20:56] [WARNING] Backend CORS Preflight - Health response may be incomplete
+[2025-08-02 15:20:56] [INFO] Starting test: WhatsApp Status (GET http://localhost:3003/api/status)
+[2025-08-02 15:20:56] [SUCCESS] WhatsApp Status passed - HTTP 200 in 1ms
+[2025-08-02 15:20:56] [SUCCESS] WhatsApp Status - Status response is valid
+[2025-08-02 15:20:56] [INFO] Starting test: WhatsApp QR Code (GET http://localhost:3003/qr)
+[2025-08-02 15:20:56] [ERROR] WhatsApp QR Code failed - HTTP 404, expected 200
+[2025-08-02 15:20:56] [INFO] Starting test: WhatsApp Chat List (GET http://localhost:3003/api/chats)
+[2025-08-02 15:20:56] [ERROR] WhatsApp Chat List failed - HTTP 404, expected 200
+[2025-08-02 15:20:56] [INFO] Starting test: WhatsApp Health (GET http://localhost:3003/api/health)
+[2025-08-02 15:20:56] [SUCCESS] WhatsApp Health passed - HTTP 404 in 1ms
+[2025-08-02 15:20:56] [WARNING] WhatsApp Health - Health response may be incomplete
+[2025-08-02 15:20:56] [INFO] Starting test: WhatsApp Connection Info (GET http://localhost:3003/api/connection)
+[2025-08-02 15:20:56] [SUCCESS] WhatsApp Connection Info passed - HTTP 404 in 1ms
+[2025-08-02 15:20:56] [INFO] Starting test: WhatsApp Root (GET http://localhost:3003/)
+[2025-08-02 15:20:56] [SUCCESS] WhatsApp Root passed - HTTP 200 in 1ms
+[2025-08-02 15:20:56] [SUCCESS] WhatsApp Root - Non-empty response received
+[2025-08-02 15:20:56] [INFO] Starting test: Frontend Main Page (GET http://localhost:3000/)
+[2025-08-02 15:20:56] [SUCCESS] Frontend Main Page passed - HTTP 200 in 1ms
+[2025-08-02 15:20:56] [SUCCESS] Frontend Main Page - Non-empty response received
+[2025-08-02 15:20:56] [INFO] Starting test: Frontend Manifest (GET http://localhost:3000/manifest.json)
+[2025-08-02 15:20:56] [SUCCESS] Frontend Manifest passed - HTTP 200 in 8ms
+[2025-08-02 15:20:56] [SUCCESS] Frontend Manifest - Non-empty response received
+[2025-08-02 15:20:56] [INFO] Starting test: Frontend Favicon (GET http://localhost:3000/favicon.ico)
+[2025-08-02 15:20:56] [SUCCESS] Frontend Favicon passed - HTTP 404 in 13ms
+[2025-08-02 15:20:56] [INFO] Starting test: Frontend Static Assets (GET http://localhost:3000/static/)
+[2025-08-02 15:20:56] [SUCCESS] Frontend Static Assets passed - HTTP 404 in 7ms
+[2025-08-02 15:20:56] [INFO] Starting test: Backend Data Flow (GET http://localhost:3002/api/dashboard)
+[2025-08-02 15:20:56] [ERROR] Backend Data Flow failed - HTTP 404, expected 200
+[2025-08-02 15:20:56] [INFO] Starting test: WhatsApp-Backend Integration (POST http://localhost:3002/api/webhook)
+[2025-08-02 15:20:56] [SUCCESS] WhatsApp-Backend Integration passed - HTTP 404 in 2ms
+[2025-08-02 15:20:57] [INFO] Starting test: Notification System (GET http://localhost:3002/api/notifications)
+[2025-08-02 15:20:57] [SUCCESS] Notification System passed - HTTP 404 in 2ms
+[2025-08-02 15:20:57] [INFO] Starting test: Auth System (GET http://localhost:3002/api/auth/status)
+[2025-08-02 15:20:57] [SUCCESS] Auth System passed - HTTP 404 in 2ms
+[2025-08-02 15:20:57] [INFO] Endpoint tests completed - Total: 20, Passed: 15, Failed: 5

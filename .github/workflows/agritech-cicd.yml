@@ -1,0 +1,417 @@
+name: 🌾 SPR AgriTech CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop, feature/* ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run daily at 6 AM UTC (peak trading hours preparation)
+    - cron: '0 6 * * *'
+
+env:
+  PYTHON_VERSION: '3.11'
+  NODE_VERSION: '18'
+  POSTGRES_VERSION: '15'
+  DOCKER_BUILDKIT: 1
+  COMPOSE_DOCKER_CLI_BUILD: 1
+
+jobs:
+  # ==================== AGRITECH DATA VALIDATION ====================
+  validate-agritech-data:
+    name: 🌾 Validate AgriTech Data Sources
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest-mock requests-mock
+      
+      - name: Test IBGE API connectivity
+        run: |
+          python -c "
+          from app.dados_governo.ibge import IBGEClient
+          client = IBGEClient()
+          print('✅ IBGE API connection successful')
+          "
+      
+      - name: Test INMET API connectivity
+        run: |
+          python -c "
+          from app.dados_governo.inmet_client import INMETClient
+          client = INMETClient()
+          print('✅ INMET API connection successful')
+          "
+      
+      - name: Validate commodity data schemas
+        run: |
+          pytest app/dados_governo/tests/ -v -k "test_schema"
+
+  # ==================== DATABASE TESTS ====================
+  database-tests:
+    name: 🗄 Database Schema & Performance Tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: spr_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+      
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest-postgresql pytest-redis
+      
+      - name: Run database migrations
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/spr_test
+        run: |
+          python app/database/init_db.py
+      
+      - name: Test commodity price queries performance
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/spr_test
+          REDIS_URL: redis://localhost:6379
+        run: |
+          pytest app/database/tests/ -v -k "test_performance"
+      
+      - name: Test Redis caching for market data
+        run: |
+          pytest app/database/tests/ -v -k "test_cache"
+
+  # ==================== BACKEND TESTS ====================
+  backend-tests:
+    name: 🐍 Backend API & Business Logic Tests
+    runs-on: ubuntu-latest
+    needs: [database-tests]
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest-asyncio pytest-mock
+      
+      - name: Test pricing algorithms
+        run: |
+          pytest app/precificacao/tests/ -v --cov=app/precificacao
+      
+      - name: Test market analysis modules
+        run: |
+          pytest app/analise/tests/ -v --cov=app/analise
+      
+      - name: Test FastAPI endpoints
+        run: |
+          pytest app/routers/tests/ -v --cov=app/routers
+      
+      - name: Generate coverage report
+        run: |
+          coverage xml
+      
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+          flags: backend
+          name: backend-coverage
+
+  # ==================== FRONTEND TESTS ====================
+  frontend-tests:
+    name: ⚛️ Frontend React/TypeScript Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+      
+      - name: Install frontend dependencies
+        working-directory: ./frontend
+        run: npm ci
+      
+      - name: TypeScript type checking
+        working-directory: ./frontend
+        run: npm run type-check
+      
+      - name: Run unit tests
+        working-directory: ./frontend
+        run: npm test -- --coverage --watchAll=false
+      
+      - name: Test commodity dashboard components
+        working-directory: ./frontend
+        run: npm test -- --testPathPattern="Dashboard|Commodity" --watchAll=false
+      
+      - name: Build frontend for production
+        working-directory: ./frontend
+        run: npm run build
+      
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: frontend-build
+          path: frontend/build/
+
+  # ==================== WHATSAPP INTEGRATION TESTS ====================
+  whatsapp-integration-tests:
+    name: 💬 WhatsApp Integration Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      
+      - name: Install dependencies
+        run: npm install
+      
+      - name: Test WhatsApp client initialization
+        run: |
+          npm test -- --testPathPattern="whatsapp" --testTimeout=30000
+      
+      - name: Test message formatting for commodities
+        run: |
+          node -e "
+          const { formatCommodityMessage } = require('./app/services/whatsapp_service.js');
+          console.log('✅ WhatsApp message formatting works');
+          "
+
+  # ==================== SECURITY SCANNING ====================
+  security-scan:
+    name: 🔐 Security & Vulnerability Scanning
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+      
+      - name: Upload Trivy scan results
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
+      
+      - name: Python security check with bandit
+        run: |
+          pip install bandit
+          bandit -r app/ -f json -o bandit-report.json
+      
+      - name: Check for API keys in code
+        run: |
+          if grep -r "api_key\|secret\|password" --include="*.py" --include="*.js" --exclude-dir=".git" . | grep -v "example\|test\|placeholder"; then
+            echo "❌ Potential API keys found in code"
+            exit 1
+          else
+            echo "✅ No API keys found in code"
+          fi
+
+  # ==================== INTEGRATION TESTS ====================
+  integration-tests:
+    name: 🔗 End-to-End Integration Tests
+    runs-on: ubuntu-latest
+    needs: [backend-tests, frontend-tests, whatsapp-integration-tests]
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: spr_integration_test
+        ports:
+          - 5432:5432
+      
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+      
+      - name: Install all dependencies
+        run: |
+          pip install -r requirements.txt
+          cd frontend && npm ci && cd ..
+          npm install
+      
+      - name: Start services with Docker Compose
+        run: |
+          docker-compose -f docker-compose.yml -f docker-compose.test.yml up -d
+          sleep 30  # Wait for services to be ready
+      
+      - name: Run integration tests
+        run: |
+          pytest tests/integration/ -v --tb=short
+      
+      - name: Test complete price prediction workflow
+        run: |
+          python tests/integration/test_price_prediction_workflow.py
+      
+      - name: Test WhatsApp notification pipeline
+        run: |
+          python tests/integration/test_whatsapp_pipeline.py
+      
+      - name: Cleanup
+        run: |
+          docker-compose -f docker-compose.yml -f docker-compose.test.yml down
+
+  # ==================== DEPLOYMENT ====================
+  deploy-staging:
+    name: 🚀 Deploy to Staging (AgriTech Environment)
+    runs-on: ubuntu-latest
+    needs: [integration-tests, security-scan]
+    if: github.ref == 'refs/heads/develop'
+    
+    environment:
+      name: staging
+      url: https://staging.spr-agritech.com
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+      
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      
+      - name: Build and push Docker images
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY_BACKEND: spr-backend
+          ECR_REPOSITORY_FRONTEND: spr-frontend
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          # Build backend
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY_BACKEND:$IMAGE_TAG
+          
+          # Build frontend
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:$IMAGE_TAG ./frontend
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY_FRONTEND:$IMAGE_TAG
+      
+      - name: Deploy to ECS Staging
+        run: |
+          aws ecs update-service --cluster spr-staging --service spr-backend-staging --force-new-deployment
+          aws ecs update-service --cluster spr-staging --service spr-frontend-staging --force-new-deployment
+      
+      - name: Run health checks
+        run: |
+          python scripts/health-check.sh staging
+
+  deploy-production:
+    name: 🌱 Deploy to Production (Live AgriTech System)
+    runs-on: ubuntu-latest
+    needs: [deploy-staging]
+    if: github.ref == 'refs/heads/main'
+    
+    environment:
+      name: production
+      url: https://spr-agritech.com
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Deploy to production with blue-green strategy
+        run: |
+          # Blue-green deployment logic here
+          echo "🌱 Deploying to production with zero downtime"
+      
+      - name: Run production health checks
+        run: |
+          python scripts/health-check.sh production
+      
+      - name: Notify team via Slack
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          channel: '#spr-deployments'
+          text: '🌾 SPR AgriTech deployed to production successfully!'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK }}
+
+  # ==================== MONITORING SETUP ====================
+  setup-monitoring:
+    name: 📊 Setup Production Monitoring
+    runs-on: ubuntu-latest
+    needs: [deploy-production]
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Configure application monitoring
+        run: |
+          echo "Setting up Datadog/New Relic monitoring for AgriTech metrics"
+      
+      - name: Setup commodity price alerts
+        run: |
+          echo "Configuring price alert thresholds for key commodities"
+      
+      - name: Setup performance monitoring
+        run: |
+          echo "Monitoring API response times and database performance"

@@ -1,47 +1,41 @@
 import React, { useState } from 'react';
-import DashboardMetrics from '../components/Dashboard/DashboardMetrics';
+import SPRKPICards from '../components/Common/KPICards';
 import CommodityChart from '../components/Dashboard/CommodityChart';
 import CommodityIcon from '../components/Common/CommodityIcons';
 import { useDashboardData } from '../hooks/useDashboardData';
+import { useSPRData } from '../hooks/useSPRData';
 import { useGoogleCalendar } from '../hooks/useGoogleCalendar';
 
-// Dados reais das commodities coletados de noticiasagricolas.com.br e outras fontes
-const realCommodityData = {
-  // Preços em reais por saca/arroba conforme especificado nas fontes
-  soja: {
-    price: 130.00, // R$/60kg - Fob Abelardo Luz/SC (Safras & Mercado)
-    variation: 0.04, // % - B3
-    unit: 'R$/60kg',
-    source: 'Safras & Mercado'
-  },
-  milho: {
-    price: 63.19, // R$/60kg - Indicador CEPEA/ESALQ
-    variation: -0.25, // %
-    unit: 'R$/60kg',
-    source: 'CEPEA/ESALQ'
-  },
-  algodao: {
-    price: 66.11, // centavos/libra - NYBOT
-    variation: -0.38, // %
-    unit: '¢/lb',
-    source: 'NYBOT'
-  },
-  boi: {
-    price: 305.00, // R$/arroba - CEPEA
-    variation: -0.20, // %
-    unit: 'R$/@',
-    source: 'CEPEA'
-  },
-  dolar: {
-    price: 5.56, // R$/USD - Banco Central
-    variation: 0.95, // %
-    unit: 'R$/USD',
-    source: 'Banco Central'
+// Função para converter dados SPR para formato compatível com o frontend
+const convertSPRToDisplayData = (commodities: any[]) => {
+  const displayData: any = {};
+  
+  commodities.forEach(commodity => {
+    const key = commodity.symbol.toLowerCase();
+    displayData[key] = {
+      price: commodity.current_price || 0,
+      variation: commodity.price_change_percent || 0,
+      unit: commodity.unit || 'R$',
+      source: 'SPR Backend'
+    };
+  });
+  
+  // Dados padrão caso não venham do backend
+  if (Object.keys(displayData).length === 0) {
+    return {
+      soja: { price: 130.00, variation: 0.04, unit: 'R$/60kg', source: 'SPR Backend' },
+      milho: { price: 63.19, variation: -0.25, unit: 'R$/60kg', source: 'SPR Backend' },
+      algodao: { price: 66.11, variation: -0.38, unit: '¢/lb', source: 'SPR Backend' },
+      boi: { price: 305.00, variation: -0.20, unit: 'R$/@', source: 'SPR Backend' },
+      dolar: { price: 5.56, variation: 0.95, unit: 'R$/USD', source: 'SPR Backend' }
+    };
   }
+  
+  return displayData;
 };
 
-// Notícias/chamadas específicas para cada commodity com conteúdo completo
-const commodityNews = {
+// Função para gerar notícias baseadas em dados reais do SPR
+const generateCommodityNews = (commodities: any[], realCommodityData: any) => ({
   soja: {
     title: "Soja: Safra 2024/25 pode bater recorde",
     summary: "Conab projeta produção de 166 milhões de toneladas com clima favorável no Centro-Oeste",
@@ -75,9 +69,9 @@ const commodityNews = {
     priority: "high",
     source: "Conab",
     date: new Date('2025-07-10'),
-    price: realCommodityData.soja.price,
-    variation: realCommodityData.soja.variation,
-    unit: realCommodityData.soja.unit
+    price: realCommodityData.soja?.price || 130.00,
+    variation: realCommodityData.soja?.variation || 0.04,
+    unit: realCommodityData.soja?.unit || 'R$/60kg'
   },
   milho: {
     title: "Milho: Demanda forte impulsiona preços",
@@ -111,9 +105,9 @@ const commodityNews = {
     priority: "medium",
     source: "CEPEA/ESALQ",
     date: new Date('2025-07-09'),
-    price: realCommodityData.milho.price,
-    variation: realCommodityData.milho.variation,
-    unit: realCommodityData.milho.unit
+    price: realCommodityData.milho?.price || 63.19,
+    variation: realCommodityData.milho?.variation || -0.25,
+    unit: realCommodityData.milho?.unit || 'R$/60kg'
   },
   algodao: {
     title: "Algodão: Pressão da safra americana",
@@ -147,9 +141,9 @@ const commodityNews = {
     priority: "medium",
     source: "NYBOT",
     date: new Date('2025-07-08'),
-    price: realCommodityData.algodao.price,
-    variation: realCommodityData.algodao.variation,
-    unit: realCommodityData.algodao.unit
+    price: realCommodityData.algodao?.price || 66.11,
+    variation: realCommodityData.algodao?.variation || -0.38,
+    unit: realCommodityData.algodao?.unit || '¢/lb'
   },
   boi: {
     title: "Boi Gordo: Frigoríficos elevam ofertas",
@@ -191,9 +185,9 @@ const commodityNews = {
     priority: "medium", 
     source: "CEPEA",
     date: new Date('2025-07-07'),
-    price: realCommodityData.boi.price,
-    variation: realCommodityData.boi.variation,
-    unit: realCommodityData.boi.unit
+    price: realCommodityData.boi?.price || 305.00,
+    variation: realCommodityData.boi?.variation || -0.20,
+    unit: realCommodityData.boi?.unit || 'R$/@'
   },
   dolar: {
     title: "Dólar: Cenário externo favorece alta",
@@ -234,11 +228,11 @@ const commodityNews = {
     priority: "high",
     source: "Banco Central",
     date: new Date('2025-07-10'),
-    price: realCommodityData.dolar.price,
-    variation: realCommodityData.dolar.variation,
-    unit: realCommodityData.dolar.unit
+    price: realCommodityData.dolar?.price || 5.56,
+    variation: realCommodityData.dolar?.variation || 0.95,
+    unit: realCommodityData.dolar?.unit || 'R$/USD'
   }
-};
+});
 
 // Notícias importantes simuladas
 const importantNews = [
@@ -320,6 +314,17 @@ const calendarEvents = [
 const Dashboard: React.FC = () => {
   const { data: dashboardData } = useDashboardData();
   const { 
+    commodities, 
+    predictions, 
+    alerts, 
+    weather, 
+    agents, 
+    loading: sprLoading, 
+    error: sprError, 
+    lastUpdate: sprLastUpdate,
+    refresh: refreshSPRData 
+  } = useSPRData();
+  const { 
     isAuthenticated: isGoogleCalendarAuth, 
     isLoading: isGoogleCalendarLoading,
     events: googleCalendarEvents,
@@ -335,7 +340,7 @@ const Dashboard: React.FC = () => {
   const [showNewsModal, setShowNewsModal] = useState(false);
   const [showCreateEventModal, setShowCreateEventModal] = useState(false);
 
-  const handleNewsClick = (newsKey: string) => {
+  const handleNewsClick = (newsKey: string, commodityNews: any) => {
     setSelectedNews(commodityNews[newsKey as keyof typeof commodityNews]);
     setShowNewsModal(true);
   };
@@ -356,74 +361,88 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  const renderDashboardTab = () => (
+  const renderDashboardTab = () => {
+    // Converter dados do SPR para formato de display
+    const realCommodityData = convertSPRToDisplayData(commodities);
+    const commodityNews = generateCommodityNews(commodities, realCommodityData);
+    
+    return (
     <>
       {/* Notícias das Commodities */}
       <div className="mb-8">
         <h2 className="text-xl font-semibold text-gray-900 mb-4">Chamadas do Mercado</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 lg:gap-6 mb-6">
           {Object.entries(commodityNews).map(([key, news]) => (
             <div 
               key={key} 
-              className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 commodity-card content-over-watermark cursor-pointer hover:shadow-md transition-shadow"
-              onClick={() => handleNewsClick(key)}
+              className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 lg:p-5 commodity-card content-over-watermark cursor-pointer hover:shadow-md transition-shadow min-h-[280px] flex flex-col justify-between"
+              onClick={() => handleNewsClick(key, commodityNews)}
             >
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="text-sm font-medium text-gray-900 capitalize flex items-center">
-                  <CommodityIcon commodity={key} size={20} className="mr-2" />
-                  <span>
-                    {key === 'algodao' ? 'Algodão' : 
-                     key === 'dolar' ? 'Dólar' : key}
-                  </span>
-                </h3>
-                <span className={`text-xs px-2 py-1 rounded-full ${
-                  news.impact === 'positive' 
-                    ? 'bg-green-100 text-green-800' 
-                    : news.impact === 'negative'
-                    ? 'bg-red-100 text-red-800'
-                    : 'bg-yellow-100 text-yellow-800'
-                }`}>
-                  {news.impact === 'positive' ? '📈 Alta' : 
-                   news.impact === 'negative' ? '📉 Baixa' : '➡️ Neutro'}
-                </span>
-              </div>
-              
-              <h4 className="text-sm font-semibold text-gray-800 mb-2 line-clamp-2">
-                {news.title}
-              </h4>
-              
-              <p className="text-xs text-gray-600 mb-3 line-clamp-3">
-                {news.summary}
-              </p>
-              
-              <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
-                <span>📰 {news.source}</span>
-                <span>{news.date.toLocaleDateString('pt-BR', { month: 'short', day: 'numeric' })}</span>
-              </div>
-              
-              {/* Cotação resumida */}
-              <div className="border-t pt-2 mt-2">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-gray-900">
-                    {news.price.toLocaleString('pt-BR', { 
-                      minimumFractionDigits: 2, 
-                      maximumFractionDigits: 2 
-                    })}
-                  </span>
-                  <span className={`text-xs px-1.5 py-0.5 rounded ${
-                    news.variation >= 0 
-                      ? 'bg-green-100 text-green-700' 
-                      : 'bg-red-100 text-red-700'
+              <div className="flex flex-col h-full">
+                {/* Header */}
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-sm font-medium text-gray-900 capitalize flex items-center">
+                    <CommodityIcon commodity={key} size={20} className="mr-2" />
+                    <span>
+                      {key === 'algodao' ? 'Algodão' : 
+                       key === 'dolar' ? 'Dólar' : key}
+                    </span>
+                  </h3>
+                  <span className={`text-xs px-2 py-1 rounded-full whitespace-nowrap ${
+                    news.impact === 'positive' 
+                      ? 'bg-green-100 text-green-800' 
+                      : news.impact === 'negative'
+                      ? 'bg-red-100 text-red-800'
+                      : 'bg-yellow-100 text-yellow-800'
                   }`}>
-                    {news.variation >= 0 ? '+' : ''}{news.variation.toFixed(2)}%
+                    {news.impact === 'positive' ? '📈 Alta' : 
+                     news.impact === 'negative' ? '📉 Baixa' : '➡️ Neutro'}
                   </span>
                 </div>
-                <div className="text-xs text-gray-500">{news.unit}</div>
-              </div>
-              
-              {/* Indicador de clique */}
-              <div className="mt-2 text-xs text-blue-600 font-medium text-center">
-                Clique para ler mais
+                
+                {/* Content - grows to fill space */}
+                <div className="flex-1 flex flex-col">
+                  <h4 className="text-sm font-semibold text-gray-800 mb-2 line-clamp-2 leading-tight">
+                    {news.title}
+                  </h4>
+                  
+                  <p className="text-xs text-gray-600 mb-3 line-clamp-3 leading-relaxed flex-1">
+                    {news.summary}
+                  </p>
+                  
+                  <div className="flex items-center justify-between text-xs text-gray-500 mb-3">
+                    <span>📰 {news.source}</span>
+                    <span>{news.date.toLocaleDateString('pt-BR', { month: 'short', day: 'numeric' })}</span>
+                  </div>
+                </div>
+                
+                {/* Footer - always at bottom */}
+                <div className="mt-auto">
+                  {/* Cotação resumida */}
+                  <div className="border-t pt-3 mb-3">
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm font-medium text-gray-900">
+                        {news.price.toLocaleString('pt-BR', { 
+                          minimumFractionDigits: 2, 
+                          maximumFractionDigits: 2 
+                        })}
+                      </span>
+                      <span className={`text-xs px-1.5 py-0.5 rounded ${
+                        news.variation >= 0 
+                          ? 'bg-green-100 text-green-700' 
+                          : 'bg-red-100 text-red-700'
+                      }`}>
+                        {news.variation >= 0 ? '+' : ''}{news.variation.toFixed(2)}%
+                      </span>
+                    </div>
+                    <div className="text-xs text-gray-500 mt-1">{news.unit}</div>
+                  </div>
+                  
+                  {/* Indicador de clique */}
+                  <div className="text-xs text-blue-600 font-medium text-center py-1 bg-blue-50 rounded">
+                    Clique para ler mais
+                  </div>
+                </div>
               </div>
             </div>
           ))}
@@ -432,8 +451,18 @@ const Dashboard: React.FC = () => {
         {/* Gráfico Unificado */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 content-over-watermark">
           <h3 className="text-lg font-semibold text-gray-900 mb-4">Gráfico de Linhas (Últimos 30 dias)</h3>
-          <div className="h-80">
-            <CommodityChart data={realCommodityData} />
+          <div className="h-64">
+            {sprLoading ? (
+              <div className="flex items-center justify-center h-full">
+                <div className="text-gray-500">Carregando dados das commodities...</div>
+              </div>
+            ) : sprError ? (
+              <div className="flex items-center justify-center h-full">
+                <div className="text-red-500">Erro ao carregar dados: {sprError}</div>
+              </div>
+            ) : (
+              <CommodityChart data={realCommodityData} />
+            )}
           </div>
         </div>
       </div>
@@ -441,15 +470,12 @@ const Dashboard: React.FC = () => {
       {/* Métricas do WhatsApp */}
       <div className="mb-8">
         <h2 className="text-xl font-semibold text-gray-900 mb-4">Métricas do WhatsApp</h2>
-        <DashboardMetrics 
-          metrics={{
-            totalMessages: dashboardData.totalMessages,
-            totalContacts: dashboardData.totalContacts,
-            activeChats: dashboardData.activeChats,
-            responseTime: dashboardData.responseTime,
-            deliveryRate: dashboardData.deliveryRate,
-            readRate: dashboardData.readRate
-          }}
+        <SPRKPICards 
+          totalMessages={dashboardData.totalMessages}
+          totalContacts={dashboardData.totalContacts}
+          responseTime={dashboardData.responseTime}
+          deliveryRate={dashboardData.deliveryRate}
+          loading={false}
         />
       </div>
 
@@ -480,12 +506,62 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
       </div>
+      
+      {/* Status do SPR Backend */}
+      <div className="mb-8">
+        <div className="bg-white rounded-lg shadow p-6">
+          <h3 className="text-lg font-medium text-gray-900 mb-4">Status do SPR Backend</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="text-center">
+              <div className={`w-4 h-4 rounded-full mx-auto mb-2 ${sprError ? 'bg-red-500' : sprLoading ? 'bg-yellow-500' : 'bg-green-500'}`}></div>
+              <span className="text-sm font-medium">
+                {sprError ? 'Erro' : sprLoading ? 'Carregando' : 'Conectado'}
+              </span>
+              <p className="text-xs text-gray-500 mt-1">
+                {commodities.length} commodities carregadas
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="text-lg font-bold text-blue-600">{predictions.length}</div>
+              <span className="text-sm text-gray-600">Previsões</span>
+            </div>
+            <div className="text-center">
+              <div className="text-lg font-bold text-orange-600">{alerts.length}</div>
+              <span className="text-sm text-gray-600">Alertas</span>
+            </div>
+          </div>
+          
+          {sprError && (
+            <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-sm text-red-800">
+                <strong>Erro:</strong> {sprError}
+              </p>
+              <button 
+                onClick={refreshSPRData}
+                className="mt-2 text-xs text-red-600 underline hover:text-red-800"
+              >
+                Tentar novamente
+              </button>
+            </div>
+          )}
+          
+          <div className="mt-4 text-xs text-gray-500">
+            Última atualização: {sprLastUpdate.toLocaleString('pt-BR')}
+          </div>
+        </div>
+      </div>
     </>
-  );
+    );
+  };
 
-  const renderNewsTab = () => (
-    <div className="space-y-6">
-      <h2 className="text-xl font-semibold text-gray-900">Notícias Importantes</h2>
+  const renderNewsTab = () => {
+    // Converter dados do SPR para formato de display (mesmo que renderDashboardTab)
+    const realCommodityData = convertSPRToDisplayData(commodities);
+    const commodityNews = generateCommodityNews(commodities, realCommodityData);
+    
+    return (
+      <div className="space-y-6">
+        <h2 className="text-xl font-semibold text-gray-900">Notícias Importantes</h2>
       
       {/* Filtros */}
       <div className="flex space-x-4">
@@ -532,7 +608,7 @@ const Dashboard: React.FC = () => {
                 </div>
               </div>
               <button 
-                onClick={() => handleNewsClick(news.category)}
+                onClick={() => handleNewsClick(news.category, commodityNews)}
                 className="ml-4 text-blue-600 hover:text-blue-800 text-sm font-medium"
               >
                 Ler mais
@@ -542,7 +618,8 @@ const Dashboard: React.FC = () => {
         ))}
       </div>
     </div>
-  );
+    );
+  };
 
   const renderCalendarTab = () => {
     // Combinar eventos locais com eventos do Google Calendar
@@ -727,12 +804,11 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Dashboard SPR</h1>
-          <p className="mt-2 text-gray-600">Sistema Preditivo Royal - Monitoramento em tempo real</p>
-        </div>
+    <div className="space-y-8">
+      <div className="mb-8">
+        <h1 className="text-xl font-bold text-gray-900">Sistema Preditivo Royal</h1>
+        <p className="mt-2 text-gray-600">Monitoramento em tempo real das commodities agrícolas</p>
+      </div>
 
         {/* Navegação por abas */}
         <div className="mb-8">
@@ -806,12 +882,11 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
         </div>
-      </div>
 
       {/* Modal de Notícias */}
       {showNewsModal && selectedNews && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="bg-white rounded-lg max-w-3xl w-full max-h-[80vh] overflow-y-auto">
             <div className="sticky top-0 bg-white border-b p-4 flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <span className={`text-xs px-2 py-1 rounded-full ${

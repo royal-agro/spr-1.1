@@ -1,0 +1,319 @@
+// Royal Theme - Sistema de cores sóbrio para SPR
+// Inspirado no modelo Gentelella com tonalidades Royal mais escuras
+
+// Cores Royal principais (sóbrias e elegantes)
+$royal-primary: #1a237e;        // Royal azul escuro
+$royal-primary-light: #283593;   // Royal azul médio
+$royal-primary-dark: #0d1142;    // Royal azul profundo
+
+$royal-secondary: #3949ab;       // Royal índigo
+$royal-secondary-light: #5c6bc0; // Royal índigo claro
+$royal-secondary-dark: #1a2579;  // Royal índigo escuro
+
+$royal-accent: #5e35b1;          // Royal roxo
+$royal-accent-light: #7e57c2;    // Royal roxo claro
+$royal-accent-dark: #4527a0;     // Royal roxo escuro
+
+// Cores neutras sofisticadas
+$royal-gray-50: #fafbff;         // Branco azulado
+$royal-gray-100: #f5f6fb;        // Cinza muito claro
+$royal-gray-200: #e8eaf6;        // Cinza claro
+$royal-gray-300: #c5cae9;        // Cinza médio claro
+$royal-gray-400: #9fa8da;        // Cinza médio
+$royal-gray-500: #7986cb;        // Cinza médio escuro
+$royal-gray-600: #5c6bc0;        // Cinza escuro
+$royal-gray-700: #3f51b5;        // Cinza muito escuro
+$royal-gray-800: #303f9f;        // Cinza profundo
+$royal-gray-900: #1a237e;        // Quase preto azulado
+
+// Cores de estado (versões sóbrias)
+$royal-success: #2e7d32;         // Verde escuro sóbrio
+$royal-success-light: #388e3c;   // Verde médio
+$royal-warning: #f57c00;         // Laranja sóbrio
+$royal-warning-light: #ff9800;   // Laranja médio
+$royal-error: #c62828;           // Vermelho sóbrio
+$royal-error-light: #d32f2f;     // Vermelho médio
+$royal-info: #1976d2;            // Azul informativo sóbrio
+$royal-info-light: #2196f3;      // Azul informativo médio
+
+// Gradientes Royal elegantes
+$royal-gradient-primary: linear-gradient(135deg, $royal-primary-dark 0%, $royal-primary 50%, $royal-secondary 100%);
+$royal-gradient-secondary: linear-gradient(135deg, $royal-secondary-dark 0%, $royal-secondary 50%, $royal-accent 100%);
+$royal-gradient-subtle: linear-gradient(135deg, $royal-gray-100 0%, $royal-gray-50 100%);
+
+// Sombras elegantes
+$royal-shadow-sm: 0 2px 4px rgba(26, 35, 126, 0.08);
+$royal-shadow-md: 0 4px 8px rgba(26, 35, 126, 0.12);
+$royal-shadow-lg: 0 8px 16px rgba(26, 35, 126, 0.16);
+$royal-shadow-xl: 0 12px 24px rgba(26, 35, 126, 0.20);
+
+// Bordas e raios
+$royal-border-radius-sm: 4px;
+$royal-border-radius-md: 8px;
+$royal-border-radius-lg: 12px;
+$royal-border-radius-xl: 16px;
+
+// Tipografia
+$royal-font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+$royal-font-weight-light: 300;
+$royal-font-weight-normal: 400;
+$royal-font-weight-medium: 500;
+$royal-font-weight-semibold: 600;
+$royal-font-weight-bold: 700;
+
+// Espaçamentos consistentes com Gentelella
+$royal-spacing-xs: 0.25rem;  // 4px
+$royal-spacing-sm: 0.5rem;   // 8px
+$royal-spacing-md: 1rem;     // 16px
+$royal-spacing-lg: 1.5rem;   // 24px
+$royal-spacing-xl: 2rem;     // 32px
+$royal-spacing-2xl: 3rem;    // 48px
+
+// Breakpoints responsivos
+$royal-breakpoint-sm: 576px;
+$royal-breakpoint-md: 768px;
+$royal-breakpoint-lg: 992px;
+$royal-breakpoint-xl: 1200px;
+$royal-breakpoint-xxl: 1400px;
+
+// Variáveis CSS customizadas para uso dinâmico
+:root {
+  // Cores principais
+  --royal-primary: #{$royal-primary};
+  --royal-primary-light: #{$royal-primary-light};
+  --royal-primary-dark: #{$royal-primary-dark};
+  
+  --royal-secondary: #{$royal-secondary};
+  --royal-secondary-light: #{$royal-secondary-light};
+  --royal-secondary-dark: #{$royal-secondary-dark};
+  
+  --royal-accent: #{$royal-accent};
+  --royal-accent-light: #{$royal-accent-light};
+  --royal-accent-dark: #{$royal-accent-dark};
+  
+  // Cores neutras
+  --royal-gray-50: #{$royal-gray-50};
+  --royal-gray-100: #{$royal-gray-100};
+  --royal-gray-200: #{$royal-gray-200};
+  --royal-gray-300: #{$royal-gray-300};
+  --royal-gray-400: #{$royal-gray-400};
+  --royal-gray-500: #{$royal-gray-500};
+  --royal-gray-600: #{$royal-gray-600};
+  --royal-gray-700: #{$royal-gray-700};
+  --royal-gray-800: #{$royal-gray-800};
+  --royal-gray-900: #{$royal-gray-900};
+  
+  // Cores de estado
+  --royal-success: #{$royal-success};
+  --royal-success-light: #{$royal-success-light};
+  --royal-warning: #{$royal-warning};
+  --royal-warning-light: #{$royal-warning-light};
+  --royal-error: #{$royal-error};
+  --royal-error-light: #{$royal-error-light};
+  --royal-info: #{$royal-info};
+  --royal-info-light: #{$royal-info-light};
+  
+  // Sombras
+  --royal-shadow-sm: #{$royal-shadow-sm};
+  --royal-shadow-md: #{$royal-shadow-md};
+  --royal-shadow-lg: #{$royal-shadow-lg};
+  --royal-shadow-xl: #{$royal-shadow-xl};
+  
+  // Raios de borda
+  --royal-border-radius-sm: #{$royal-border-radius-sm};
+  --royal-border-radius-md: #{$royal-border-radius-md};
+  --royal-border-radius-lg: #{$royal-border-radius-lg};
+  --royal-border-radius-xl: #{$royal-border-radius-xl};
+  
+  // Espaçamentos
+  --royal-spacing-xs: #{$royal-spacing-xs};
+  --royal-spacing-sm: #{$royal-spacing-sm};
+  --royal-spacing-md: #{$royal-spacing-md};
+  --royal-spacing-lg: #{$royal-spacing-lg};
+  --royal-spacing-xl: #{$royal-spacing-xl};
+  --royal-spacing-2xl: #{$royal-spacing-2xl};
+}
+
+// Mixins utilitários
+
+// Mixin para botões Royal elegantes
+@mixin royal-button($bg-color: $royal-primary, $text-color: white, $hover-bg: $royal-primary-light) {
+  background: $bg-color;
+  color: $text-color;
+  border: none;
+  border-radius: $royal-border-radius-md;
+  padding: $royal-spacing-sm $royal-spacing-md;
+  font-family: $royal-font-family;
+  font-weight: $royal-font-weight-medium;
+  box-shadow: $royal-shadow-sm;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  
+  &:hover {
+    background: $hover-bg;
+    box-shadow: $royal-shadow-md;
+    transform: translateY(-1px);
+  }
+  
+  &:active {
+    transform: translateY(0);
+    box-shadow: $royal-shadow-sm;
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    
+    &:hover {
+      transform: none;
+      box-shadow: $royal-shadow-sm;
+    }
+  }
+}
+
+// Mixin para cards elegantes
+@mixin royal-card($padding: $royal-spacing-lg, $shadow: $royal-shadow-md) {
+  background: white;
+  border-radius: $royal-border-radius-lg;
+  padding: $padding;
+  box-shadow: $shadow;
+  border: 1px solid $royal-gray-200;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: $royal-shadow-lg;
+    transform: translateY(-2px);
+  }
+}
+
+// Mixin para texto gradiente Royal
+@mixin royal-gradient-text($gradient: $royal-gradient-primary) {
+  background: $gradient;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: $royal-font-weight-bold;
+}
+
+// Mixin para sidebar estilo Gentelella
+@mixin royal-sidebar() {
+  background: $royal-gradient-primary;
+  color: white;
+  min-height: 100vh;
+  box-shadow: $royal-shadow-lg;
+  
+  .nav-item {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    &.active {
+      background: rgba(255, 255, 255, 0.2);
+      border-left: 4px solid white;
+    }
+  }
+}
+
+// Classes utilitárias
+
+// Classes de cores de texto
+.text-royal-primary { color: $royal-primary !important; }
+.text-royal-secondary { color: $royal-secondary !important; }
+.text-royal-accent { color: $royal-accent !important; }
+.text-royal-success { color: $royal-success !important; }
+.text-royal-warning { color: $royal-warning !important; }
+.text-royal-error { color: $royal-error !important; }
+
+// Classes de cores de fundo
+.bg-royal-primary { background-color: $royal-primary !important; }
+.bg-royal-secondary { background-color: $royal-secondary !important; }
+.bg-royal-accent { background-color: $royal-accent !important; }
+.bg-royal-gradient-primary { background: $royal-gradient-primary !important; }
+.bg-royal-gradient-secondary { background: $royal-gradient-secondary !important; }
+
+// Classes de sombra
+.shadow-royal-sm { box-shadow: $royal-shadow-sm !important; }
+.shadow-royal-md { box-shadow: $royal-shadow-md !important; }
+.shadow-royal-lg { box-shadow: $royal-shadow-lg !important; }
+.shadow-royal-xl { box-shadow: $royal-shadow-xl !important; }
+
+// Classes de borda
+.rounded-royal-sm { border-radius: $royal-border-radius-sm !important; }
+.rounded-royal-md { border-radius: $royal-border-radius-md !important; }
+.rounded-royal-lg { border-radius: $royal-border-radius-lg !important; }
+.rounded-royal-xl { border-radius: $royal-border-radius-xl !important; }
+
+// Animações elegantes
+@keyframes royal-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes royal-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.royal-fade-in {
+  animation: royal-fade-in 0.5s ease-out;
+}
+
+.royal-pulse {
+  animation: royal-pulse 2s ease-in-out infinite;
+}
+
+// Estilos para componentes específicos do SPR
+
+// WhatsApp Chat styling
+.whatsapp-chat-container {
+  @include royal-card();
+  
+  .message {
+    &.from-me {
+      background: $royal-gradient-primary;
+      color: white;
+    }
+    
+    &.from-contact {
+      background: $royal-gray-100;
+      color: $royal-gray-800;
+    }
+  }
+}
+
+// Dashboard widget styling
+.dashboard-widget {
+  @include royal-card();
+  
+  .widget-header {
+    background: $royal-gradient-subtle;
+    color: $royal-primary;
+    font-weight: $royal-font-weight-semibold;
+  }
+  
+  .widget-value {
+    @include royal-gradient-text();
+    font-size: 2rem;
+  }
+}
+
+// Navegação principal
+.main-navigation {
+  @include royal-sidebar();
+  
+  .brand-logo {
+    @include royal-gradient-text();
+  }
+}

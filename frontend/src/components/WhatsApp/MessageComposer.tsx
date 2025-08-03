@@ -69,7 +69,7 @@ const MessageComposer: React.FC<MessageComposerProps> = ({
   const audioChunks = useRef<Blob[]>([]);
 
   // URL base da API
-  const API_BASE_URL = 'http://localhost:3002';
+  const API_BASE_URL = 'http://localhost:3003';
 
   // Função para limpar mensagens de status
   const clearStatusMessages = () => {
@@ -144,7 +144,7 @@ const MessageComposer: React.FC<MessageComposerProps> = ({
       
       // Verificar se é erro de conectividade
       if (errorMessage.includes('fetch')) {
-        errorMessage = 'Não foi possível conectar ao servidor. Verifique se o backend está rodando na porta 3002.';
+        errorMessage = 'Não foi possível conectar ao servidor. Verifique se o WhatsApp server está rodando na porta 3003.';
       }
       
       setApiError(`❌ ${errorMessage}`);
@@ -266,7 +266,7 @@ const MessageComposer: React.FC<MessageComposerProps> = ({
   // Função para testar conectividade da API
   const testAPI = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/health`, {
+      const response = await fetch(`${API_BASE_URL}/api/status`, {
         method: 'GET',
         mode: 'cors',
         headers: {
@@ -280,7 +280,7 @@ const MessageComposer: React.FC<MessageComposerProps> = ({
       }
     } catch (error) {
       console.error('Erro de conectividade:', error);
-      setApiError('❌ Não foi possível conectar ao servidor. Verifique se o backend está rodando na porta 3002.');
+      setApiError('❌ Não foi possível conectar ao servidor. Verifique se o WhatsApp server está rodando na porta 3003.');
     }
     clearStatusMessages();
   };

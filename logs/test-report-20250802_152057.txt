@@ -1,0 +1,28 @@
+Relatório de Testes SPR - Sat Aug  2 15:20:57 -04 2025
+========================================
+Total de Testes: 20
+Aprovados: 15
+Falharam: 5
+Taxa de Sucesso: 75%
+Tempo de Execução: 1s
+
+WhatsApp Connection Info: PASS - 1ms
+WhatsApp-Backend Integration: PASS - 2ms
+WhatsApp Root: PASS - 1ms
+Backend CORS Preflight: PASS - 1ms
+Backend Health Check: PASS - 2ms
+Notification System: PASS - 2ms
+WhatsApp QR Code: FAIL - 1ms
+Frontend Main Page: PASS - 1ms
+Generate Message API: FAIL - 13ms
+Auth System: PASS - 2ms
+WhatsApp Health: PASS - 1ms
+Backend Status: PASS - 4ms
+Backend Data Flow: FAIL - 2ms
+Backend Root: PASS - 3ms
+WhatsApp Chat List: FAIL - 1ms
+Backend Dashboard Data: FAIL - 2ms
+WhatsApp Status: PASS - 1ms
+Frontend Manifest: PASS - 8ms
+Frontend Favicon: PASS - 13ms
+Frontend Static Assets: PASS - 7ms

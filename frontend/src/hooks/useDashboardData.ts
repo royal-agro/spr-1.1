@@ -264,7 +264,7 @@ export const useDashboardData = () => {
       await new Promise(resolve => setTimeout(resolve, 1000));
 
       // Buscar status do servidor
-      const statusResponse = await fetch('http://localhost:3002/api/status', {
+      const statusResponse = await fetch('http://localhost:3003/api/status', {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json'
@@ -277,25 +277,8 @@ export const useDashboardData = () => {
       
       const statusData = await statusResponse.json();
 
-      // Buscar métricas específicas se disponível
-      let serverMetrics = {};
-      try {
-        const metricsResponse = await fetch('http://localhost:3002/api/metrics', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-        
-        if (metricsResponse.ok) {
-          const metricsData = await metricsResponse.json();
-          serverMetrics = metricsData.metrics || {};
-        } else {
-          console.log(`Métricas não disponíveis: ${metricsResponse.status}`);
-        }
-              } catch (error) {
-          console.log('Métricas do servidor não disponíveis, usando cálculos locais:', error instanceof Error ? error.message : String(error));
-        }
+      // Usar métricas do endpoint de status (público)
+      const serverMetrics = statusData.metrics || {};
 
       const calculatedMetrics = calculateMetrics();
       const messageHistory = generateMessageHistory();

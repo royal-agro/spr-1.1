@@ -8,7 +8,7 @@ const WhatsAppTest: React.FC = () => {
     const testConnection = async () => {
       try {
         console.log('🧪 Testando conexão com backend...');
-        const response = await fetch('http://localhost:3002/api/status');
+        const response = await fetch('http://localhost:3003/api/status');
         
         if (!response.ok) {
           throw new Error(`HTTP ${response.status}: ${response.statusText}`);

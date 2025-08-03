@@ -1,0 +1,14 @@
+Relatório de Testes SPR - Fri Aug  1 09:49:59 -04 2025
+========================================
+Total de Testes: 6
+Aprovados: 0
+Falharam: 6
+Taxa de Sucesso: 0%
+Tempo de Execução: 0s
+
+Backend CORS Preflight: FAIL - 1ms
+Backend Health Check: FAIL - 1ms
+Generate Message API: FAIL - 1ms
+Backend Status: FAIL - 1ms
+Backend Root: FAIL - 1ms
+Backend Dashboard Data: FAIL - ms

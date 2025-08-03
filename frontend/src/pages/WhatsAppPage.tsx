@@ -4,20 +4,23 @@ import {
   PaperAirplaneIcon,
   UserGroupIcon,
   ChartBarIcon,
-  Cog6ToothIcon
+  Cog6ToothIcon,
+  MegaphoneIcon
 } from '@heroicons/react/24/outline';
+import SPRKPICards from '../components/Common/KPICards';
 import WhatsAppInterface from '../components/WhatsApp/WhatsAppInterface';
 import WhatsAppTest from '../components/WhatsApp/WhatsAppTest';
 import MessageComposer from '../components/WhatsApp/MessageComposer';
 import ContactGroupSelector from '../components/WhatsApp/ContactGroupSelector';
 import AutoSendManager from '../components/WhatsApp/AutoSendManager';
+import BroadcastManager from '../components/WhatsApp/BroadcastManager';
 import FeatureGuard from '../components/License/FeatureGuard';
 import { useWhatsAppStore } from '../store/useWhatsAppStore';
 import { useWhatsAppSync } from '../hooks/useWhatsAppSync';
 import { config } from '../config';
 
 const WhatsAppPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'chat' | 'composer' | 'groups' | 'automation' | 'analytics'>('chat');
+  const [activeTab, setActiveTab] = useState<'chat' | 'composer' | 'groups' | 'automation' | 'broadcast' | 'analytics'>('chat');
   const [autoReplyEnabled, setAutoReplyEnabled] = useState<boolean>(false);
   
   const { 
@@ -97,6 +100,11 @@ const WhatsAppPage: React.FC = () => {
       icon: Cog6ToothIcon 
     },
     { 
+      id: 'broadcast', 
+      name: 'Broadcast', 
+      icon: MegaphoneIcon 
+    },
+    { 
       id: 'analytics', 
       name: 'Métricas', 
       icon: ChartBarIcon 
@@ -154,60 +162,21 @@ const WhatsAppPage: React.FC = () => {
           />
         );
       
+      case 'broadcast':
+        return <BroadcastManager className="w-full" />;
+      
       case 'analytics':
         return (
-          <div className="p-6">
+          <div className="space-y-6">
               <h2 className="text-xl font-semibold text-gray-900 mb-6">Métricas WhatsApp</h2>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <ChatBubbleLeftRightIcon className="h-8 w-8 text-blue-600" />
-                    </div>
-                    <div className="ml-4">
-                      <p className="text-sm font-medium text-gray-500">Total de Conversas</p>
-                      <p className="text-2xl font-semibold text-gray-900">{totalChats}</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <UserGroupIcon className="h-8 w-8 text-green-600" />
-                    </div>
-                    <div className="ml-4">
-                      <p className="text-sm font-medium text-gray-500">Total de Contatos</p>
-                      <p className="text-2xl font-semibold text-gray-900">{totalContacts}</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <PaperAirplaneIcon className="h-8 w-8 text-purple-600" />
-                    </div>
-                    <div className="ml-4">
-                      <p className="text-sm font-medium text-gray-500">Mensagens (última hora)</p>
-                      <p className="text-2xl font-semibold text-gray-900">{metrics.messagesLastHour}</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                  <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                      <ChartBarIcon className="h-8 w-8 text-yellow-600" />
-                    </div>
-                    <div className="ml-4">
-                      <p className="text-sm font-medium text-gray-500">Taxa de Resposta</p>
-                      <p className="text-2xl font-semibold text-gray-900">{metrics.responseRate}%</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <SPRKPICards 
+                totalMessages={metrics.messagesLastHour || 0}
+                totalContacts={totalContacts}
+                responseTime={15} // Tempo em minutos
+                deliveryRate={metrics.responseRate || 0}
+                loading={false}
+              />
 
               <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                 <h3 className="text-lg font-medium text-gray-900 mb-4">Status da Conexão</h3>
@@ -245,91 +214,84 @@ const WhatsAppPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div>
-              <h1 className="text-xl font-semibold text-gray-900">WhatsApp</h1>
-              <p className="text-sm text-gray-600">Gerencie suas conversas e campanhas</p>
-            </div>
-            
-            <div className="flex items-center space-x-4">
-              {/* Status de Conexão */}
-              <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-sm ${
-                connectionStatus === 'connected' ? 'bg-green-100 text-green-800' :
-                connectionStatus === 'connecting' ? 'bg-yellow-100 text-yellow-800' :
-                connectionStatus === 'error' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'
-              }`}>
-                <div className={`w-2 h-2 rounded-full ${
-                  connectionStatus === 'connected' ? 'bg-green-500' :
-                  connectionStatus === 'connecting' ? 'bg-yellow-500' :
-                  connectionStatus === 'error' ? 'bg-red-500' : 'bg-gray-400'
-                }`} />
-                <span>
-                  {connectionStatus === 'connected' && 'Conectado'}
-                  {connectionStatus === 'connecting' && 'Conectando...'}
-                  {connectionStatus === 'disconnected' && 'Desconectado'}
-                  {connectionStatus === 'error' && 'Erro'}
-                </span>
-              </div>
-              
-              {/* Controle de Resposta Automática */}
-              {connectionStatus === 'connected' && (
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm text-gray-600">Resposta Automática:</span>
-                  <button
-                    onClick={toggleAutoReply}
-                    className={`px-3 py-1 text-sm rounded-full transition-colors ${
-                      autoReplyEnabled 
-                        ? 'bg-green-500 text-white hover:bg-green-600' 
-                        : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
-                    }`}
-                  >
-                    {autoReplyEnabled ? 'ON' : 'OFF'}
-                  </button>
-                </div>
-              )}
-            </div>
+    <div className="space-y-6">
+      {/* Header Info */}
+      <div className="flex justify-between items-center">
+        <div>
+          <p className="text-gray-600">Gerencie suas conversas e campanhas</p>
+        </div>
+        
+        <div className="flex items-center space-x-4">
+          {/* Status de Conexão */}
+          <div className={`flex items-center space-x-2 px-3 py-1 rounded-full text-sm ${
+            connectionStatus === 'connected' ? 'bg-green-100 text-green-800' :
+            connectionStatus === 'connecting' ? 'bg-yellow-100 text-yellow-800' :
+            connectionStatus === 'error' ? 'bg-red-100 text-red-800' : 'bg-gray-100 text-gray-800'
+          }`}>
+            <div className={`w-2 h-2 rounded-full ${
+              connectionStatus === 'connected' ? 'bg-green-500' :
+              connectionStatus === 'connecting' ? 'bg-yellow-500' :
+              connectionStatus === 'error' ? 'bg-red-500' : 'bg-gray-400'
+            }`} />
+            <span>
+              {connectionStatus === 'connected' && 'Conectado'}
+              {connectionStatus === 'connecting' && 'Conectando...'}
+              {connectionStatus === 'disconnected' && 'Desconectado'}
+              {connectionStatus === 'error' && 'Erro'}
+            </span>
           </div>
+          
+          {/* Controle de Resposta Automática */}
+          {connectionStatus === 'connected' && (
+            <div className="flex items-center space-x-2">
+              <span className="text-sm text-gray-600">Resposta Automática:</span>
+              <button
+                onClick={toggleAutoReply}
+                className={`px-3 py-1 text-sm rounded-full transition-colors ${
+                  autoReplyEnabled 
+                    ? 'bg-green-500 text-white hover:bg-green-600' 
+                    : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
+                }`}
+              >
+                {autoReplyEnabled ? 'ON' : 'OFF'}
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="flex space-x-8">
-            {tabs.map((tab) => {
-              const Icon = tab.icon;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id as any)}
-                  className={`relative py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
-                    activeTab === tab.id
-                      ? 'border-blue-500 text-blue-600'
-                      : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                  }`}
-                >
-                  <div className="flex items-center space-x-2">
-                    <Icon className="h-5 w-5" />
-                    <span>{tab.name}</span>
-                    {tab.badge && (
-                      <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-500 rounded-full">
-                        {tab.badge}
-                      </span>
-                    )}
-                  </div>
-                </button>
-              );
-            })}
-          </nav>
-        </div>
+      <div className="bg-white border-b border-gray-200 rounded-lg">
+        <nav className="flex space-x-8 px-6">
+          {tabs.map((tab) => {
+            const Icon = tab.icon;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`relative py-4 px-1 border-b-2 font-medium text-sm transition-colors ${
+                  activeTab === tab.id
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                <div className="flex items-center space-x-2">
+                  <Icon className="h-5 w-5" />
+                  <span>{tab.name}</span>
+                  {tab.badge && (
+                    <span className="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-500 rounded-full">
+                      {tab.badge}
+                    </span>
+                  )}
+                </div>
+              </button>
+            );
+          })}
+        </nav>
       </div>
 
       {/* Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div>
         {renderTabContent()}
       </div>
     </div>

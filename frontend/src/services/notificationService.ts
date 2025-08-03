@@ -179,7 +179,7 @@ _Royal Negócios Agrícolas_`
 // Classe principal do serviço de notificações
 class NotificationService {
   private static instance: NotificationService;
-  private whatsappEndpoint = 'http://localhost:3002/api/whatsapp/send';
+  private whatsappEndpoint = 'http://localhost:3003/api/whatsapp/send';
   private emailEndpoint = 'http://localhost:8000/api/send-email';
 
   private constructor() {}
@@ -306,8 +306,10 @@ class NotificationService {
   // Testar conectividade dos serviços
   async testConnectivity(): Promise<{ email: boolean; whatsapp: boolean }> {
     try {
-      const emailTest = await fetch(this.emailEndpoint.replace('/send-email', '/health'));
-      const whatsappTest = await fetch(this.whatsappEndpoint.replace('/send-message', '/health'));
+      // Backend SPR (port 8000) - use /health (not /api/health)
+      const emailTest = await fetch('http://localhost:8000/health');
+      // WhatsApp server (port 3003) - use /api/status (not /api/health)
+      const whatsappTest = await fetch('http://localhost:3003/api/status');
       
       return {
         email: emailTest.ok,

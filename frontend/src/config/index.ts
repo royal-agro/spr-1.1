@@ -20,8 +20,8 @@ export interface LicenseInfo {
 export const config = {
   // URLs da API
   api: {
-    baseUrl: process.env.REACT_APP_API_URL || 'http://localhost:3002',
-    whatsappUrl: process.env.REACT_APP_WHATSAPP_URL || 'http://localhost:3000',
+    baseUrl: process.env.REACT_APP_SPR_API_URL || 'http://localhost:8000', // Backend SPR Python
+    whatsappUrl: process.env.REACT_APP_WHATSAPP_URL || 'http://localhost:3003', // WhatsApp Server
     timeout: 10000
   },
 
@@ -160,7 +160,11 @@ export const getApiUrl = (endpoint: string): string => {
 };
 
 export const getWhatsAppUrl = (endpoint: string): string => {
-  return `${config.api.whatsappUrl}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
+  return `${config.whatsapp.apiUrl}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
+};
+
+export const getSPRApiUrl = (endpoint: string): string => {
+  return `${config.api.baseUrl}${endpoint.startsWith('/') ? endpoint : `/${endpoint}`}`;
 };
 
 // Configurações específicas por ambiente

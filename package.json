@@ -10,21 +10,32 @@
     "install-deps": "npm install express cors body-parser dotenv",
     "setup": "npm run install-deps && node backend_server_fixed.js"
   },
-  "keywords": ["spr", "api", "backend", "whatsapp", "ia", "commodities"],
+  "keywords": [
+    "spr",
+    "api",
+    "backend",
+    "whatsapp",
+    "ia",
+    "commodities"
+  ],
   "author": "Royal Negócios Agrícolas",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5",
-    "body-parser": "^1.20.2",
-    "dotenv": "^16.3.1",
+    "@whiskeysockets/baileys": "^6.7.18",
     "axios": "^1.6.0",
-    "helmet": "^7.1.0",
-    "express-rate-limit": "^7.1.5",
-    "jsonwebtoken": "^9.0.2",
     "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
     "compression": "^1.7.4",
-    "morgan": "^1.10.0"
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
+    "helmet": "^7.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "qrcode": "^1.5.4",
+    "qrcode-terminal": "^0.12.0",
+    "whatsapp-web.js": "^1.31.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"
@@ -32,4 +43,4 @@
   "engines": {
     "node": ">=16.0.0"
   }
-} 
+}

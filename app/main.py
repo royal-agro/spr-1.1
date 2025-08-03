@@ -29,7 +29,9 @@ from .middleware.webhook_security_fastapi import webhook_verifier, verify_whatsa
 from .security.encryption import setup_encryption
 
 # Import routers
-from .routers import broadcast
+from .routers import broadcast, commodities, frontend
+# TODO: Fix missing dependencies before enabling:
+# from .routers import previsao, notifications, price_locator
 
 logging.basicConfig(
    level=logging.INFO,
@@ -263,6 +265,12 @@ async def get_metrics(current_user: dict = Depends(get_current_user)):
 
 # Include routers
 app.include_router(broadcast.router)
+app.include_router(commodities.router)
+app.include_router(frontend.router)
+# TODO: Enable after fixing dependencies:
+# app.include_router(previsao.router)
+# app.include_router(notifications.router)
+# app.include_router(price_locator.router)
 
 class SPRSystem:
    def __init__(self):

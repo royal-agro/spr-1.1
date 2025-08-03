@@ -1,0 +1,1347 @@
+
+> spr-frontend@1.1.0 start
+> react-scripts start
+
+(node:363) [DEP0176] DeprecationWarning: fs.F_OK is deprecated, use fs.constants.F_OK instead
+(Use `node --trace-deprecation ...` to show where the warning was created)
+(node:363) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(node:363) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+Starting the development server...
+
+Compiled successfully!
+
+You can now view spr-frontend in the browser.
+
+  Local:            http://localhost:3000
+  On Your Network:  http://172.18.69.235:3000
+
+Note that the development build is not optimized.
+To create a production build, use npm run build.
+
+webpack compiled successfully
+Files successfully emitted, waiting for typecheck results...
+Issues checking in progress...
+ERROR in src/components/Common/ConnectivityStatus.tsx:75:56
+TS18046: 'error' is of type 'unknown'.
+    73 |         }
+    74 |       } catch (error) {
+  > 75 |         console.warn(`⚠️ WhatsApp falhou via ${url}:`, error.message);
+       |                                                        ^^^^^
+    76 |         lastError = error;
+    77 |       }
+    78 |     }
+
+ERROR in src/components/Common/ConnectivityStatus.tsx:76:9
+TS2322: Type 'unknown' is not assignable to type 'null'.
+    74 |       } catch (error) {
+    75 |         console.warn(`⚠️ WhatsApp falhou via ${url}:`, error.message);
+  > 76 |         lastError = error;
+       |         ^^^^^^^^^
+    77 |       }
+    78 |     }
+    79 |     
+
+ERROR in src/components/Common/ConnectivityStatus.tsx:126:51
+TS18046: 'error' is of type 'unknown'.
+    124 |         }
+    125 |       } catch (error) {
+  > 126 |         console.warn(`⚠️ SPR falhou via ${url}:`, error.message);
+        |                                                   ^^^^^
+    127 |         lastError = error;
+    128 |       }
+    129 |     }
+
+ERROR in src/components/Common/ConnectivityStatus.tsx:127:9
+TS2322: Type 'unknown' is not assignable to type 'null'.
+    125 |       } catch (error) {
+    126 |         console.warn(`⚠️ SPR falhou via ${url}:`, error.message);
+  > 127 |         lastError = error;
+        |         ^^^^^^^^^
+    128 |       }
+    129 |     }
+    130 |     
+
+ERROR in src/store/useWhatsAppStore.ts:347:17
+TS2769: No overload matches this call.
+  Overload 1 of 2, '(input: string | URL | Request, init?: RequestInit | undefined): Promise<Response>', gave the following error.
+    Argument of type '{ method: string; timeout: number; signal: AbortSignal; }' is not assignable to parameter of type 'RequestInit'.
+      Object literal may only specify known properties, and 'timeout' does not exist in type 'RequestInit'.
+  Overload 2 of 2, '(input: URL | RequestInfo, init?: RequestInit | undefined): Promise<Response>', gave the following error.
+    Argument of type '{ method: string; timeout: number; signal: AbortSignal; }' is not assignable to parameter of type 'RequestInit'.
+      Object literal may only specify known properties, and 'timeout' does not exist in type 'RequestInit'.
+    345 |               const testResponse = await fetch(`${baseUrl}/api/status`, {
+    346 |                 method: 'GET',
+  > 347 |                 timeout: 10000,
+        |                 ^^^^^^^^^^^^^^
+    348 |                 signal: AbortSignal.timeout(10000)
+    349 |               });
+    350 |               
+
+ERROR in src/store/useWhatsAppStore.ts:366:17
+TS2769: No overload matches this call.
+  Overload 1 of 2, '(input: string | URL | Request, init?: RequestInit | undefined): Promise<Response>', gave the following error.
+    Argument of type '{ method: string; headers: { 'Content-Type': string; }; timeout: number; signal: AbortSignal; }' is not assignable to parameter of type 'RequestInit'.
+      Object literal may only specify known properties, and 'timeout' does not exist in type 'RequestInit'.
+  Overload 2 of 2, '(input: URL | RequestInfo, init?: RequestInit | undefined): Promise<Response>', gave the following error.
+    Argument of type '{ method: string; headers: { 'Content-Type': string; }; timeout: number; signal: AbortSignal; }' is not assignable to parameter of type 'RequestInit'.
+      Object literal may only specify known properties, and 'timeout' does not exist in type 'RequestInit'.
+    364 |                   'Content-Type': 'application/json'
+    365 |                 },
+  > 366 |                 timeout: 15000,
+        |                 ^^^^^^^^^^^^^^
+    367 |                 signal: AbortSignal.timeout(15000)
+    368 |               });
+    369 |               
+
+ERROR in src/store/useWhatsAppStore.ts:436:15
+TS2322: Type 'unknown' is not assignable to type 'null'.
+    434 |             } catch (error) {
+    435 |               console.error(`❌ Falha ao conectar com ${baseUrl}:`, error);
+  > 436 |               lastError = error;
+        |               ^^^^^^^^^
+    437 |               
+    438 |               // If this is not the last URL, try the next one
+    439 |               if (baseUrl !== whatsappUrls[whatsappUrls.length - 1]) {
+
+ERROR in src/store/useWhatsAppStore.ts:507:17
+TS2322: Type 'Response' is not assignable to type 'null'.
+    505 |             for (const baseUrl of whatsappUrls) {
+    506 |               try {
+  > 507 |                 response = await fetch(`${baseUrl}/api/whatsapp/send`, {
+        |                 ^^^^^^^^
+    508 |                   method: 'POST',
+    509 |                   headers: {
+    510 |                     'Content-Type': 'application/json'
+
+ERROR in src/store/useWhatsAppStore.ts:516:19
+TS2769: No overload matches this call.
+  Overload 1 of 2, '(input: string | URL | Request, init?: RequestInit | undefined): Promise<Response>', gave the following error.
+    Argument of type '{ method: string; headers: { 'Content-Type': string; }; body: string; timeout: number; signal: AbortSignal; }' is not assignable to parameter of type 'RequestInit'.
+      Object literal may only specify known properties, and 'timeout' does not exist in type 'RequestInit'.
+  Overload 2 of 2, '(input: URL | RequestInfo, init?: RequestInit | undefined): Promise<Response>', gave the following error.
+    Argument of type '{ method: string; headers: { 'Content-Type': string; }; body: string; timeout: number; signal: AbortSignal; }' is not assignable to parameter of type 'RequestInit'.
+      Object literal may only specify known properties, and 'timeout' does not exist in type 'RequestInit'.
+    514 |                     message: content
+    515 |                   }),
+  > 516 |                   timeout: 10000,
+        |                   ^^^^^^^^^^^^^^
+    517 |                   signal: AbortSignal.timeout(10000)
+    518 |                 });
+    519 |                 
+
+ERROR in src/store/useWhatsAppStore.ts:520:21
+TS18047: 'response' is possibly 'null'.
+    518 |                 });
+    519 |                 
+  > 520 |                 if (response.ok) {
+        |                     ^^^^^^^^
+    521 |                   console.log(`✅ Mensagem enviada via ${baseUrl}`);
+    522 |                   break;
+    523 |                 }
+
+ERROR in src/store/useWhatsAppStore.ts:526:17
+TS2322: Type 'unknown' is not assignable to type 'null'.
+    524 |               } catch (error) {
+    525 |                 console.warn(`⚠️ Falha ao enviar via ${baseUrl}:`, error);
+  > 526 |                 lastError = error;
+        |                 ^^^^^^^^^
+    527 |               }
+    528 |             }
+    529 |             
+
+ERROR in src/store/useWhatsAppStore.ts:530:40
+TS2339: Property 'ok' does not exist on type 'never'.
+    528 |             }
+    529 |             
+  > 530 |             if (!response || !response.ok) {
+        |                                        ^^
+    531 |               throw lastError || new Error('Todos os servidores WhatsApp falharam');
+    532 |             }
+    533 |
+
+ERROR in src/store/useWhatsAppStore.ts:534:43
+TS2339: Property 'json' does not exist on type 'never'.
+    532 |             }
+    533 |
+  > 534 |             const result = await response.json();
+        |                                           ^^^^
+    535 |             
+    536 |             if (result.success) {
+    537 |               // Marcar como entregue
+
+(node:363) [DEP0060] DeprecationWarning: The `util._extend` API is deprecated. Please use Object.assign() instead.
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+ERROR in src/components/Common/ConnectivityStatus.tsx:76:9
+TS2322: Type 'Error' is not assignable to type 'null'.
+    74 |       } catch (error) {
+    75 |         console.warn(`⚠️ WhatsApp falhou via ${url}:`, error instanceof Error ? error.message : String(error));
+  > 76 |         lastError = error instanceof Error ? error : new Error(String(error));
+       |         ^^^^^^^^^
+    77 |       }
+    78 |     }
+    79 |     
+
+ERROR in src/components/Common/ConnectivityStatus.tsx:127:9
+TS2322: Type 'Error' is not assignable to type 'null'.
+    125 |       } catch (error) {
+    126 |         console.warn(`⚠️ SPR falhou via ${url}:`, error instanceof Error ? error.message : String(error));
+  > 127 |         lastError = error instanceof Error ? error : new Error(String(error));
+        |         ^^^^^^^^^
+    128 |       }
+    129 |     }
+    130 |     
+
+ERROR in src/store/useWhatsAppStore.ts:347:17
+TS2769: No overload matches this call.
+  Overload 1 of 2, '(input: string | URL | Request, init?: RequestInit | undefined): Promise<Response>', gave the following error.
+    Argument of type '{ method: string; timeout: number; signal: AbortSignal; }' is not assignable to parameter of type 'RequestInit'.
+      Object literal may only specify known properties, and 'timeout' does not exist in type 'RequestInit'.
+  Overload 2 of 2, '(input: URL | RequestInfo, init?: RequestInit | undefined): Promise<Response>', gave the following error.
+    Argument of type '{ method: string; timeout: number; signal: AbortSignal; }' is not assignable to parameter of type 'RequestInit'.
+      Object literal may only specify known properties, and 'timeout' does not exist in type 'RequestInit'.
+    345 |               const testResponse = await fetch(`${baseUrl}/api/status`, {
+    346 |                 method: 'GET',
+  > 347 |                 timeout: 10000,
+        |                 ^^^^^^^^^^^^^^
+    348 |                 signal: AbortSignal.timeout(10000)
+    349 |               });
+    350 |               
+
+ERROR in src/store/useWhatsAppStore.ts:366:17
+TS2769: No overload matches this call.
+  Overload 1 of 2, '(input: string | URL | Request, init?: RequestInit | undefined): Promise<Response>', gave the following error.
+    Argument of type '{ method: string; headers: { 'Content-Type': string; }; timeout: number; signal: AbortSignal; }' is not assignable to parameter of type 'RequestInit'.
+      Object literal may only specify known properties, and 'timeout' does not exist in type 'RequestInit'.
+  Overload 2 of 2, '(input: URL | RequestInfo, init?: RequestInit | undefined): Promise<Response>', gave the following error.
+    Argument of type '{ method: string; headers: { 'Content-Type': string; }; timeout: number; signal: AbortSignal; }' is not assignable to parameter of type 'RequestInit'.
+      Object literal may only specify known properties, and 'timeout' does not exist in type 'RequestInit'.
+    364 |                   'Content-Type': 'application/json'
+    365 |                 },
+  > 366 |                 timeout: 15000,
+        |                 ^^^^^^^^^^^^^^
+    367 |                 signal: AbortSignal.timeout(15000)
+    368 |               });
+    369 |               
+
+ERROR in src/store/useWhatsAppStore.ts:436:15
+TS2322: Type 'unknown' is not assignable to type 'null'.
+    434 |             } catch (error) {
+    435 |               console.error(`❌ Falha ao conectar com ${baseUrl}:`, error);
+  > 436 |               lastError = error;
+        |               ^^^^^^^^^
+    437 |               
+    438 |               // If this is not the last URL, try the next one
+    439 |               if (baseUrl !== whatsappUrls[whatsappUrls.length - 1]) {
+
+ERROR in src/store/useWhatsAppStore.ts:507:17
+TS2322: Type 'Response' is not assignable to type 'null'.
+    505 |             for (const baseUrl of whatsappUrls) {
+    506 |               try {
+  > 507 |                 response = await fetch(`${baseUrl}/api/whatsapp/send`, {
+        |                 ^^^^^^^^
+    508 |                   method: 'POST',
+    509 |                   headers: {
+    510 |                     'Content-Type': 'application/json'
+
+ERROR in src/store/useWhatsAppStore.ts:516:19
+TS2769: No overload matches this call.
+  Overload 1 of 2, '(input: string | URL | Request, init?: RequestInit | undefined): Promise<Response>', gave the following error.
+    Argument of type '{ method: string; headers: { 'Content-Type': string; }; body: string; timeout: number; signal: AbortSignal; }' is not assignable to parameter of type 'RequestInit'.
+      Object literal may only specify known properties, and 'timeout' does not exist in type 'RequestInit'.
+  Overload 2 of 2, '(input: URL | RequestInfo, init?: RequestInit | undefined): Promise<Response>', gave the following error.
+    Argument of type '{ method: string; headers: { 'Content-Type': string; }; body: string; timeout: number; signal: AbortSignal; }' is not assignable to parameter of type 'RequestInit'.
+      Object literal may only specify known properties, and 'timeout' does not exist in type 'RequestInit'.
+    514 |                     message: content
+    515 |                   }),
+  > 516 |                   timeout: 10000,
+        |                   ^^^^^^^^^^^^^^
+    517 |                   signal: AbortSignal.timeout(10000)
+    518 |                 });
+    519 |                 
+
+ERROR in src/store/useWhatsAppStore.ts:520:21
+TS18047: 'response' is possibly 'null'.
+    518 |                 });
+    519 |                 
+  > 520 |                 if (response.ok) {
+        |                     ^^^^^^^^
+    521 |                   console.log(`✅ Mensagem enviada via ${baseUrl}`);
+    522 |                   break;
+    523 |                 }
+
+ERROR in src/store/useWhatsAppStore.ts:526:17
+TS2322: Type 'unknown' is not assignable to type 'null'.
+    524 |               } catch (error) {
+    525 |                 console.warn(`⚠️ Falha ao enviar via ${baseUrl}:`, error);
+  > 526 |                 lastError = error;
+        |                 ^^^^^^^^^
+    527 |               }
+    528 |             }
+    529 |             
+
+ERROR in src/store/useWhatsAppStore.ts:530:40
+TS2339: Property 'ok' does not exist on type 'never'.
+    528 |             }
+    529 |             
+  > 530 |             if (!response || !response.ok) {
+        |                                        ^^
+    531 |               throw lastError || new Error('Todos os servidores WhatsApp falharam');
+    532 |             }
+    533 |
+
+ERROR in src/store/useWhatsAppStore.ts:534:43
+TS2339: Property 'json' does not exist on type 'never'.
+    532 |             }
+    533 |
+  > 534 |             const result = await response.json();
+        |                                           ^^^^
+    535 |             
+    536 |             if (result.success) {
+    537 |               // Marcar como entregue
+
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+ERROR in src/components/Common/ConnectivityStatus.tsx:76:9
+TS2322: Type 'Error' is not assignable to type 'null'.
+    74 |       } catch (error) {
+    75 |         console.warn(`⚠️ WhatsApp falhou via ${url}:`, error instanceof Error ? error.message : String(error));
+  > 76 |         lastError = error instanceof Error ? error : new Error(String(error));
+       |         ^^^^^^^^^
+    77 |       }
+    78 |     }
+    79 |     
+
+ERROR in src/components/Common/ConnectivityStatus.tsx:127:9
+TS2322: Type 'Error' is not assignable to type 'null'.
+    125 |       } catch (error) {
+    126 |         console.warn(`⚠️ SPR falhou via ${url}:`, error instanceof Error ? error.message : String(error));
+  > 127 |         lastError = error instanceof Error ? error : new Error(String(error));
+        |         ^^^^^^^^^
+    128 |       }
+    129 |     }
+    130 |     
+
+ERROR in src/store/useWhatsAppStore.ts:434:15
+TS2322: Type 'Error' is not assignable to type 'null'.
+    432 |             } catch (error) {
+    433 |               console.error(`❌ Falha ao conectar com ${baseUrl}:`, error);
+  > 434 |               lastError = error instanceof Error ? error : new Error(String(error));
+        |               ^^^^^^^^^
+    435 |               
+    436 |               // If this is not the last URL, try the next one
+    437 |               if (baseUrl !== whatsappUrls[whatsappUrls.length - 1]) {
+
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+ERROR in src/store/useWhatsAppStore.ts:434:15
+TS2322: Type 'Error' is not assignable to type 'null'.
+    432 |             } catch (error) {
+    433 |               console.error(`❌ Falha ao conectar com ${baseUrl}:`, error);
+  > 434 |               lastError = error instanceof Error ? error : new Error(String(error));
+        |               ^^^^^^^^^
+    435 |               
+    436 |               // If this is not the last URL, try the next one
+    437 |               if (baseUrl !== whatsappUrls[whatsappUrls.length - 1]) {
+
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+No issues found.
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Files successfully emitted, waiting for typecheck results...
+Issues checking in progress...
+No issues found.
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Files successfully emitted, waiting for typecheck results...
+Issues checking in progress...
+ERROR in src/components/Dashboard/DashboardWidgets.tsx:7:3
+TS2305: Module '"@heroicons/react/24/outline"' has no exported member 'TrendingUpIcon'.
+     5 |   PaperAirplaneIcon,
+     6 |   ChartBarIcon,
+  >  7 |   TrendingUpIcon,
+       |   ^^^^^^^^^^^^^^
+     8 |   TrendingDownIcon,
+     9 |   ClockIcon,
+    10 |   CheckCircleIcon,
+
+ERROR in src/components/Dashboard/DashboardWidgets.tsx:8:3
+TS2724: '"@heroicons/react/24/outline"' has no exported member named 'TrendingDownIcon'. Did you mean 'ArrowTrendingDownIcon'?
+     6 |   ChartBarIcon,
+     7 |   TrendingUpIcon,
+  >  8 |   TrendingDownIcon,
+       |   ^^^^^^^^^^^^^^^^
+     9 |   ClockIcon,
+    10 |   CheckCircleIcon,
+    11 |   ExclamationTriangleIcon,
+
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Files successfully emitted, waiting for typecheck results...
+Issues checking in progress...
+ERROR in src/components/Dashboard/DashboardWidgets.tsx:7:3
+TS2305: Module '"@heroicons/react/24/outline"' has no exported member 'TrendingUpIcon'.
+     5 |   PaperAirplaneIcon,
+     6 |   ChartBarIcon,
+  >  7 |   TrendingUpIcon,
+       |   ^^^^^^^^^^^^^^
+     8 |   TrendingDownIcon,
+     9 |   ClockIcon,
+    10 |   CheckCircleIcon,
+
+ERROR in src/components/Dashboard/DashboardWidgets.tsx:8:3
+TS2724: '"@heroicons/react/24/outline"' has no exported member named 'TrendingDownIcon'. Did you mean 'ArrowTrendingDownIcon'?
+     6 |   ChartBarIcon,
+     7 |   TrendingUpIcon,
+  >  8 |   TrendingDownIcon,
+       |   ^^^^^^^^^^^^^^^^
+     9 |   ClockIcon,
+    10 |   CheckCircleIcon,
+    11 |   ExclamationTriangleIcon,
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:13:3
+TS2305: Module '"@heroicons/react/24/outline"' has no exported member 'CheckCheckIcon'.
+    11 |   UserCircleIcon,
+    12 |   CheckIcon,
+  > 13 |   CheckCheckIcon,
+       |   ^^^^^^^^^^^^^^
+    14 |   ClockIcon
+    15 | } from '@heroicons/react/24/outline';
+    16 | import { useWhatsAppStore } from '../../store/useWhatsAppStore';
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:29:5
+TS2339: Property 'selectedChatId' does not exist on type 'WhatsAppStore'.
+    27 |     contacts,
+    28 |     chats,
+  > 29 |     selectedChatId,
+       |     ^^^^^^^^^^^^^^
+    30 |     setSelectedChat,
+    31 |     sendMessage,
+    32 |     connect,
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:30:5
+TS2339: Property 'setSelectedChat' does not exist on type 'WhatsAppStore'.
+    28 |     chats,
+    29 |     selectedChatId,
+  > 30 |     setSelectedChat,
+       |     ^^^^^^^^^^^^^^^
+    31 |     sendMessage,
+    32 |     connect,
+    33 |     disconnect
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:32:5
+TS2339: Property 'connect' does not exist on type 'WhatsAppStore'.
+    30 |     setSelectedChat,
+    31 |     sendMessage,
+  > 32 |     connect,
+       |     ^^^^^^^
+    33 |     disconnect
+    34 |   } = useWhatsAppStore();
+    35 |
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:33:5
+TS2339: Property 'disconnect' does not exist on type 'WhatsAppStore'.
+    31 |     sendMessage,
+    32 |     connect,
+  > 33 |     disconnect
+       |     ^^^^^^^^^^
+    34 |   } = useWhatsAppStore();
+    35 |
+    36 |   const [newMessage, setNewMessage] = useState('');
+
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+Files successfully emitted, waiting for typecheck results...
+Issues checking in progress...
+ERROR in src/components/Dashboard/DashboardWidgets.tsx:7:3
+TS2305: Module '"@heroicons/react/24/outline"' has no exported member 'TrendingUpIcon'.
+     5 |   PaperAirplaneIcon,
+     6 |   ChartBarIcon,
+  >  7 |   TrendingUpIcon,
+       |   ^^^^^^^^^^^^^^
+     8 |   TrendingDownIcon,
+     9 |   ClockIcon,
+    10 |   CheckCircleIcon,
+
+ERROR in src/components/Dashboard/DashboardWidgets.tsx:8:3
+TS2724: '"@heroicons/react/24/outline"' has no exported member named 'TrendingDownIcon'. Did you mean 'ArrowTrendingDownIcon'?
+     6 |   ChartBarIcon,
+     7 |   TrendingUpIcon,
+  >  8 |   TrendingDownIcon,
+       |   ^^^^^^^^^^^^^^^^
+     9 |   ClockIcon,
+    10 |   CheckCircleIcon,
+    11 |   ExclamationTriangleIcon,
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:13:3
+TS2305: Module '"@heroicons/react/24/outline"' has no exported member 'CheckCheckIcon'.
+    11 |   UserCircleIcon,
+    12 |   CheckIcon,
+  > 13 |   CheckCheckIcon,
+       |   ^^^^^^^^^^^^^^
+    14 |   ClockIcon
+    15 | } from '@heroicons/react/24/outline';
+    16 | import { useWhatsAppStore } from '../../store/useWhatsAppStore';
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:29:5
+TS2339: Property 'selectedChatId' does not exist on type 'WhatsAppStore'.
+    27 |     contacts,
+    28 |     chats,
+  > 29 |     selectedChatId,
+       |     ^^^^^^^^^^^^^^
+    30 |     setSelectedChat,
+    31 |     sendMessage,
+    32 |     connect,
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:30:5
+TS2339: Property 'setSelectedChat' does not exist on type 'WhatsAppStore'.
+    28 |     chats,
+    29 |     selectedChatId,
+  > 30 |     setSelectedChat,
+       |     ^^^^^^^^^^^^^^^
+    31 |     sendMessage,
+    32 |     connect,
+    33 |     disconnect
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:32:5
+TS2339: Property 'connect' does not exist on type 'WhatsAppStore'.
+    30 |     setSelectedChat,
+    31 |     sendMessage,
+  > 32 |     connect,
+       |     ^^^^^^^
+    33 |     disconnect
+    34 |   } = useWhatsAppStore();
+    35 |
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:33:5
+TS2339: Property 'disconnect' does not exist on type 'WhatsAppStore'.
+    31 |     sendMessage,
+    32 |     connect,
+  > 33 |     disconnect
+       |     ^^^^^^^^^^
+    34 |   } = useWhatsAppStore();
+    35 |
+    36 |   const [newMessage, setNewMessage] = useState('');
+
+ERROR in src/pages/DashboardGentelella.tsx:7:3
+TS2305: Module '"@heroicons/react/24/outline"' has no exported member 'TrendingUpIcon'.
+     5 | import {
+     6 |   ChartBarIcon,
+  >  7 |   TrendingUpIcon,
+       |   ^^^^^^^^^^^^^^
+     8 |   UserGroupIcon,
+     9 |   CalendarDaysIcon
+    10 | } from '@heroicons/react/24/outline';
+
+Compiling...
+Failed to compile.
+
+Cannot find module 'sass'
+Require stack:
+- /home/cadu/projeto_SPR/frontend/node_modules/sass-loader/dist/utils.js
+- /home/cadu/projeto_SPR/frontend/node_modules/sass-loader/dist/index.js
+- /home/cadu/projeto_SPR/frontend/node_modules/sass-loader/dist/cjs.js
+- /home/cadu/projeto_SPR/frontend/node_modules/loader-runner/lib/loadLoader.js
+- /home/cadu/projeto_SPR/frontend/node_modules/loader-runner/lib/LoaderRunner.js
+- /home/cadu/projeto_SPR/frontend/node_modules/webpack/lib/NormalModule.js
+- /home/cadu/projeto_SPR/frontend/node_modules/webpack-manifest-plugin/dist/index.js
+- /home/cadu/projeto_SPR/frontend/node_modules/react-scripts/config/webpack.config.js
+- /home/cadu/projeto_SPR/frontend/node_modules/react-scripts/scripts/start.js
+WARNING in ./src/styles/royal-theme.scss (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[2]!./node_modules/resolve-url-loader/index.js??ruleSet[1].rules[1].oneOf[7].use[3]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[4]!./src/styles/royal-theme.scss)
+Module Warning (from ./node_modules/resolve-url-loader/index.js):
+resolve-url-loader: webpack misconfiguration
+  webpack or the upstream loader did not supply a source-map
+
+ERROR in ./src/styles/royal-theme.scss (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[2]!./node_modules/resolve-url-loader/index.js??ruleSet[1].rules[1].oneOf[7].use[3]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[4]!./src/styles/royal-theme.scss)
+Module Error (from ./node_modules/sass-loader/dist/cjs.js):
+Cannot find module 'sass'
+Require stack:
+- /home/cadu/projeto_SPR/frontend/node_modules/sass-loader/dist/utils.js
+- /home/cadu/projeto_SPR/frontend/node_modules/sass-loader/dist/index.js
+- /home/cadu/projeto_SPR/frontend/node_modules/sass-loader/dist/cjs.js
+- /home/cadu/projeto_SPR/frontend/node_modules/loader-runner/lib/loadLoader.js
+- /home/cadu/projeto_SPR/frontend/node_modules/loader-runner/lib/LoaderRunner.js
+- /home/cadu/projeto_SPR/frontend/node_modules/webpack/lib/NormalModule.js
+- /home/cadu/projeto_SPR/frontend/node_modules/webpack-manifest-plugin/dist/index.js
+- /home/cadu/projeto_SPR/frontend/node_modules/react-scripts/config/webpack.config.js
+- /home/cadu/projeto_SPR/frontend/node_modules/react-scripts/scripts/start.js
+
+ERROR in ./src/styles/royal-theme.scss (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[2]!./node_modules/resolve-url-loader/index.js??ruleSet[1].rules[1].oneOf[7].use[3]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[4]!./src/styles/royal-theme.scss)
+Module build failed (from ./node_modules/resolve-url-loader/index.js):
+Error: resolve-url-loader: error processing CSS
+  PostCSS received undefined instead of CSS string
+  at new Input (/home/cadu/projeto_SPR/frontend/node_modules/resolve-url-loader/node_modules/postcss/lib/input.js:38:13)
+    at encodeError (/home/cadu/projeto_SPR/frontend/node_modules/resolve-url-loader/index.js:287:12)
+    at onFailure (/home/cadu/projeto_SPR/frontend/node_modules/resolve-url-loader/index.js:228:14)
+
+webpack compiled with 2 errors and 1 warning
+ERROR in src/App.tsx:20:10
+TS2304: Cannot find name 'LayoutSidebar'.
+    18 |     <Router>
+    19 |       <div className="App">
+  > 20 |         <LayoutSidebar>
+       |          ^^^^^^^^^^^^^
+    21 |           <Routes>
+    22 |             <Route path="/" element={<Dashboard />} />
+    23 |             <Route path="/whatsapp" element={<WhatsAppPage />} />
+
+ERROR in src/App.tsx:30:11
+TS2304: Cannot find name 'LayoutSidebar'.
+    28 |             <Route path="/settings" element={<Settings />} />
+    29 |           </Routes>
+  > 30 |         </LayoutSidebar>
+       |           ^^^^^^^^^^^^^
+    31 |         <Toaster
+    32 |           position="top-right"
+    33 |           toastOptions={{
+
+ERROR in src/components/Dashboard/DashboardWidgets.tsx:7:3
+TS2305: Module '"@heroicons/react/24/outline"' has no exported member 'TrendingUpIcon'.
+     5 |   PaperAirplaneIcon,
+     6 |   ChartBarIcon,
+  >  7 |   TrendingUpIcon,
+       |   ^^^^^^^^^^^^^^
+     8 |   TrendingDownIcon,
+     9 |   ClockIcon,
+    10 |   CheckCircleIcon,
+
+ERROR in src/components/Dashboard/DashboardWidgets.tsx:8:3
+TS2724: '"@heroicons/react/24/outline"' has no exported member named 'TrendingDownIcon'. Did you mean 'ArrowTrendingDownIcon'?
+     6 |   ChartBarIcon,
+     7 |   TrendingUpIcon,
+  >  8 |   TrendingDownIcon,
+       |   ^^^^^^^^^^^^^^^^
+     9 |   ClockIcon,
+    10 |   CheckCircleIcon,
+    11 |   ExclamationTriangleIcon,
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:13:3
+TS2305: Module '"@heroicons/react/24/outline"' has no exported member 'CheckCheckIcon'.
+    11 |   UserCircleIcon,
+    12 |   CheckIcon,
+  > 13 |   CheckCheckIcon,
+       |   ^^^^^^^^^^^^^^
+    14 |   ClockIcon
+    15 | } from '@heroicons/react/24/outline';
+    16 | import { useWhatsAppStore } from '../../store/useWhatsAppStore';
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:29:5
+TS2339: Property 'selectedChatId' does not exist on type 'WhatsAppStore'.
+    27 |     contacts,
+    28 |     chats,
+  > 29 |     selectedChatId,
+       |     ^^^^^^^^^^^^^^
+    30 |     setSelectedChat,
+    31 |     sendMessage,
+    32 |     connect,
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:30:5
+TS2339: Property 'setSelectedChat' does not exist on type 'WhatsAppStore'.
+    28 |     chats,
+    29 |     selectedChatId,
+  > 30 |     setSelectedChat,
+       |     ^^^^^^^^^^^^^^^
+    31 |     sendMessage,
+    32 |     connect,
+    33 |     disconnect
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:32:5
+TS2339: Property 'connect' does not exist on type 'WhatsAppStore'.
+    30 |     setSelectedChat,
+    31 |     sendMessage,
+  > 32 |     connect,
+       |     ^^^^^^^
+    33 |     disconnect
+    34 |   } = useWhatsAppStore();
+    35 |
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:33:5
+TS2339: Property 'disconnect' does not exist on type 'WhatsAppStore'.
+    31 |     sendMessage,
+    32 |     connect,
+  > 33 |     disconnect
+       |     ^^^^^^^^^^
+    34 |   } = useWhatsAppStore();
+    35 |
+    36 |   const [newMessage, setNewMessage] = useState('');
+
+ERROR in src/pages/DashboardGentelella.tsx:7:3
+TS2305: Module '"@heroicons/react/24/outline"' has no exported member 'TrendingUpIcon'.
+     5 | import {
+     6 |   ChartBarIcon,
+  >  7 |   TrendingUpIcon,
+       |   ^^^^^^^^^^^^^^
+     8 |   UserGroupIcon,
+     9 |   CalendarDaysIcon
+    10 | } from '@heroicons/react/24/outline';
+
+Compiling...
+Failed to compile.
+
+Attempted import error: 'TrendingUpIcon' is not exported from '@heroicons/react/24/outline' (imported as 'TrendingUpIcon').
+WARNING in ./src/styles/royal-theme.scss (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[2]!./node_modules/resolve-url-loader/index.js??ruleSet[1].rules[1].oneOf[7].use[3]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[4]!./src/styles/royal-theme.scss)
+Module Warning (from ./node_modules/resolve-url-loader/index.js):
+resolve-url-loader: webpack misconfiguration
+  webpack or the upstream loader did not supply a source-map
+
+ERROR in ./src/components/Dashboard/DashboardWidgets.tsx 86:61-75
+export 'TrendingUpIcon' (imported as 'TrendingUpIcon') was not found in '@heroicons/react/24/outline' (possible exports: AcademicCapIcon, AdjustmentsHorizontalIcon, AdjustmentsVerticalIcon, ArchiveBoxArrowDownIcon, ArchiveBoxIcon, ArchiveBoxXMarkIcon, ArrowDownCircleIcon, ArrowDownIcon, ArrowDownLeftIcon, ArrowDownOnSquareIcon, ArrowDownOnSquareStackIcon, ArrowDownRightIcon, ArrowDownTrayIcon, ArrowLeftCircleIcon, ArrowLeftEndOnRectangleIcon, ArrowLeftIcon, ArrowLeftOnRectangleIcon, ArrowLeftStartOnRectangleIcon, ArrowLongDownIcon, ArrowLongLeftIcon, ArrowLongRightIcon, ArrowLongUpIcon, ArrowPathIcon, ArrowPathRoundedSquareIcon, ArrowRightCircleIcon, ArrowRightEndOnRectangleIcon, ArrowRightIcon, ArrowRightOnRectangleIcon, ArrowRightStartOnRectangleIcon, ArrowSmallDownIcon, ArrowSmallLeftIcon, ArrowSmallRightIcon, ArrowSmallUpIcon, ArrowTopRightOnSquareIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, ArrowTurnDownLeftIcon, ArrowTurnDownRightIcon, ArrowTurnLeftDownIcon, ArrowTurnLeftUpIcon, ArrowTurnRightDownIcon, ArrowTurnRightUpIcon, ArrowTurnUpLeftIcon, ArrowTurnUpRightIcon, ArrowUpCircleIcon, ArrowUpIcon, ArrowUpLeftIcon, ArrowUpOnSquareIcon, ArrowUpOnSquareStackIcon, ArrowUpRightIcon, ArrowUpTrayIcon, ArrowUturnDownIcon, ArrowUturnLeftIcon, ArrowUturnRightIcon, ArrowUturnUpIcon, ArrowsPointingInIcon, ArrowsPointingOutIcon, ArrowsRightLeftIcon, ArrowsUpDownIcon, AtSymbolIcon, BackspaceIcon, BackwardIcon, BanknotesIcon, Bars2Icon, Bars3BottomLeftIcon, Bars3BottomRightIcon, Bars3CenterLeftIcon, Bars3Icon, Bars4Icon, BarsArrowDownIcon, BarsArrowUpIcon, Battery0Icon, Battery100Icon, Battery50Icon, BeakerIcon, BellAlertIcon, BellIcon, BellSlashIcon, BellSnoozeIcon, BoldIcon, BoltIcon, BoltSlashIcon, BookOpenIcon, BookmarkIcon, BookmarkSlashIcon, BookmarkSquareIcon, BriefcaseIcon, BugAntIcon, BuildingLibraryIcon, BuildingOffice2Icon, BuildingOfficeIcon, BuildingStorefrontIcon, CakeIcon, CalculatorIcon, CalendarDateRangeIcon, CalendarDaysIcon, CalendarIcon, CameraIcon, ChartBarIcon, ChartBarSquareIcon, ChartPieIcon, ChatBubbleBottomCenterIcon, ChatBubbleBottomCenterTextIcon, ChatBubbleLeftEllipsisIcon, ChatBubbleLeftIcon, ChatBubbleLeftRightIcon, ChatBubbleOvalLeftEllipsisIcon, ChatBubbleOvalLeftIcon, CheckBadgeIcon, CheckCircleIcon, CheckIcon, ChevronDoubleDownIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronDoubleUpIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, ChevronUpDownIcon, ChevronUpIcon, CircleStackIcon, ClipboardDocumentCheckIcon, ClipboardDocumentIcon, ClipboardDocumentListIcon, ClipboardIcon, ClockIcon, CloudArrowDownIcon, CloudArrowUpIcon, CloudIcon, CodeBracketIcon, CodeBracketSquareIcon, Cog6ToothIcon, Cog8ToothIcon, CogIcon, CommandLineIcon, ComputerDesktopIcon, CpuChipIcon, CreditCardIcon, CubeIcon, CubeTransparentIcon, CurrencyBangladeshiIcon, CurrencyDollarIcon, CurrencyEuroIcon, CurrencyPoundIcon, CurrencyRupeeIcon, CurrencyYenIcon, CursorArrowRaysIcon, CursorArrowRippleIcon, DevicePhoneMobileIcon, DeviceTabletIcon, DivideIcon, DocumentArrowDownIcon, DocumentArrowUpIcon, DocumentChartBarIcon, DocumentCheckIcon, DocumentCurrencyBangladeshiIcon, DocumentCurrencyDollarIcon, DocumentCurrencyEuroIcon, DocumentCurrencyPoundIcon, DocumentCurrencyRupeeIcon, DocumentCurrencyYenIcon, DocumentDuplicateIcon, DocumentIcon, DocumentMagnifyingGlassIcon, DocumentMinusIcon, DocumentPlusIcon, DocumentTextIcon, EllipsisHorizontalCircleIcon, EllipsisHorizontalIcon, EllipsisVerticalIcon, EnvelopeIcon, EnvelopeOpenIcon, EqualsIcon, ExclamationCircleIcon, ExclamationTriangleIcon, EyeDropperIcon, EyeIcon, EyeSlashIcon, FaceFrownIcon, FaceSmileIcon, FilmIcon, FingerPrintIcon, FireIcon, FlagIcon, FolderArrowDownIcon, FolderIcon, FolderMinusIcon, FolderOpenIcon, FolderPlusIcon, ForwardIcon, FunnelIcon, GifIcon, GiftIcon, GiftTopIcon, GlobeAltIcon, GlobeAmericasIcon, GlobeAsiaAustraliaIcon, GlobeEuropeAfricaIcon, H1Icon, H2Icon, H3Icon, HandRaisedIcon, HandThumbDownIcon, HandThumbUpIcon, HashtagIcon, HeartIcon, HomeIcon, HomeModernIcon, IdentificationIcon, InboxArrowDownIcon, InboxIcon, InboxStackIcon, InformationCircleIcon, ItalicIcon, KeyIcon, LanguageIcon, LifebuoyIcon, LightBulbIcon, LinkIcon, LinkSlashIcon, ListBulletIcon, LockClosedIcon, LockOpenIcon, MagnifyingGlassCircleIcon, MagnifyingGlassIcon, MagnifyingGlassMinusIcon, MagnifyingGlassPlusIcon, MapIcon, MapPinIcon, MegaphoneIcon, MicrophoneIcon, MinusCircleIcon, MinusIcon, MinusSmallIcon, MoonIcon, MusicalNoteIcon, NewspaperIcon, NoSymbolIcon, NumberedListIcon, PaintBrushIcon, PaperAirplaneIcon, PaperClipIcon, PauseCircleIcon, PauseIcon, PencilIcon, PencilSquareIcon, PercentBadgeIcon, PhoneArrowDownLeftIcon, PhoneArrowUpRightIcon, PhoneIcon, PhoneXMarkIcon, PhotoIcon, PlayCircleIcon, PlayIcon, PlayPauseIcon, PlusCircleIcon, PlusIcon, PlusSmallIcon, PowerIcon, PresentationChartBarIcon, PresentationChartLineIcon, PrinterIcon, PuzzlePieceIcon, QrCodeIcon, QuestionMarkCircleIcon, QueueListIcon, RadioIcon, ReceiptPercentIcon, ReceiptRefundIcon, RectangleGroupIcon, RectangleStackIcon, RocketLaunchIcon, RssIcon, ScaleIcon, ScissorsIcon, ServerIcon, ServerStackIcon, ShareIcon, ShieldCheckIcon, ShieldExclamationIcon, ShoppingBagIcon, ShoppingCartIcon, SignalIcon, SignalSlashIcon, SlashIcon, SparklesIcon, SpeakerWaveIcon, SpeakerXMarkIcon, Square2StackIcon, Square3Stack3DIcon, Squares2X2Icon, SquaresPlusIcon, StarIcon, StopCircleIcon, StopIcon, StrikethroughIcon, SunIcon, SwatchIcon, TableCellsIcon, TagIcon, TicketIcon, TrashIcon, TrophyIcon, TruckIcon, TvIcon, UnderlineIcon, UserCircleIcon, UserGroupIcon, UserIcon, UserMinusIcon, UserPlusIcon, UsersIcon, VariableIcon, VideoCameraIcon, VideoCameraSlashIcon, ViewColumnsIcon, ViewfinderCircleIcon, WalletIcon, WifiIcon, WindowIcon, WrenchIcon, WrenchScrewdriverIcon, XCircleIcon, XMarkIcon)
+
+ERROR in ./src/components/Dashboard/DashboardWidgets.tsx 92:42-58
+export 'TrendingDownIcon' (imported as 'TrendingDownIcon') was not found in '@heroicons/react/24/outline' (possible exports: AcademicCapIcon, AdjustmentsHorizontalIcon, AdjustmentsVerticalIcon, ArchiveBoxArrowDownIcon, ArchiveBoxIcon, ArchiveBoxXMarkIcon, ArrowDownCircleIcon, ArrowDownIcon, ArrowDownLeftIcon, ArrowDownOnSquareIcon, ArrowDownOnSquareStackIcon, ArrowDownRightIcon, ArrowDownTrayIcon, ArrowLeftCircleIcon, ArrowLeftEndOnRectangleIcon, ArrowLeftIcon, ArrowLeftOnRectangleIcon, ArrowLeftStartOnRectangleIcon, ArrowLongDownIcon, ArrowLongLeftIcon, ArrowLongRightIcon, ArrowLongUpIcon, ArrowPathIcon, ArrowPathRoundedSquareIcon, ArrowRightCircleIcon, ArrowRightEndOnRectangleIcon, ArrowRightIcon, ArrowRightOnRectangleIcon, ArrowRightStartOnRectangleIcon, ArrowSmallDownIcon, ArrowSmallLeftIcon, ArrowSmallRightIcon, ArrowSmallUpIcon, ArrowTopRightOnSquareIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, ArrowTurnDownLeftIcon, ArrowTurnDownRightIcon, ArrowTurnLeftDownIcon, ArrowTurnLeftUpIcon, ArrowTurnRightDownIcon, ArrowTurnRightUpIcon, ArrowTurnUpLeftIcon, ArrowTurnUpRightIcon, ArrowUpCircleIcon, ArrowUpIcon, ArrowUpLeftIcon, ArrowUpOnSquareIcon, ArrowUpOnSquareStackIcon, ArrowUpRightIcon, ArrowUpTrayIcon, ArrowUturnDownIcon, ArrowUturnLeftIcon, ArrowUturnRightIcon, ArrowUturnUpIcon, ArrowsPointingInIcon, ArrowsPointingOutIcon, ArrowsRightLeftIcon, ArrowsUpDownIcon, AtSymbolIcon, BackspaceIcon, BackwardIcon, BanknotesIcon, Bars2Icon, Bars3BottomLeftIcon, Bars3BottomRightIcon, Bars3CenterLeftIcon, Bars3Icon, Bars4Icon, BarsArrowDownIcon, BarsArrowUpIcon, Battery0Icon, Battery100Icon, Battery50Icon, BeakerIcon, BellAlertIcon, BellIcon, BellSlashIcon, BellSnoozeIcon, BoldIcon, BoltIcon, BoltSlashIcon, BookOpenIcon, BookmarkIcon, BookmarkSlashIcon, BookmarkSquareIcon, BriefcaseIcon, BugAntIcon, BuildingLibraryIcon, BuildingOffice2Icon, BuildingOfficeIcon, BuildingStorefrontIcon, CakeIcon, CalculatorIcon, CalendarDateRangeIcon, CalendarDaysIcon, CalendarIcon, CameraIcon, ChartBarIcon, ChartBarSquareIcon, ChartPieIcon, ChatBubbleBottomCenterIcon, ChatBubbleBottomCenterTextIcon, ChatBubbleLeftEllipsisIcon, ChatBubbleLeftIcon, ChatBubbleLeftRightIcon, ChatBubbleOvalLeftEllipsisIcon, ChatBubbleOvalLeftIcon, CheckBadgeIcon, CheckCircleIcon, CheckIcon, ChevronDoubleDownIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronDoubleUpIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, ChevronUpDownIcon, ChevronUpIcon, CircleStackIcon, ClipboardDocumentCheckIcon, ClipboardDocumentIcon, ClipboardDocumentListIcon, ClipboardIcon, ClockIcon, CloudArrowDownIcon, CloudArrowUpIcon, CloudIcon, CodeBracketIcon, CodeBracketSquareIcon, Cog6ToothIcon, Cog8ToothIcon, CogIcon, CommandLineIcon, ComputerDesktopIcon, CpuChipIcon, CreditCardIcon, CubeIcon, CubeTransparentIcon, CurrencyBangladeshiIcon, CurrencyDollarIcon, CurrencyEuroIcon, CurrencyPoundIcon, CurrencyRupeeIcon, CurrencyYenIcon, CursorArrowRaysIcon, CursorArrowRippleIcon, DevicePhoneMobileIcon, DeviceTabletIcon, DivideIcon, DocumentArrowDownIcon, DocumentArrowUpIcon, DocumentChartBarIcon, DocumentCheckIcon, DocumentCurrencyBangladeshiIcon, DocumentCurrencyDollarIcon, DocumentCurrencyEuroIcon, DocumentCurrencyPoundIcon, DocumentCurrencyRupeeIcon, DocumentCurrencyYenIcon, DocumentDuplicateIcon, DocumentIcon, DocumentMagnifyingGlassIcon, DocumentMinusIcon, DocumentPlusIcon, DocumentTextIcon, EllipsisHorizontalCircleIcon, EllipsisHorizontalIcon, EllipsisVerticalIcon, EnvelopeIcon, EnvelopeOpenIcon, EqualsIcon, ExclamationCircleIcon, ExclamationTriangleIcon, EyeDropperIcon, EyeIcon, EyeSlashIcon, FaceFrownIcon, FaceSmileIcon, FilmIcon, FingerPrintIcon, FireIcon, FlagIcon, FolderArrowDownIcon, FolderIcon, FolderMinusIcon, FolderOpenIcon, FolderPlusIcon, ForwardIcon, FunnelIcon, GifIcon, GiftIcon, GiftTopIcon, GlobeAltIcon, GlobeAmericasIcon, GlobeAsiaAustraliaIcon, GlobeEuropeAfricaIcon, H1Icon, H2Icon, H3Icon, HandRaisedIcon, HandThumbDownIcon, HandThumbUpIcon, HashtagIcon, HeartIcon, HomeIcon, HomeModernIcon, IdentificationIcon, InboxArrowDownIcon, InboxIcon, InboxStackIcon, InformationCircleIcon, ItalicIcon, KeyIcon, LanguageIcon, LifebuoyIcon, LightBulbIcon, LinkIcon, LinkSlashIcon, ListBulletIcon, LockClosedIcon, LockOpenIcon, MagnifyingGlassCircleIcon, MagnifyingGlassIcon, MagnifyingGlassMinusIcon, MagnifyingGlassPlusIcon, MapIcon, MapPinIcon, MegaphoneIcon, MicrophoneIcon, MinusCircleIcon, MinusIcon, MinusSmallIcon, MoonIcon, MusicalNoteIcon, NewspaperIcon, NoSymbolIcon, NumberedListIcon, PaintBrushIcon, PaperAirplaneIcon, PaperClipIcon, PauseCircleIcon, PauseIcon, PencilIcon, PencilSquareIcon, PercentBadgeIcon, PhoneArrowDownLeftIcon, PhoneArrowUpRightIcon, PhoneIcon, PhoneXMarkIcon, PhotoIcon, PlayCircleIcon, PlayIcon, PlayPauseIcon, PlusCircleIcon, PlusIcon, PlusSmallIcon, PowerIcon, PresentationChartBarIcon, PresentationChartLineIcon, PrinterIcon, PuzzlePieceIcon, QrCodeIcon, QuestionMarkCircleIcon, QueueListIcon, RadioIcon, ReceiptPercentIcon, ReceiptRefundIcon, RectangleGroupIcon, RectangleStackIcon, RocketLaunchIcon, RssIcon, ScaleIcon, ScissorsIcon, ServerIcon, ServerStackIcon, ShareIcon, ShieldCheckIcon, ShieldExclamationIcon, ShoppingBagIcon, ShoppingCartIcon, SignalIcon, SignalSlashIcon, SlashIcon, SparklesIcon, SpeakerWaveIcon, SpeakerXMarkIcon, Square2StackIcon, Square3Stack3DIcon, Squares2X2Icon, SquaresPlusIcon, StarIcon, StopCircleIcon, StopIcon, StrikethroughIcon, SunIcon, SwatchIcon, TableCellsIcon, TagIcon, TicketIcon, TrashIcon, TrophyIcon, TruckIcon, TvIcon, UnderlineIcon, UserCircleIcon, UserGroupIcon, UserIcon, UserMinusIcon, UserPlusIcon, UsersIcon, VariableIcon, VideoCameraIcon, VideoCameraSlashIcon, ViewColumnsIcon, ViewfinderCircleIcon, WalletIcon, WifiIcon, WindowIcon, WrenchIcon, WrenchScrewdriverIcon, XCircleIcon, XMarkIcon)
+
+ERROR in ./src/components/Layout/GentelellaLayout.tsx 7:0-42
+Module not found: Error: You attempted to import ../../../styles/royal-theme.scss which falls outside of the project src/ directory. Relative imports outside of src/ are not supported.
+You can either move it inside src/, or add a symlink to it from project's node_modules/.
+
+ERROR in ./src/components/WhatsApp/ModernWhatsAppInterface.tsx 51:36-50
+export 'CheckCheckIcon' (imported as 'CheckCheckIcon') was not found in '@heroicons/react/24/outline' (possible exports: AcademicCapIcon, AdjustmentsHorizontalIcon, AdjustmentsVerticalIcon, ArchiveBoxArrowDownIcon, ArchiveBoxIcon, ArchiveBoxXMarkIcon, ArrowDownCircleIcon, ArrowDownIcon, ArrowDownLeftIcon, ArrowDownOnSquareIcon, ArrowDownOnSquareStackIcon, ArrowDownRightIcon, ArrowDownTrayIcon, ArrowLeftCircleIcon, ArrowLeftEndOnRectangleIcon, ArrowLeftIcon, ArrowLeftOnRectangleIcon, ArrowLeftStartOnRectangleIcon, ArrowLongDownIcon, ArrowLongLeftIcon, ArrowLongRightIcon, ArrowLongUpIcon, ArrowPathIcon, ArrowPathRoundedSquareIcon, ArrowRightCircleIcon, ArrowRightEndOnRectangleIcon, ArrowRightIcon, ArrowRightOnRectangleIcon, ArrowRightStartOnRectangleIcon, ArrowSmallDownIcon, ArrowSmallLeftIcon, ArrowSmallRightIcon, ArrowSmallUpIcon, ArrowTopRightOnSquareIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, ArrowTurnDownLeftIcon, ArrowTurnDownRightIcon, ArrowTurnLeftDownIcon, ArrowTurnLeftUpIcon, ArrowTurnRightDownIcon, ArrowTurnRightUpIcon, ArrowTurnUpLeftIcon, ArrowTurnUpRightIcon, ArrowUpCircleIcon, ArrowUpIcon, ArrowUpLeftIcon, ArrowUpOnSquareIcon, ArrowUpOnSquareStackIcon, ArrowUpRightIcon, ArrowUpTrayIcon, ArrowUturnDownIcon, ArrowUturnLeftIcon, ArrowUturnRightIcon, ArrowUturnUpIcon, ArrowsPointingInIcon, ArrowsPointingOutIcon, ArrowsRightLeftIcon, ArrowsUpDownIcon, AtSymbolIcon, BackspaceIcon, BackwardIcon, BanknotesIcon, Bars2Icon, Bars3BottomLeftIcon, Bars3BottomRightIcon, Bars3CenterLeftIcon, Bars3Icon, Bars4Icon, BarsArrowDownIcon, BarsArrowUpIcon, Battery0Icon, Battery100Icon, Battery50Icon, BeakerIcon, BellAlertIcon, BellIcon, BellSlashIcon, BellSnoozeIcon, BoldIcon, BoltIcon, BoltSlashIcon, BookOpenIcon, BookmarkIcon, BookmarkSlashIcon, BookmarkSquareIcon, BriefcaseIcon, BugAntIcon, BuildingLibraryIcon, BuildingOffice2Icon, BuildingOfficeIcon, BuildingStorefrontIcon, CakeIcon, CalculatorIcon, CalendarDateRangeIcon, CalendarDaysIcon, CalendarIcon, CameraIcon, ChartBarIcon, ChartBarSquareIcon, ChartPieIcon, ChatBubbleBottomCenterIcon, ChatBubbleBottomCenterTextIcon, ChatBubbleLeftEllipsisIcon, ChatBubbleLeftIcon, ChatBubbleLeftRightIcon, ChatBubbleOvalLeftEllipsisIcon, ChatBubbleOvalLeftIcon, CheckBadgeIcon, CheckCircleIcon, CheckIcon, ChevronDoubleDownIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronDoubleUpIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, ChevronUpDownIcon, ChevronUpIcon, CircleStackIcon, ClipboardDocumentCheckIcon, ClipboardDocumentIcon, ClipboardDocumentListIcon, ClipboardIcon, ClockIcon, CloudArrowDownIcon, CloudArrowUpIcon, CloudIcon, CodeBracketIcon, CodeBracketSquareIcon, Cog6ToothIcon, Cog8ToothIcon, CogIcon, CommandLineIcon, ComputerDesktopIcon, CpuChipIcon, CreditCardIcon, CubeIcon, CubeTransparentIcon, CurrencyBangladeshiIcon, CurrencyDollarIcon, CurrencyEuroIcon, CurrencyPoundIcon, CurrencyRupeeIcon, CurrencyYenIcon, CursorArrowRaysIcon, CursorArrowRippleIcon, DevicePhoneMobileIcon, DeviceTabletIcon, DivideIcon, DocumentArrowDownIcon, DocumentArrowUpIcon, DocumentChartBarIcon, DocumentCheckIcon, DocumentCurrencyBangladeshiIcon, DocumentCurrencyDollarIcon, DocumentCurrencyEuroIcon, DocumentCurrencyPoundIcon, DocumentCurrencyRupeeIcon, DocumentCurrencyYenIcon, DocumentDuplicateIcon, DocumentIcon, DocumentMagnifyingGlassIcon, DocumentMinusIcon, DocumentPlusIcon, DocumentTextIcon, EllipsisHorizontalCircleIcon, EllipsisHorizontalIcon, EllipsisVerticalIcon, EnvelopeIcon, EnvelopeOpenIcon, EqualsIcon, ExclamationCircleIcon, ExclamationTriangleIcon, EyeDropperIcon, EyeIcon, EyeSlashIcon, FaceFrownIcon, FaceSmileIcon, FilmIcon, FingerPrintIcon, FireIcon, FlagIcon, FolderArrowDownIcon, FolderIcon, FolderMinusIcon, FolderOpenIcon, FolderPlusIcon, ForwardIcon, FunnelIcon, GifIcon, GiftIcon, GiftTopIcon, GlobeAltIcon, GlobeAmericasIcon, GlobeAsiaAustraliaIcon, GlobeEuropeAfricaIcon, H1Icon, H2Icon, H3Icon, HandRaisedIcon, HandThumbDownIcon, HandThumbUpIcon, HashtagIcon, HeartIcon, HomeIcon, HomeModernIcon, IdentificationIcon, InboxArrowDownIcon, InboxIcon, InboxStackIcon, InformationCircleIcon, ItalicIcon, KeyIcon, LanguageIcon, LifebuoyIcon, LightBulbIcon, LinkIcon, LinkSlashIcon, ListBulletIcon, LockClosedIcon, LockOpenIcon, MagnifyingGlassCircleIcon, MagnifyingGlassIcon, MagnifyingGlassMinusIcon, MagnifyingGlassPlusIcon, MapIcon, MapPinIcon, MegaphoneIcon, MicrophoneIcon, MinusCircleIcon, MinusIcon, MinusSmallIcon, MoonIcon, MusicalNoteIcon, NewspaperIcon, NoSymbolIcon, NumberedListIcon, PaintBrushIcon, PaperAirplaneIcon, PaperClipIcon, PauseCircleIcon, PauseIcon, PencilIcon, PencilSquareIcon, PercentBadgeIcon, PhoneArrowDownLeftIcon, PhoneArrowUpRightIcon, PhoneIcon, PhoneXMarkIcon, PhotoIcon, PlayCircleIcon, PlayIcon, PlayPauseIcon, PlusCircleIcon, PlusIcon, PlusSmallIcon, PowerIcon, PresentationChartBarIcon, PresentationChartLineIcon, PrinterIcon, PuzzlePieceIcon, QrCodeIcon, QuestionMarkCircleIcon, QueueListIcon, RadioIcon, ReceiptPercentIcon, ReceiptRefundIcon, RectangleGroupIcon, RectangleStackIcon, RocketLaunchIcon, RssIcon, ScaleIcon, ScissorsIcon, ServerIcon, ServerStackIcon, ShareIcon, ShieldCheckIcon, ShieldExclamationIcon, ShoppingBagIcon, ShoppingCartIcon, SignalIcon, SignalSlashIcon, SlashIcon, SparklesIcon, SpeakerWaveIcon, SpeakerXMarkIcon, Square2StackIcon, Square3Stack3DIcon, Squares2X2Icon, SquaresPlusIcon, StarIcon, StopCircleIcon, StopIcon, StrikethroughIcon, SunIcon, SwatchIcon, TableCellsIcon, TagIcon, TicketIcon, TrashIcon, TrophyIcon, TruckIcon, TvIcon, UnderlineIcon, UserCircleIcon, UserGroupIcon, UserIcon, UserMinusIcon, UserPlusIcon, UsersIcon, VariableIcon, VideoCameraIcon, VideoCameraSlashIcon, ViewColumnsIcon, ViewfinderCircleIcon, WalletIcon, WifiIcon, WindowIcon, WrenchIcon, WrenchScrewdriverIcon, XCircleIcon, XMarkIcon)
+
+ERROR in ./src/components/WhatsApp/ModernWhatsAppInterface.tsx 59:36-50
+export 'CheckCheckIcon' (imported as 'CheckCheckIcon') was not found in '@heroicons/react/24/outline' (possible exports: AcademicCapIcon, AdjustmentsHorizontalIcon, AdjustmentsVerticalIcon, ArchiveBoxArrowDownIcon, ArchiveBoxIcon, ArchiveBoxXMarkIcon, ArrowDownCircleIcon, ArrowDownIcon, ArrowDownLeftIcon, ArrowDownOnSquareIcon, ArrowDownOnSquareStackIcon, ArrowDownRightIcon, ArrowDownTrayIcon, ArrowLeftCircleIcon, ArrowLeftEndOnRectangleIcon, ArrowLeftIcon, ArrowLeftOnRectangleIcon, ArrowLeftStartOnRectangleIcon, ArrowLongDownIcon, ArrowLongLeftIcon, ArrowLongRightIcon, ArrowLongUpIcon, ArrowPathIcon, ArrowPathRoundedSquareIcon, ArrowRightCircleIcon, ArrowRightEndOnRectangleIcon, ArrowRightIcon, ArrowRightOnRectangleIcon, ArrowRightStartOnRectangleIcon, ArrowSmallDownIcon, ArrowSmallLeftIcon, ArrowSmallRightIcon, ArrowSmallUpIcon, ArrowTopRightOnSquareIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, ArrowTurnDownLeftIcon, ArrowTurnDownRightIcon, ArrowTurnLeftDownIcon, ArrowTurnLeftUpIcon, ArrowTurnRightDownIcon, ArrowTurnRightUpIcon, ArrowTurnUpLeftIcon, ArrowTurnUpRightIcon, ArrowUpCircleIcon, ArrowUpIcon, ArrowUpLeftIcon, ArrowUpOnSquareIcon, ArrowUpOnSquareStackIcon, ArrowUpRightIcon, ArrowUpTrayIcon, ArrowUturnDownIcon, ArrowUturnLeftIcon, ArrowUturnRightIcon, ArrowUturnUpIcon, ArrowsPointingInIcon, ArrowsPointingOutIcon, ArrowsRightLeftIcon, ArrowsUpDownIcon, AtSymbolIcon, BackspaceIcon, BackwardIcon, BanknotesIcon, Bars2Icon, Bars3BottomLeftIcon, Bars3BottomRightIcon, Bars3CenterLeftIcon, Bars3Icon, Bars4Icon, BarsArrowDownIcon, BarsArrowUpIcon, Battery0Icon, Battery100Icon, Battery50Icon, BeakerIcon, BellAlertIcon, BellIcon, BellSlashIcon, BellSnoozeIcon, BoldIcon, BoltIcon, BoltSlashIcon, BookOpenIcon, BookmarkIcon, BookmarkSlashIcon, BookmarkSquareIcon, BriefcaseIcon, BugAntIcon, BuildingLibraryIcon, BuildingOffice2Icon, BuildingOfficeIcon, BuildingStorefrontIcon, CakeIcon, CalculatorIcon, CalendarDateRangeIcon, CalendarDaysIcon, CalendarIcon, CameraIcon, ChartBarIcon, ChartBarSquareIcon, ChartPieIcon, ChatBubbleBottomCenterIcon, ChatBubbleBottomCenterTextIcon, ChatBubbleLeftEllipsisIcon, ChatBubbleLeftIcon, ChatBubbleLeftRightIcon, ChatBubbleOvalLeftEllipsisIcon, ChatBubbleOvalLeftIcon, CheckBadgeIcon, CheckCircleIcon, CheckIcon, ChevronDoubleDownIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronDoubleUpIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, ChevronUpDownIcon, ChevronUpIcon, CircleStackIcon, ClipboardDocumentCheckIcon, ClipboardDocumentIcon, ClipboardDocumentListIcon, ClipboardIcon, ClockIcon, CloudArrowDownIcon, CloudArrowUpIcon, CloudIcon, CodeBracketIcon, CodeBracketSquareIcon, Cog6ToothIcon, Cog8ToothIcon, CogIcon, CommandLineIcon, ComputerDesktopIcon, CpuChipIcon, CreditCardIcon, CubeIcon, CubeTransparentIcon, CurrencyBangladeshiIcon, CurrencyDollarIcon, CurrencyEuroIcon, CurrencyPoundIcon, CurrencyRupeeIcon, CurrencyYenIcon, CursorArrowRaysIcon, CursorArrowRippleIcon, DevicePhoneMobileIcon, DeviceTabletIcon, DivideIcon, DocumentArrowDownIcon, DocumentArrowUpIcon, DocumentChartBarIcon, DocumentCheckIcon, DocumentCurrencyBangladeshiIcon, DocumentCurrencyDollarIcon, DocumentCurrencyEuroIcon, DocumentCurrencyPoundIcon, DocumentCurrencyRupeeIcon, DocumentCurrencyYenIcon, DocumentDuplicateIcon, DocumentIcon, DocumentMagnifyingGlassIcon, DocumentMinusIcon, DocumentPlusIcon, DocumentTextIcon, EllipsisHorizontalCircleIcon, EllipsisHorizontalIcon, EllipsisVerticalIcon, EnvelopeIcon, EnvelopeOpenIcon, EqualsIcon, ExclamationCircleIcon, ExclamationTriangleIcon, EyeDropperIcon, EyeIcon, EyeSlashIcon, FaceFrownIcon, FaceSmileIcon, FilmIcon, FingerPrintIcon, FireIcon, FlagIcon, FolderArrowDownIcon, FolderIcon, FolderMinusIcon, FolderOpenIcon, FolderPlusIcon, ForwardIcon, FunnelIcon, GifIcon, GiftIcon, GiftTopIcon, GlobeAltIcon, GlobeAmericasIcon, GlobeAsiaAustraliaIcon, GlobeEuropeAfricaIcon, H1Icon, H2Icon, H3Icon, HandRaisedIcon, HandThumbDownIcon, HandThumbUpIcon, HashtagIcon, HeartIcon, HomeIcon, HomeModernIcon, IdentificationIcon, InboxArrowDownIcon, InboxIcon, InboxStackIcon, InformationCircleIcon, ItalicIcon, KeyIcon, LanguageIcon, LifebuoyIcon, LightBulbIcon, LinkIcon, LinkSlashIcon, ListBulletIcon, LockClosedIcon, LockOpenIcon, MagnifyingGlassCircleIcon, MagnifyingGlassIcon, MagnifyingGlassMinusIcon, MagnifyingGlassPlusIcon, MapIcon, MapPinIcon, MegaphoneIcon, MicrophoneIcon, MinusCircleIcon, MinusIcon, MinusSmallIcon, MoonIcon, MusicalNoteIcon, NewspaperIcon, NoSymbolIcon, NumberedListIcon, PaintBrushIcon, PaperAirplaneIcon, PaperClipIcon, PauseCircleIcon, PauseIcon, PencilIcon, PencilSquareIcon, PercentBadgeIcon, PhoneArrowDownLeftIcon, PhoneArrowUpRightIcon, PhoneIcon, PhoneXMarkIcon, PhotoIcon, PlayCircleIcon, PlayIcon, PlayPauseIcon, PlusCircleIcon, PlusIcon, PlusSmallIcon, PowerIcon, PresentationChartBarIcon, PresentationChartLineIcon, PrinterIcon, PuzzlePieceIcon, QrCodeIcon, QuestionMarkCircleIcon, QueueListIcon, RadioIcon, ReceiptPercentIcon, ReceiptRefundIcon, RectangleGroupIcon, RectangleStackIcon, RocketLaunchIcon, RssIcon, ScaleIcon, ScissorsIcon, ServerIcon, ServerStackIcon, ShareIcon, ShieldCheckIcon, ShieldExclamationIcon, ShoppingBagIcon, ShoppingCartIcon, SignalIcon, SignalSlashIcon, SlashIcon, SparklesIcon, SpeakerWaveIcon, SpeakerXMarkIcon, Square2StackIcon, Square3Stack3DIcon, Squares2X2Icon, SquaresPlusIcon, StarIcon, StopCircleIcon, StopIcon, StrikethroughIcon, SunIcon, SwatchIcon, TableCellsIcon, TagIcon, TicketIcon, TrashIcon, TrophyIcon, TruckIcon, TvIcon, UnderlineIcon, UserCircleIcon, UserGroupIcon, UserIcon, UserMinusIcon, UserPlusIcon, UsersIcon, VariableIcon, VideoCameraIcon, VideoCameraSlashIcon, ViewColumnsIcon, ViewfinderCircleIcon, WalletIcon, WifiIcon, WindowIcon, WrenchIcon, WrenchScrewdriverIcon, XCircleIcon, XMarkIcon)
+
+ERROR in ./src/pages/DashboardGentelella.tsx 351:43-57
+export 'TrendingUpIcon' (imported as 'TrendingUpIcon') was not found in '@heroicons/react/24/outline' (possible exports: AcademicCapIcon, AdjustmentsHorizontalIcon, AdjustmentsVerticalIcon, ArchiveBoxArrowDownIcon, ArchiveBoxIcon, ArchiveBoxXMarkIcon, ArrowDownCircleIcon, ArrowDownIcon, ArrowDownLeftIcon, ArrowDownOnSquareIcon, ArrowDownOnSquareStackIcon, ArrowDownRightIcon, ArrowDownTrayIcon, ArrowLeftCircleIcon, ArrowLeftEndOnRectangleIcon, ArrowLeftIcon, ArrowLeftOnRectangleIcon, ArrowLeftStartOnRectangleIcon, ArrowLongDownIcon, ArrowLongLeftIcon, ArrowLongRightIcon, ArrowLongUpIcon, ArrowPathIcon, ArrowPathRoundedSquareIcon, ArrowRightCircleIcon, ArrowRightEndOnRectangleIcon, ArrowRightIcon, ArrowRightOnRectangleIcon, ArrowRightStartOnRectangleIcon, ArrowSmallDownIcon, ArrowSmallLeftIcon, ArrowSmallRightIcon, ArrowSmallUpIcon, ArrowTopRightOnSquareIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, ArrowTurnDownLeftIcon, ArrowTurnDownRightIcon, ArrowTurnLeftDownIcon, ArrowTurnLeftUpIcon, ArrowTurnRightDownIcon, ArrowTurnRightUpIcon, ArrowTurnUpLeftIcon, ArrowTurnUpRightIcon, ArrowUpCircleIcon, ArrowUpIcon, ArrowUpLeftIcon, ArrowUpOnSquareIcon, ArrowUpOnSquareStackIcon, ArrowUpRightIcon, ArrowUpTrayIcon, ArrowUturnDownIcon, ArrowUturnLeftIcon, ArrowUturnRightIcon, ArrowUturnUpIcon, ArrowsPointingInIcon, ArrowsPointingOutIcon, ArrowsRightLeftIcon, ArrowsUpDownIcon, AtSymbolIcon, BackspaceIcon, BackwardIcon, BanknotesIcon, Bars2Icon, Bars3BottomLeftIcon, Bars3BottomRightIcon, Bars3CenterLeftIcon, Bars3Icon, Bars4Icon, BarsArrowDownIcon, BarsArrowUpIcon, Battery0Icon, Battery100Icon, Battery50Icon, BeakerIcon, BellAlertIcon, BellIcon, BellSlashIcon, BellSnoozeIcon, BoldIcon, BoltIcon, BoltSlashIcon, BookOpenIcon, BookmarkIcon, BookmarkSlashIcon, BookmarkSquareIcon, BriefcaseIcon, BugAntIcon, BuildingLibraryIcon, BuildingOffice2Icon, BuildingOfficeIcon, BuildingStorefrontIcon, CakeIcon, CalculatorIcon, CalendarDateRangeIcon, CalendarDaysIcon, CalendarIcon, CameraIcon, ChartBarIcon, ChartBarSquareIcon, ChartPieIcon, ChatBubbleBottomCenterIcon, ChatBubbleBottomCenterTextIcon, ChatBubbleLeftEllipsisIcon, ChatBubbleLeftIcon, ChatBubbleLeftRightIcon, ChatBubbleOvalLeftEllipsisIcon, ChatBubbleOvalLeftIcon, CheckBadgeIcon, CheckCircleIcon, CheckIcon, ChevronDoubleDownIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronDoubleUpIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, ChevronUpDownIcon, ChevronUpIcon, CircleStackIcon, ClipboardDocumentCheckIcon, ClipboardDocumentIcon, ClipboardDocumentListIcon, ClipboardIcon, ClockIcon, CloudArrowDownIcon, CloudArrowUpIcon, CloudIcon, CodeBracketIcon, CodeBracketSquareIcon, Cog6ToothIcon, Cog8ToothIcon, CogIcon, CommandLineIcon, ComputerDesktopIcon, CpuChipIcon, CreditCardIcon, CubeIcon, CubeTransparentIcon, CurrencyBangladeshiIcon, CurrencyDollarIcon, CurrencyEuroIcon, CurrencyPoundIcon, CurrencyRupeeIcon, CurrencyYenIcon, CursorArrowRaysIcon, CursorArrowRippleIcon, DevicePhoneMobileIcon, DeviceTabletIcon, DivideIcon, DocumentArrowDownIcon, DocumentArrowUpIcon, DocumentChartBarIcon, DocumentCheckIcon, DocumentCurrencyBangladeshiIcon, DocumentCurrencyDollarIcon, DocumentCurrencyEuroIcon, DocumentCurrencyPoundIcon, DocumentCurrencyRupeeIcon, DocumentCurrencyYenIcon, DocumentDuplicateIcon, DocumentIcon, DocumentMagnifyingGlassIcon, DocumentMinusIcon, DocumentPlusIcon, DocumentTextIcon, EllipsisHorizontalCircleIcon, EllipsisHorizontalIcon, EllipsisVerticalIcon, EnvelopeIcon, EnvelopeOpenIcon, EqualsIcon, ExclamationCircleIcon, ExclamationTriangleIcon, EyeDropperIcon, EyeIcon, EyeSlashIcon, FaceFrownIcon, FaceSmileIcon, FilmIcon, FingerPrintIcon, FireIcon, FlagIcon, FolderArrowDownIcon, FolderIcon, FolderMinusIcon, FolderOpenIcon, FolderPlusIcon, ForwardIcon, FunnelIcon, GifIcon, GiftIcon, GiftTopIcon, GlobeAltIcon, GlobeAmericasIcon, GlobeAsiaAustraliaIcon, GlobeEuropeAfricaIcon, H1Icon, H2Icon, H3Icon, HandRaisedIcon, HandThumbDownIcon, HandThumbUpIcon, HashtagIcon, HeartIcon, HomeIcon, HomeModernIcon, IdentificationIcon, InboxArrowDownIcon, InboxIcon, InboxStackIcon, InformationCircleIcon, ItalicIcon, KeyIcon, LanguageIcon, LifebuoyIcon, LightBulbIcon, LinkIcon, LinkSlashIcon, ListBulletIcon, LockClosedIcon, LockOpenIcon, MagnifyingGlassCircleIcon, MagnifyingGlassIcon, MagnifyingGlassMinusIcon, MagnifyingGlassPlusIcon, MapIcon, MapPinIcon, MegaphoneIcon, MicrophoneIcon, MinusCircleIcon, MinusIcon, MinusSmallIcon, MoonIcon, MusicalNoteIcon, NewspaperIcon, NoSymbolIcon, NumberedListIcon, PaintBrushIcon, PaperAirplaneIcon, PaperClipIcon, PauseCircleIcon, PauseIcon, PencilIcon, PencilSquareIcon, PercentBadgeIcon, PhoneArrowDownLeftIcon, PhoneArrowUpRightIcon, PhoneIcon, PhoneXMarkIcon, PhotoIcon, PlayCircleIcon, PlayIcon, PlayPauseIcon, PlusCircleIcon, PlusIcon, PlusSmallIcon, PowerIcon, PresentationChartBarIcon, PresentationChartLineIcon, PrinterIcon, PuzzlePieceIcon, QrCodeIcon, QuestionMarkCircleIcon, QueueListIcon, RadioIcon, ReceiptPercentIcon, ReceiptRefundIcon, RectangleGroupIcon, RectangleStackIcon, RocketLaunchIcon, RssIcon, ScaleIcon, ScissorsIcon, ServerIcon, ServerStackIcon, ShareIcon, ShieldCheckIcon, ShieldExclamationIcon, ShoppingBagIcon, ShoppingCartIcon, SignalIcon, SignalSlashIcon, SlashIcon, SparklesIcon, SpeakerWaveIcon, SpeakerXMarkIcon, Square2StackIcon, Square3Stack3DIcon, Squares2X2Icon, SquaresPlusIcon, StarIcon, StopCircleIcon, StopIcon, StrikethroughIcon, SunIcon, SwatchIcon, TableCellsIcon, TagIcon, TicketIcon, TrashIcon, TrophyIcon, TruckIcon, TvIcon, UnderlineIcon, UserCircleIcon, UserGroupIcon, UserIcon, UserMinusIcon, UserPlusIcon, UsersIcon, VariableIcon, VideoCameraIcon, VideoCameraSlashIcon, ViewColumnsIcon, ViewfinderCircleIcon, WalletIcon, WifiIcon, WindowIcon, WrenchIcon, WrenchScrewdriverIcon, XCircleIcon, XMarkIcon)
+
+ERROR in ./src/pages/DashboardGentelella.tsx 529:45-59
+export 'TrendingUpIcon' (imported as 'TrendingUpIcon') was not found in '@heroicons/react/24/outline' (possible exports: AcademicCapIcon, AdjustmentsHorizontalIcon, AdjustmentsVerticalIcon, ArchiveBoxArrowDownIcon, ArchiveBoxIcon, ArchiveBoxXMarkIcon, ArrowDownCircleIcon, ArrowDownIcon, ArrowDownLeftIcon, ArrowDownOnSquareIcon, ArrowDownOnSquareStackIcon, ArrowDownRightIcon, ArrowDownTrayIcon, ArrowLeftCircleIcon, ArrowLeftEndOnRectangleIcon, ArrowLeftIcon, ArrowLeftOnRectangleIcon, ArrowLeftStartOnRectangleIcon, ArrowLongDownIcon, ArrowLongLeftIcon, ArrowLongRightIcon, ArrowLongUpIcon, ArrowPathIcon, ArrowPathRoundedSquareIcon, ArrowRightCircleIcon, ArrowRightEndOnRectangleIcon, ArrowRightIcon, ArrowRightOnRectangleIcon, ArrowRightStartOnRectangleIcon, ArrowSmallDownIcon, ArrowSmallLeftIcon, ArrowSmallRightIcon, ArrowSmallUpIcon, ArrowTopRightOnSquareIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, ArrowTurnDownLeftIcon, ArrowTurnDownRightIcon, ArrowTurnLeftDownIcon, ArrowTurnLeftUpIcon, ArrowTurnRightDownIcon, ArrowTurnRightUpIcon, ArrowTurnUpLeftIcon, ArrowTurnUpRightIcon, ArrowUpCircleIcon, ArrowUpIcon, ArrowUpLeftIcon, ArrowUpOnSquareIcon, ArrowUpOnSquareStackIcon, ArrowUpRightIcon, ArrowUpTrayIcon, ArrowUturnDownIcon, ArrowUturnLeftIcon, ArrowUturnRightIcon, ArrowUturnUpIcon, ArrowsPointingInIcon, ArrowsPointingOutIcon, ArrowsRightLeftIcon, ArrowsUpDownIcon, AtSymbolIcon, BackspaceIcon, BackwardIcon, BanknotesIcon, Bars2Icon, Bars3BottomLeftIcon, Bars3BottomRightIcon, Bars3CenterLeftIcon, Bars3Icon, Bars4Icon, BarsArrowDownIcon, BarsArrowUpIcon, Battery0Icon, Battery100Icon, Battery50Icon, BeakerIcon, BellAlertIcon, BellIcon, BellSlashIcon, BellSnoozeIcon, BoldIcon, BoltIcon, BoltSlashIcon, BookOpenIcon, BookmarkIcon, BookmarkSlashIcon, BookmarkSquareIcon, BriefcaseIcon, BugAntIcon, BuildingLibraryIcon, BuildingOffice2Icon, BuildingOfficeIcon, BuildingStorefrontIcon, CakeIcon, CalculatorIcon, CalendarDateRangeIcon, CalendarDaysIcon, CalendarIcon, CameraIcon, ChartBarIcon, ChartBarSquareIcon, ChartPieIcon, ChatBubbleBottomCenterIcon, ChatBubbleBottomCenterTextIcon, ChatBubbleLeftEllipsisIcon, ChatBubbleLeftIcon, ChatBubbleLeftRightIcon, ChatBubbleOvalLeftEllipsisIcon, ChatBubbleOvalLeftIcon, CheckBadgeIcon, CheckCircleIcon, CheckIcon, ChevronDoubleDownIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronDoubleUpIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, ChevronUpDownIcon, ChevronUpIcon, CircleStackIcon, ClipboardDocumentCheckIcon, ClipboardDocumentIcon, ClipboardDocumentListIcon, ClipboardIcon, ClockIcon, CloudArrowDownIcon, CloudArrowUpIcon, CloudIcon, CodeBracketIcon, CodeBracketSquareIcon, Cog6ToothIcon, Cog8ToothIcon, CogIcon, CommandLineIcon, ComputerDesktopIcon, CpuChipIcon, CreditCardIcon, CubeIcon, CubeTransparentIcon, CurrencyBangladeshiIcon, CurrencyDollarIcon, CurrencyEuroIcon, CurrencyPoundIcon, CurrencyRupeeIcon, CurrencyYenIcon, CursorArrowRaysIcon, CursorArrowRippleIcon, DevicePhoneMobileIcon, DeviceTabletIcon, DivideIcon, DocumentArrowDownIcon, DocumentArrowUpIcon, DocumentChartBarIcon, DocumentCheckIcon, DocumentCurrencyBangladeshiIcon, DocumentCurrencyDollarIcon, DocumentCurrencyEuroIcon, DocumentCurrencyPoundIcon, DocumentCurrencyRupeeIcon, DocumentCurrencyYenIcon, DocumentDuplicateIcon, DocumentIcon, DocumentMagnifyingGlassIcon, DocumentMinusIcon, DocumentPlusIcon, DocumentTextIcon, EllipsisHorizontalCircleIcon, EllipsisHorizontalIcon, EllipsisVerticalIcon, EnvelopeIcon, EnvelopeOpenIcon, EqualsIcon, ExclamationCircleIcon, ExclamationTriangleIcon, EyeDropperIcon, EyeIcon, EyeSlashIcon, FaceFrownIcon, FaceSmileIcon, FilmIcon, FingerPrintIcon, FireIcon, FlagIcon, FolderArrowDownIcon, FolderIcon, FolderMinusIcon, FolderOpenIcon, FolderPlusIcon, ForwardIcon, FunnelIcon, GifIcon, GiftIcon, GiftTopIcon, GlobeAltIcon, GlobeAmericasIcon, GlobeAsiaAustraliaIcon, GlobeEuropeAfricaIcon, H1Icon, H2Icon, H3Icon, HandRaisedIcon, HandThumbDownIcon, HandThumbUpIcon, HashtagIcon, HeartIcon, HomeIcon, HomeModernIcon, IdentificationIcon, InboxArrowDownIcon, InboxIcon, InboxStackIcon, InformationCircleIcon, ItalicIcon, KeyIcon, LanguageIcon, LifebuoyIcon, LightBulbIcon, LinkIcon, LinkSlashIcon, ListBulletIcon, LockClosedIcon, LockOpenIcon, MagnifyingGlassCircleIcon, MagnifyingGlassIcon, MagnifyingGlassMinusIcon, MagnifyingGlassPlusIcon, MapIcon, MapPinIcon, MegaphoneIcon, MicrophoneIcon, MinusCircleIcon, MinusIcon, MinusSmallIcon, MoonIcon, MusicalNoteIcon, NewspaperIcon, NoSymbolIcon, NumberedListIcon, PaintBrushIcon, PaperAirplaneIcon, PaperClipIcon, PauseCircleIcon, PauseIcon, PencilIcon, PencilSquareIcon, PercentBadgeIcon, PhoneArrowDownLeftIcon, PhoneArrowUpRightIcon, PhoneIcon, PhoneXMarkIcon, PhotoIcon, PlayCircleIcon, PlayIcon, PlayPauseIcon, PlusCircleIcon, PlusIcon, PlusSmallIcon, PowerIcon, PresentationChartBarIcon, PresentationChartLineIcon, PrinterIcon, PuzzlePieceIcon, QrCodeIcon, QuestionMarkCircleIcon, QueueListIcon, RadioIcon, ReceiptPercentIcon, ReceiptRefundIcon, RectangleGroupIcon, RectangleStackIcon, RocketLaunchIcon, RssIcon, ScaleIcon, ScissorsIcon, ServerIcon, ServerStackIcon, ShareIcon, ShieldCheckIcon, ShieldExclamationIcon, ShoppingBagIcon, ShoppingCartIcon, SignalIcon, SignalSlashIcon, SlashIcon, SparklesIcon, SpeakerWaveIcon, SpeakerXMarkIcon, Square2StackIcon, Square3Stack3DIcon, Squares2X2Icon, SquaresPlusIcon, StarIcon, StopCircleIcon, StopIcon, StrikethroughIcon, SunIcon, SwatchIcon, TableCellsIcon, TagIcon, TicketIcon, TrashIcon, TrophyIcon, TruckIcon, TvIcon, UnderlineIcon, UserCircleIcon, UserGroupIcon, UserIcon, UserMinusIcon, UserPlusIcon, UsersIcon, VariableIcon, VideoCameraIcon, VideoCameraSlashIcon, ViewColumnsIcon, ViewfinderCircleIcon, WalletIcon, WifiIcon, WindowIcon, WrenchIcon, WrenchScrewdriverIcon, XCircleIcon, XMarkIcon)
+
+ERROR in ./src/styles/royal-theme.scss (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[2]!./node_modules/resolve-url-loader/index.js??ruleSet[1].rules[1].oneOf[7].use[3]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[4]!./src/styles/royal-theme.scss)
+Module Error (from ./node_modules/sass-loader/dist/cjs.js):
+Cannot find module 'sass'
+Require stack:
+- /home/cadu/projeto_SPR/frontend/node_modules/sass-loader/dist/utils.js
+- /home/cadu/projeto_SPR/frontend/node_modules/sass-loader/dist/index.js
+- /home/cadu/projeto_SPR/frontend/node_modules/sass-loader/dist/cjs.js
+- /home/cadu/projeto_SPR/frontend/node_modules/loader-runner/lib/loadLoader.js
+- /home/cadu/projeto_SPR/frontend/node_modules/loader-runner/lib/LoaderRunner.js
+- /home/cadu/projeto_SPR/frontend/node_modules/webpack/lib/NormalModule.js
+- /home/cadu/projeto_SPR/frontend/node_modules/webpack-manifest-plugin/dist/index.js
+- /home/cadu/projeto_SPR/frontend/node_modules/react-scripts/config/webpack.config.js
+- /home/cadu/projeto_SPR/frontend/node_modules/react-scripts/scripts/start.js
+
+ERROR in ./src/styles/royal-theme.scss (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[2]!./node_modules/resolve-url-loader/index.js??ruleSet[1].rules[1].oneOf[7].use[3]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[4]!./src/styles/royal-theme.scss)
+Module build failed (from ./node_modules/resolve-url-loader/index.js):
+Error: resolve-url-loader: error processing CSS
+  PostCSS received undefined instead of CSS string
+  at new Input (/home/cadu/projeto_SPR/frontend/node_modules/resolve-url-loader/node_modules/postcss/lib/input.js:38:13)
+    at encodeError (/home/cadu/projeto_SPR/frontend/node_modules/resolve-url-loader/index.js:287:12)
+    at onFailure (/home/cadu/projeto_SPR/frontend/node_modules/resolve-url-loader/index.js:228:14)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at runNextTicks (node:internal/process/task_queues:69:3)
+    at process.processImmediate (node:internal/timers:473:9)
+
+webpack compiled with 9 errors and 1 warning
+ERROR in src/components/Dashboard/DashboardWidgets.tsx:7:3
+TS2305: Module '"@heroicons/react/24/outline"' has no exported member 'TrendingUpIcon'.
+     5 |   PaperAirplaneIcon,
+     6 |   ChartBarIcon,
+  >  7 |   TrendingUpIcon,
+       |   ^^^^^^^^^^^^^^
+     8 |   TrendingDownIcon,
+     9 |   ClockIcon,
+    10 |   CheckCircleIcon,
+
+ERROR in src/components/Dashboard/DashboardWidgets.tsx:8:3
+TS2724: '"@heroicons/react/24/outline"' has no exported member named 'TrendingDownIcon'. Did you mean 'ArrowTrendingDownIcon'?
+     6 |   ChartBarIcon,
+     7 |   TrendingUpIcon,
+  >  8 |   TrendingDownIcon,
+       |   ^^^^^^^^^^^^^^^^
+     9 |   ClockIcon,
+    10 |   CheckCircleIcon,
+    11 |   ExclamationTriangleIcon,
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:13:3
+TS2305: Module '"@heroicons/react/24/outline"' has no exported member 'CheckCheckIcon'.
+    11 |   UserCircleIcon,
+    12 |   CheckIcon,
+  > 13 |   CheckCheckIcon,
+       |   ^^^^^^^^^^^^^^
+    14 |   ClockIcon
+    15 | } from '@heroicons/react/24/outline';
+    16 | import { useWhatsAppStore } from '../../store/useWhatsAppStore';
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:29:5
+TS2339: Property 'selectedChatId' does not exist on type 'WhatsAppStore'.
+    27 |     contacts,
+    28 |     chats,
+  > 29 |     selectedChatId,
+       |     ^^^^^^^^^^^^^^
+    30 |     setSelectedChat,
+    31 |     sendMessage,
+    32 |     connect,
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:30:5
+TS2339: Property 'setSelectedChat' does not exist on type 'WhatsAppStore'.
+    28 |     chats,
+    29 |     selectedChatId,
+  > 30 |     setSelectedChat,
+       |     ^^^^^^^^^^^^^^^
+    31 |     sendMessage,
+    32 |     connect,
+    33 |     disconnect
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:32:5
+TS2339: Property 'connect' does not exist on type 'WhatsAppStore'.
+    30 |     setSelectedChat,
+    31 |     sendMessage,
+  > 32 |     connect,
+       |     ^^^^^^^
+    33 |     disconnect
+    34 |   } = useWhatsAppStore();
+    35 |
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:33:5
+TS2339: Property 'disconnect' does not exist on type 'WhatsAppStore'.
+    31 |     sendMessage,
+    32 |     connect,
+  > 33 |     disconnect
+       |     ^^^^^^^^^^
+    34 |   } = useWhatsAppStore();
+    35 |
+    36 |   const [newMessage, setNewMessage] = useState('');
+
+ERROR in src/pages/DashboardGentelella.tsx:7:3
+TS2305: Module '"@heroicons/react/24/outline"' has no exported member 'TrendingUpIcon'.
+     5 | import {
+     6 |   ChartBarIcon,
+  >  7 |   TrendingUpIcon,
+       |   ^^^^^^^^^^^^^^
+     8 |   UserGroupIcon,
+     9 |   CalendarDaysIcon
+    10 | } from '@heroicons/react/24/outline';
+
+Compiling...
+Failed to compile.
+
+Attempted import error: 'TrendingUpIcon' is not exported from '@heroicons/react/24/outline' (imported as 'TrendingUpIcon').
+WARNING in ./src/styles/royal-theme.scss (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[2]!./node_modules/resolve-url-loader/index.js??ruleSet[1].rules[1].oneOf[7].use[3]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[4]!./src/styles/royal-theme.scss)
+Module Warning (from ./node_modules/resolve-url-loader/index.js):
+resolve-url-loader: webpack misconfiguration
+  webpack or the upstream loader did not supply a source-map
+
+ERROR in ./src/components/Dashboard/DashboardWidgets.tsx 86:61-75
+export 'TrendingUpIcon' (imported as 'TrendingUpIcon') was not found in '@heroicons/react/24/outline' (possible exports: AcademicCapIcon, AdjustmentsHorizontalIcon, AdjustmentsVerticalIcon, ArchiveBoxArrowDownIcon, ArchiveBoxIcon, ArchiveBoxXMarkIcon, ArrowDownCircleIcon, ArrowDownIcon, ArrowDownLeftIcon, ArrowDownOnSquareIcon, ArrowDownOnSquareStackIcon, ArrowDownRightIcon, ArrowDownTrayIcon, ArrowLeftCircleIcon, ArrowLeftEndOnRectangleIcon, ArrowLeftIcon, ArrowLeftOnRectangleIcon, ArrowLeftStartOnRectangleIcon, ArrowLongDownIcon, ArrowLongLeftIcon, ArrowLongRightIcon, ArrowLongUpIcon, ArrowPathIcon, ArrowPathRoundedSquareIcon, ArrowRightCircleIcon, ArrowRightEndOnRectangleIcon, ArrowRightIcon, ArrowRightOnRectangleIcon, ArrowRightStartOnRectangleIcon, ArrowSmallDownIcon, ArrowSmallLeftIcon, ArrowSmallRightIcon, ArrowSmallUpIcon, ArrowTopRightOnSquareIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, ArrowTurnDownLeftIcon, ArrowTurnDownRightIcon, ArrowTurnLeftDownIcon, ArrowTurnLeftUpIcon, ArrowTurnRightDownIcon, ArrowTurnRightUpIcon, ArrowTurnUpLeftIcon, ArrowTurnUpRightIcon, ArrowUpCircleIcon, ArrowUpIcon, ArrowUpLeftIcon, ArrowUpOnSquareIcon, ArrowUpOnSquareStackIcon, ArrowUpRightIcon, ArrowUpTrayIcon, ArrowUturnDownIcon, ArrowUturnLeftIcon, ArrowUturnRightIcon, ArrowUturnUpIcon, ArrowsPointingInIcon, ArrowsPointingOutIcon, ArrowsRightLeftIcon, ArrowsUpDownIcon, AtSymbolIcon, BackspaceIcon, BackwardIcon, BanknotesIcon, Bars2Icon, Bars3BottomLeftIcon, Bars3BottomRightIcon, Bars3CenterLeftIcon, Bars3Icon, Bars4Icon, BarsArrowDownIcon, BarsArrowUpIcon, Battery0Icon, Battery100Icon, Battery50Icon, BeakerIcon, BellAlertIcon, BellIcon, BellSlashIcon, BellSnoozeIcon, BoldIcon, BoltIcon, BoltSlashIcon, BookOpenIcon, BookmarkIcon, BookmarkSlashIcon, BookmarkSquareIcon, BriefcaseIcon, BugAntIcon, BuildingLibraryIcon, BuildingOffice2Icon, BuildingOfficeIcon, BuildingStorefrontIcon, CakeIcon, CalculatorIcon, CalendarDateRangeIcon, CalendarDaysIcon, CalendarIcon, CameraIcon, ChartBarIcon, ChartBarSquareIcon, ChartPieIcon, ChatBubbleBottomCenterIcon, ChatBubbleBottomCenterTextIcon, ChatBubbleLeftEllipsisIcon, ChatBubbleLeftIcon, ChatBubbleLeftRightIcon, ChatBubbleOvalLeftEllipsisIcon, ChatBubbleOvalLeftIcon, CheckBadgeIcon, CheckCircleIcon, CheckIcon, ChevronDoubleDownIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronDoubleUpIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, ChevronUpDownIcon, ChevronUpIcon, CircleStackIcon, ClipboardDocumentCheckIcon, ClipboardDocumentIcon, ClipboardDocumentListIcon, ClipboardIcon, ClockIcon, CloudArrowDownIcon, CloudArrowUpIcon, CloudIcon, CodeBracketIcon, CodeBracketSquareIcon, Cog6ToothIcon, Cog8ToothIcon, CogIcon, CommandLineIcon, ComputerDesktopIcon, CpuChipIcon, CreditCardIcon, CubeIcon, CubeTransparentIcon, CurrencyBangladeshiIcon, CurrencyDollarIcon, CurrencyEuroIcon, CurrencyPoundIcon, CurrencyRupeeIcon, CurrencyYenIcon, CursorArrowRaysIcon, CursorArrowRippleIcon, DevicePhoneMobileIcon, DeviceTabletIcon, DivideIcon, DocumentArrowDownIcon, DocumentArrowUpIcon, DocumentChartBarIcon, DocumentCheckIcon, DocumentCurrencyBangladeshiIcon, DocumentCurrencyDollarIcon, DocumentCurrencyEuroIcon, DocumentCurrencyPoundIcon, DocumentCurrencyRupeeIcon, DocumentCurrencyYenIcon, DocumentDuplicateIcon, DocumentIcon, DocumentMagnifyingGlassIcon, DocumentMinusIcon, DocumentPlusIcon, DocumentTextIcon, EllipsisHorizontalCircleIcon, EllipsisHorizontalIcon, EllipsisVerticalIcon, EnvelopeIcon, EnvelopeOpenIcon, EqualsIcon, ExclamationCircleIcon, ExclamationTriangleIcon, EyeDropperIcon, EyeIcon, EyeSlashIcon, FaceFrownIcon, FaceSmileIcon, FilmIcon, FingerPrintIcon, FireIcon, FlagIcon, FolderArrowDownIcon, FolderIcon, FolderMinusIcon, FolderOpenIcon, FolderPlusIcon, ForwardIcon, FunnelIcon, GifIcon, GiftIcon, GiftTopIcon, GlobeAltIcon, GlobeAmericasIcon, GlobeAsiaAustraliaIcon, GlobeEuropeAfricaIcon, H1Icon, H2Icon, H3Icon, HandRaisedIcon, HandThumbDownIcon, HandThumbUpIcon, HashtagIcon, HeartIcon, HomeIcon, HomeModernIcon, IdentificationIcon, InboxArrowDownIcon, InboxIcon, InboxStackIcon, InformationCircleIcon, ItalicIcon, KeyIcon, LanguageIcon, LifebuoyIcon, LightBulbIcon, LinkIcon, LinkSlashIcon, ListBulletIcon, LockClosedIcon, LockOpenIcon, MagnifyingGlassCircleIcon, MagnifyingGlassIcon, MagnifyingGlassMinusIcon, MagnifyingGlassPlusIcon, MapIcon, MapPinIcon, MegaphoneIcon, MicrophoneIcon, MinusCircleIcon, MinusIcon, MinusSmallIcon, MoonIcon, MusicalNoteIcon, NewspaperIcon, NoSymbolIcon, NumberedListIcon, PaintBrushIcon, PaperAirplaneIcon, PaperClipIcon, PauseCircleIcon, PauseIcon, PencilIcon, PencilSquareIcon, PercentBadgeIcon, PhoneArrowDownLeftIcon, PhoneArrowUpRightIcon, PhoneIcon, PhoneXMarkIcon, PhotoIcon, PlayCircleIcon, PlayIcon, PlayPauseIcon, PlusCircleIcon, PlusIcon, PlusSmallIcon, PowerIcon, PresentationChartBarIcon, PresentationChartLineIcon, PrinterIcon, PuzzlePieceIcon, QrCodeIcon, QuestionMarkCircleIcon, QueueListIcon, RadioIcon, ReceiptPercentIcon, ReceiptRefundIcon, RectangleGroupIcon, RectangleStackIcon, RocketLaunchIcon, RssIcon, ScaleIcon, ScissorsIcon, ServerIcon, ServerStackIcon, ShareIcon, ShieldCheckIcon, ShieldExclamationIcon, ShoppingBagIcon, ShoppingCartIcon, SignalIcon, SignalSlashIcon, SlashIcon, SparklesIcon, SpeakerWaveIcon, SpeakerXMarkIcon, Square2StackIcon, Square3Stack3DIcon, Squares2X2Icon, SquaresPlusIcon, StarIcon, StopCircleIcon, StopIcon, StrikethroughIcon, SunIcon, SwatchIcon, TableCellsIcon, TagIcon, TicketIcon, TrashIcon, TrophyIcon, TruckIcon, TvIcon, UnderlineIcon, UserCircleIcon, UserGroupIcon, UserIcon, UserMinusIcon, UserPlusIcon, UsersIcon, VariableIcon, VideoCameraIcon, VideoCameraSlashIcon, ViewColumnsIcon, ViewfinderCircleIcon, WalletIcon, WifiIcon, WindowIcon, WrenchIcon, WrenchScrewdriverIcon, XCircleIcon, XMarkIcon)
+
+ERROR in ./src/components/Dashboard/DashboardWidgets.tsx 92:42-58
+export 'TrendingDownIcon' (imported as 'TrendingDownIcon') was not found in '@heroicons/react/24/outline' (possible exports: AcademicCapIcon, AdjustmentsHorizontalIcon, AdjustmentsVerticalIcon, ArchiveBoxArrowDownIcon, ArchiveBoxIcon, ArchiveBoxXMarkIcon, ArrowDownCircleIcon, ArrowDownIcon, ArrowDownLeftIcon, ArrowDownOnSquareIcon, ArrowDownOnSquareStackIcon, ArrowDownRightIcon, ArrowDownTrayIcon, ArrowLeftCircleIcon, ArrowLeftEndOnRectangleIcon, ArrowLeftIcon, ArrowLeftOnRectangleIcon, ArrowLeftStartOnRectangleIcon, ArrowLongDownIcon, ArrowLongLeftIcon, ArrowLongRightIcon, ArrowLongUpIcon, ArrowPathIcon, ArrowPathRoundedSquareIcon, ArrowRightCircleIcon, ArrowRightEndOnRectangleIcon, ArrowRightIcon, ArrowRightOnRectangleIcon, ArrowRightStartOnRectangleIcon, ArrowSmallDownIcon, ArrowSmallLeftIcon, ArrowSmallRightIcon, ArrowSmallUpIcon, ArrowTopRightOnSquareIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, ArrowTurnDownLeftIcon, ArrowTurnDownRightIcon, ArrowTurnLeftDownIcon, ArrowTurnLeftUpIcon, ArrowTurnRightDownIcon, ArrowTurnRightUpIcon, ArrowTurnUpLeftIcon, ArrowTurnUpRightIcon, ArrowUpCircleIcon, ArrowUpIcon, ArrowUpLeftIcon, ArrowUpOnSquareIcon, ArrowUpOnSquareStackIcon, ArrowUpRightIcon, ArrowUpTrayIcon, ArrowUturnDownIcon, ArrowUturnLeftIcon, ArrowUturnRightIcon, ArrowUturnUpIcon, ArrowsPointingInIcon, ArrowsPointingOutIcon, ArrowsRightLeftIcon, ArrowsUpDownIcon, AtSymbolIcon, BackspaceIcon, BackwardIcon, BanknotesIcon, Bars2Icon, Bars3BottomLeftIcon, Bars3BottomRightIcon, Bars3CenterLeftIcon, Bars3Icon, Bars4Icon, BarsArrowDownIcon, BarsArrowUpIcon, Battery0Icon, Battery100Icon, Battery50Icon, BeakerIcon, BellAlertIcon, BellIcon, BellSlashIcon, BellSnoozeIcon, BoldIcon, BoltIcon, BoltSlashIcon, BookOpenIcon, BookmarkIcon, BookmarkSlashIcon, BookmarkSquareIcon, BriefcaseIcon, BugAntIcon, BuildingLibraryIcon, BuildingOffice2Icon, BuildingOfficeIcon, BuildingStorefrontIcon, CakeIcon, CalculatorIcon, CalendarDateRangeIcon, CalendarDaysIcon, CalendarIcon, CameraIcon, ChartBarIcon, ChartBarSquareIcon, ChartPieIcon, ChatBubbleBottomCenterIcon, ChatBubbleBottomCenterTextIcon, ChatBubbleLeftEllipsisIcon, ChatBubbleLeftIcon, ChatBubbleLeftRightIcon, ChatBubbleOvalLeftEllipsisIcon, ChatBubbleOvalLeftIcon, CheckBadgeIcon, CheckCircleIcon, CheckIcon, ChevronDoubleDownIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronDoubleUpIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, ChevronUpDownIcon, ChevronUpIcon, CircleStackIcon, ClipboardDocumentCheckIcon, ClipboardDocumentIcon, ClipboardDocumentListIcon, ClipboardIcon, ClockIcon, CloudArrowDownIcon, CloudArrowUpIcon, CloudIcon, CodeBracketIcon, CodeBracketSquareIcon, Cog6ToothIcon, Cog8ToothIcon, CogIcon, CommandLineIcon, ComputerDesktopIcon, CpuChipIcon, CreditCardIcon, CubeIcon, CubeTransparentIcon, CurrencyBangladeshiIcon, CurrencyDollarIcon, CurrencyEuroIcon, CurrencyPoundIcon, CurrencyRupeeIcon, CurrencyYenIcon, CursorArrowRaysIcon, CursorArrowRippleIcon, DevicePhoneMobileIcon, DeviceTabletIcon, DivideIcon, DocumentArrowDownIcon, DocumentArrowUpIcon, DocumentChartBarIcon, DocumentCheckIcon, DocumentCurrencyBangladeshiIcon, DocumentCurrencyDollarIcon, DocumentCurrencyEuroIcon, DocumentCurrencyPoundIcon, DocumentCurrencyRupeeIcon, DocumentCurrencyYenIcon, DocumentDuplicateIcon, DocumentIcon, DocumentMagnifyingGlassIcon, DocumentMinusIcon, DocumentPlusIcon, DocumentTextIcon, EllipsisHorizontalCircleIcon, EllipsisHorizontalIcon, EllipsisVerticalIcon, EnvelopeIcon, EnvelopeOpenIcon, EqualsIcon, ExclamationCircleIcon, ExclamationTriangleIcon, EyeDropperIcon, EyeIcon, EyeSlashIcon, FaceFrownIcon, FaceSmileIcon, FilmIcon, FingerPrintIcon, FireIcon, FlagIcon, FolderArrowDownIcon, FolderIcon, FolderMinusIcon, FolderOpenIcon, FolderPlusIcon, ForwardIcon, FunnelIcon, GifIcon, GiftIcon, GiftTopIcon, GlobeAltIcon, GlobeAmericasIcon, GlobeAsiaAustraliaIcon, GlobeEuropeAfricaIcon, H1Icon, H2Icon, H3Icon, HandRaisedIcon, HandThumbDownIcon, HandThumbUpIcon, HashtagIcon, HeartIcon, HomeIcon, HomeModernIcon, IdentificationIcon, InboxArrowDownIcon, InboxIcon, InboxStackIcon, InformationCircleIcon, ItalicIcon, KeyIcon, LanguageIcon, LifebuoyIcon, LightBulbIcon, LinkIcon, LinkSlashIcon, ListBulletIcon, LockClosedIcon, LockOpenIcon, MagnifyingGlassCircleIcon, MagnifyingGlassIcon, MagnifyingGlassMinusIcon, MagnifyingGlassPlusIcon, MapIcon, MapPinIcon, MegaphoneIcon, MicrophoneIcon, MinusCircleIcon, MinusIcon, MinusSmallIcon, MoonIcon, MusicalNoteIcon, NewspaperIcon, NoSymbolIcon, NumberedListIcon, PaintBrushIcon, PaperAirplaneIcon, PaperClipIcon, PauseCircleIcon, PauseIcon, PencilIcon, PencilSquareIcon, PercentBadgeIcon, PhoneArrowDownLeftIcon, PhoneArrowUpRightIcon, PhoneIcon, PhoneXMarkIcon, PhotoIcon, PlayCircleIcon, PlayIcon, PlayPauseIcon, PlusCircleIcon, PlusIcon, PlusSmallIcon, PowerIcon, PresentationChartBarIcon, PresentationChartLineIcon, PrinterIcon, PuzzlePieceIcon, QrCodeIcon, QuestionMarkCircleIcon, QueueListIcon, RadioIcon, ReceiptPercentIcon, ReceiptRefundIcon, RectangleGroupIcon, RectangleStackIcon, RocketLaunchIcon, RssIcon, ScaleIcon, ScissorsIcon, ServerIcon, ServerStackIcon, ShareIcon, ShieldCheckIcon, ShieldExclamationIcon, ShoppingBagIcon, ShoppingCartIcon, SignalIcon, SignalSlashIcon, SlashIcon, SparklesIcon, SpeakerWaveIcon, SpeakerXMarkIcon, Square2StackIcon, Square3Stack3DIcon, Squares2X2Icon, SquaresPlusIcon, StarIcon, StopCircleIcon, StopIcon, StrikethroughIcon, SunIcon, SwatchIcon, TableCellsIcon, TagIcon, TicketIcon, TrashIcon, TrophyIcon, TruckIcon, TvIcon, UnderlineIcon, UserCircleIcon, UserGroupIcon, UserIcon, UserMinusIcon, UserPlusIcon, UsersIcon, VariableIcon, VideoCameraIcon, VideoCameraSlashIcon, ViewColumnsIcon, ViewfinderCircleIcon, WalletIcon, WifiIcon, WindowIcon, WrenchIcon, WrenchScrewdriverIcon, XCircleIcon, XMarkIcon)
+
+ERROR in ./src/components/WhatsApp/ModernWhatsAppInterface.tsx 51:36-50
+export 'CheckCheckIcon' (imported as 'CheckCheckIcon') was not found in '@heroicons/react/24/outline' (possible exports: AcademicCapIcon, AdjustmentsHorizontalIcon, AdjustmentsVerticalIcon, ArchiveBoxArrowDownIcon, ArchiveBoxIcon, ArchiveBoxXMarkIcon, ArrowDownCircleIcon, ArrowDownIcon, ArrowDownLeftIcon, ArrowDownOnSquareIcon, ArrowDownOnSquareStackIcon, ArrowDownRightIcon, ArrowDownTrayIcon, ArrowLeftCircleIcon, ArrowLeftEndOnRectangleIcon, ArrowLeftIcon, ArrowLeftOnRectangleIcon, ArrowLeftStartOnRectangleIcon, ArrowLongDownIcon, ArrowLongLeftIcon, ArrowLongRightIcon, ArrowLongUpIcon, ArrowPathIcon, ArrowPathRoundedSquareIcon, ArrowRightCircleIcon, ArrowRightEndOnRectangleIcon, ArrowRightIcon, ArrowRightOnRectangleIcon, ArrowRightStartOnRectangleIcon, ArrowSmallDownIcon, ArrowSmallLeftIcon, ArrowSmallRightIcon, ArrowSmallUpIcon, ArrowTopRightOnSquareIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, ArrowTurnDownLeftIcon, ArrowTurnDownRightIcon, ArrowTurnLeftDownIcon, ArrowTurnLeftUpIcon, ArrowTurnRightDownIcon, ArrowTurnRightUpIcon, ArrowTurnUpLeftIcon, ArrowTurnUpRightIcon, ArrowUpCircleIcon, ArrowUpIcon, ArrowUpLeftIcon, ArrowUpOnSquareIcon, ArrowUpOnSquareStackIcon, ArrowUpRightIcon, ArrowUpTrayIcon, ArrowUturnDownIcon, ArrowUturnLeftIcon, ArrowUturnRightIcon, ArrowUturnUpIcon, ArrowsPointingInIcon, ArrowsPointingOutIcon, ArrowsRightLeftIcon, ArrowsUpDownIcon, AtSymbolIcon, BackspaceIcon, BackwardIcon, BanknotesIcon, Bars2Icon, Bars3BottomLeftIcon, Bars3BottomRightIcon, Bars3CenterLeftIcon, Bars3Icon, Bars4Icon, BarsArrowDownIcon, BarsArrowUpIcon, Battery0Icon, Battery100Icon, Battery50Icon, BeakerIcon, BellAlertIcon, BellIcon, BellSlashIcon, BellSnoozeIcon, BoldIcon, BoltIcon, BoltSlashIcon, BookOpenIcon, BookmarkIcon, BookmarkSlashIcon, BookmarkSquareIcon, BriefcaseIcon, BugAntIcon, BuildingLibraryIcon, BuildingOffice2Icon, BuildingOfficeIcon, BuildingStorefrontIcon, CakeIcon, CalculatorIcon, CalendarDateRangeIcon, CalendarDaysIcon, CalendarIcon, CameraIcon, ChartBarIcon, ChartBarSquareIcon, ChartPieIcon, ChatBubbleBottomCenterIcon, ChatBubbleBottomCenterTextIcon, ChatBubbleLeftEllipsisIcon, ChatBubbleLeftIcon, ChatBubbleLeftRightIcon, ChatBubbleOvalLeftEllipsisIcon, ChatBubbleOvalLeftIcon, CheckBadgeIcon, CheckCircleIcon, CheckIcon, ChevronDoubleDownIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronDoubleUpIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, ChevronUpDownIcon, ChevronUpIcon, CircleStackIcon, ClipboardDocumentCheckIcon, ClipboardDocumentIcon, ClipboardDocumentListIcon, ClipboardIcon, ClockIcon, CloudArrowDownIcon, CloudArrowUpIcon, CloudIcon, CodeBracketIcon, CodeBracketSquareIcon, Cog6ToothIcon, Cog8ToothIcon, CogIcon, CommandLineIcon, ComputerDesktopIcon, CpuChipIcon, CreditCardIcon, CubeIcon, CubeTransparentIcon, CurrencyBangladeshiIcon, CurrencyDollarIcon, CurrencyEuroIcon, CurrencyPoundIcon, CurrencyRupeeIcon, CurrencyYenIcon, CursorArrowRaysIcon, CursorArrowRippleIcon, DevicePhoneMobileIcon, DeviceTabletIcon, DivideIcon, DocumentArrowDownIcon, DocumentArrowUpIcon, DocumentChartBarIcon, DocumentCheckIcon, DocumentCurrencyBangladeshiIcon, DocumentCurrencyDollarIcon, DocumentCurrencyEuroIcon, DocumentCurrencyPoundIcon, DocumentCurrencyRupeeIcon, DocumentCurrencyYenIcon, DocumentDuplicateIcon, DocumentIcon, DocumentMagnifyingGlassIcon, DocumentMinusIcon, DocumentPlusIcon, DocumentTextIcon, EllipsisHorizontalCircleIcon, EllipsisHorizontalIcon, EllipsisVerticalIcon, EnvelopeIcon, EnvelopeOpenIcon, EqualsIcon, ExclamationCircleIcon, ExclamationTriangleIcon, EyeDropperIcon, EyeIcon, EyeSlashIcon, FaceFrownIcon, FaceSmileIcon, FilmIcon, FingerPrintIcon, FireIcon, FlagIcon, FolderArrowDownIcon, FolderIcon, FolderMinusIcon, FolderOpenIcon, FolderPlusIcon, ForwardIcon, FunnelIcon, GifIcon, GiftIcon, GiftTopIcon, GlobeAltIcon, GlobeAmericasIcon, GlobeAsiaAustraliaIcon, GlobeEuropeAfricaIcon, H1Icon, H2Icon, H3Icon, HandRaisedIcon, HandThumbDownIcon, HandThumbUpIcon, HashtagIcon, HeartIcon, HomeIcon, HomeModernIcon, IdentificationIcon, InboxArrowDownIcon, InboxIcon, InboxStackIcon, InformationCircleIcon, ItalicIcon, KeyIcon, LanguageIcon, LifebuoyIcon, LightBulbIcon, LinkIcon, LinkSlashIcon, ListBulletIcon, LockClosedIcon, LockOpenIcon, MagnifyingGlassCircleIcon, MagnifyingGlassIcon, MagnifyingGlassMinusIcon, MagnifyingGlassPlusIcon, MapIcon, MapPinIcon, MegaphoneIcon, MicrophoneIcon, MinusCircleIcon, MinusIcon, MinusSmallIcon, MoonIcon, MusicalNoteIcon, NewspaperIcon, NoSymbolIcon, NumberedListIcon, PaintBrushIcon, PaperAirplaneIcon, PaperClipIcon, PauseCircleIcon, PauseIcon, PencilIcon, PencilSquareIcon, PercentBadgeIcon, PhoneArrowDownLeftIcon, PhoneArrowUpRightIcon, PhoneIcon, PhoneXMarkIcon, PhotoIcon, PlayCircleIcon, PlayIcon, PlayPauseIcon, PlusCircleIcon, PlusIcon, PlusSmallIcon, PowerIcon, PresentationChartBarIcon, PresentationChartLineIcon, PrinterIcon, PuzzlePieceIcon, QrCodeIcon, QuestionMarkCircleIcon, QueueListIcon, RadioIcon, ReceiptPercentIcon, ReceiptRefundIcon, RectangleGroupIcon, RectangleStackIcon, RocketLaunchIcon, RssIcon, ScaleIcon, ScissorsIcon, ServerIcon, ServerStackIcon, ShareIcon, ShieldCheckIcon, ShieldExclamationIcon, ShoppingBagIcon, ShoppingCartIcon, SignalIcon, SignalSlashIcon, SlashIcon, SparklesIcon, SpeakerWaveIcon, SpeakerXMarkIcon, Square2StackIcon, Square3Stack3DIcon, Squares2X2Icon, SquaresPlusIcon, StarIcon, StopCircleIcon, StopIcon, StrikethroughIcon, SunIcon, SwatchIcon, TableCellsIcon, TagIcon, TicketIcon, TrashIcon, TrophyIcon, TruckIcon, TvIcon, UnderlineIcon, UserCircleIcon, UserGroupIcon, UserIcon, UserMinusIcon, UserPlusIcon, UsersIcon, VariableIcon, VideoCameraIcon, VideoCameraSlashIcon, ViewColumnsIcon, ViewfinderCircleIcon, WalletIcon, WifiIcon, WindowIcon, WrenchIcon, WrenchScrewdriverIcon, XCircleIcon, XMarkIcon)
+
+ERROR in ./src/components/WhatsApp/ModernWhatsAppInterface.tsx 59:36-50
+export 'CheckCheckIcon' (imported as 'CheckCheckIcon') was not found in '@heroicons/react/24/outline' (possible exports: AcademicCapIcon, AdjustmentsHorizontalIcon, AdjustmentsVerticalIcon, ArchiveBoxArrowDownIcon, ArchiveBoxIcon, ArchiveBoxXMarkIcon, ArrowDownCircleIcon, ArrowDownIcon, ArrowDownLeftIcon, ArrowDownOnSquareIcon, ArrowDownOnSquareStackIcon, ArrowDownRightIcon, ArrowDownTrayIcon, ArrowLeftCircleIcon, ArrowLeftEndOnRectangleIcon, ArrowLeftIcon, ArrowLeftOnRectangleIcon, ArrowLeftStartOnRectangleIcon, ArrowLongDownIcon, ArrowLongLeftIcon, ArrowLongRightIcon, ArrowLongUpIcon, ArrowPathIcon, ArrowPathRoundedSquareIcon, ArrowRightCircleIcon, ArrowRightEndOnRectangleIcon, ArrowRightIcon, ArrowRightOnRectangleIcon, ArrowRightStartOnRectangleIcon, ArrowSmallDownIcon, ArrowSmallLeftIcon, ArrowSmallRightIcon, ArrowSmallUpIcon, ArrowTopRightOnSquareIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, ArrowTurnDownLeftIcon, ArrowTurnDownRightIcon, ArrowTurnLeftDownIcon, ArrowTurnLeftUpIcon, ArrowTurnRightDownIcon, ArrowTurnRightUpIcon, ArrowTurnUpLeftIcon, ArrowTurnUpRightIcon, ArrowUpCircleIcon, ArrowUpIcon, ArrowUpLeftIcon, ArrowUpOnSquareIcon, ArrowUpOnSquareStackIcon, ArrowUpRightIcon, ArrowUpTrayIcon, ArrowUturnDownIcon, ArrowUturnLeftIcon, ArrowUturnRightIcon, ArrowUturnUpIcon, ArrowsPointingInIcon, ArrowsPointingOutIcon, ArrowsRightLeftIcon, ArrowsUpDownIcon, AtSymbolIcon, BackspaceIcon, BackwardIcon, BanknotesIcon, Bars2Icon, Bars3BottomLeftIcon, Bars3BottomRightIcon, Bars3CenterLeftIcon, Bars3Icon, Bars4Icon, BarsArrowDownIcon, BarsArrowUpIcon, Battery0Icon, Battery100Icon, Battery50Icon, BeakerIcon, BellAlertIcon, BellIcon, BellSlashIcon, BellSnoozeIcon, BoldIcon, BoltIcon, BoltSlashIcon, BookOpenIcon, BookmarkIcon, BookmarkSlashIcon, BookmarkSquareIcon, BriefcaseIcon, BugAntIcon, BuildingLibraryIcon, BuildingOffice2Icon, BuildingOfficeIcon, BuildingStorefrontIcon, CakeIcon, CalculatorIcon, CalendarDateRangeIcon, CalendarDaysIcon, CalendarIcon, CameraIcon, ChartBarIcon, ChartBarSquareIcon, ChartPieIcon, ChatBubbleBottomCenterIcon, ChatBubbleBottomCenterTextIcon, ChatBubbleLeftEllipsisIcon, ChatBubbleLeftIcon, ChatBubbleLeftRightIcon, ChatBubbleOvalLeftEllipsisIcon, ChatBubbleOvalLeftIcon, CheckBadgeIcon, CheckCircleIcon, CheckIcon, ChevronDoubleDownIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronDoubleUpIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, ChevronUpDownIcon, ChevronUpIcon, CircleStackIcon, ClipboardDocumentCheckIcon, ClipboardDocumentIcon, ClipboardDocumentListIcon, ClipboardIcon, ClockIcon, CloudArrowDownIcon, CloudArrowUpIcon, CloudIcon, CodeBracketIcon, CodeBracketSquareIcon, Cog6ToothIcon, Cog8ToothIcon, CogIcon, CommandLineIcon, ComputerDesktopIcon, CpuChipIcon, CreditCardIcon, CubeIcon, CubeTransparentIcon, CurrencyBangladeshiIcon, CurrencyDollarIcon, CurrencyEuroIcon, CurrencyPoundIcon, CurrencyRupeeIcon, CurrencyYenIcon, CursorArrowRaysIcon, CursorArrowRippleIcon, DevicePhoneMobileIcon, DeviceTabletIcon, DivideIcon, DocumentArrowDownIcon, DocumentArrowUpIcon, DocumentChartBarIcon, DocumentCheckIcon, DocumentCurrencyBangladeshiIcon, DocumentCurrencyDollarIcon, DocumentCurrencyEuroIcon, DocumentCurrencyPoundIcon, DocumentCurrencyRupeeIcon, DocumentCurrencyYenIcon, DocumentDuplicateIcon, DocumentIcon, DocumentMagnifyingGlassIcon, DocumentMinusIcon, DocumentPlusIcon, DocumentTextIcon, EllipsisHorizontalCircleIcon, EllipsisHorizontalIcon, EllipsisVerticalIcon, EnvelopeIcon, EnvelopeOpenIcon, EqualsIcon, ExclamationCircleIcon, ExclamationTriangleIcon, EyeDropperIcon, EyeIcon, EyeSlashIcon, FaceFrownIcon, FaceSmileIcon, FilmIcon, FingerPrintIcon, FireIcon, FlagIcon, FolderArrowDownIcon, FolderIcon, FolderMinusIcon, FolderOpenIcon, FolderPlusIcon, ForwardIcon, FunnelIcon, GifIcon, GiftIcon, GiftTopIcon, GlobeAltIcon, GlobeAmericasIcon, GlobeAsiaAustraliaIcon, GlobeEuropeAfricaIcon, H1Icon, H2Icon, H3Icon, HandRaisedIcon, HandThumbDownIcon, HandThumbUpIcon, HashtagIcon, HeartIcon, HomeIcon, HomeModernIcon, IdentificationIcon, InboxArrowDownIcon, InboxIcon, InboxStackIcon, InformationCircleIcon, ItalicIcon, KeyIcon, LanguageIcon, LifebuoyIcon, LightBulbIcon, LinkIcon, LinkSlashIcon, ListBulletIcon, LockClosedIcon, LockOpenIcon, MagnifyingGlassCircleIcon, MagnifyingGlassIcon, MagnifyingGlassMinusIcon, MagnifyingGlassPlusIcon, MapIcon, MapPinIcon, MegaphoneIcon, MicrophoneIcon, MinusCircleIcon, MinusIcon, MinusSmallIcon, MoonIcon, MusicalNoteIcon, NewspaperIcon, NoSymbolIcon, NumberedListIcon, PaintBrushIcon, PaperAirplaneIcon, PaperClipIcon, PauseCircleIcon, PauseIcon, PencilIcon, PencilSquareIcon, PercentBadgeIcon, PhoneArrowDownLeftIcon, PhoneArrowUpRightIcon, PhoneIcon, PhoneXMarkIcon, PhotoIcon, PlayCircleIcon, PlayIcon, PlayPauseIcon, PlusCircleIcon, PlusIcon, PlusSmallIcon, PowerIcon, PresentationChartBarIcon, PresentationChartLineIcon, PrinterIcon, PuzzlePieceIcon, QrCodeIcon, QuestionMarkCircleIcon, QueueListIcon, RadioIcon, ReceiptPercentIcon, ReceiptRefundIcon, RectangleGroupIcon, RectangleStackIcon, RocketLaunchIcon, RssIcon, ScaleIcon, ScissorsIcon, ServerIcon, ServerStackIcon, ShareIcon, ShieldCheckIcon, ShieldExclamationIcon, ShoppingBagIcon, ShoppingCartIcon, SignalIcon, SignalSlashIcon, SlashIcon, SparklesIcon, SpeakerWaveIcon, SpeakerXMarkIcon, Square2StackIcon, Square3Stack3DIcon, Squares2X2Icon, SquaresPlusIcon, StarIcon, StopCircleIcon, StopIcon, StrikethroughIcon, SunIcon, SwatchIcon, TableCellsIcon, TagIcon, TicketIcon, TrashIcon, TrophyIcon, TruckIcon, TvIcon, UnderlineIcon, UserCircleIcon, UserGroupIcon, UserIcon, UserMinusIcon, UserPlusIcon, UsersIcon, VariableIcon, VideoCameraIcon, VideoCameraSlashIcon, ViewColumnsIcon, ViewfinderCircleIcon, WalletIcon, WifiIcon, WindowIcon, WrenchIcon, WrenchScrewdriverIcon, XCircleIcon, XMarkIcon)
+
+ERROR in ./src/pages/DashboardGentelella.tsx 351:43-57
+export 'TrendingUpIcon' (imported as 'TrendingUpIcon') was not found in '@heroicons/react/24/outline' (possible exports: AcademicCapIcon, AdjustmentsHorizontalIcon, AdjustmentsVerticalIcon, ArchiveBoxArrowDownIcon, ArchiveBoxIcon, ArchiveBoxXMarkIcon, ArrowDownCircleIcon, ArrowDownIcon, ArrowDownLeftIcon, ArrowDownOnSquareIcon, ArrowDownOnSquareStackIcon, ArrowDownRightIcon, ArrowDownTrayIcon, ArrowLeftCircleIcon, ArrowLeftEndOnRectangleIcon, ArrowLeftIcon, ArrowLeftOnRectangleIcon, ArrowLeftStartOnRectangleIcon, ArrowLongDownIcon, ArrowLongLeftIcon, ArrowLongRightIcon, ArrowLongUpIcon, ArrowPathIcon, ArrowPathRoundedSquareIcon, ArrowRightCircleIcon, ArrowRightEndOnRectangleIcon, ArrowRightIcon, ArrowRightOnRectangleIcon, ArrowRightStartOnRectangleIcon, ArrowSmallDownIcon, ArrowSmallLeftIcon, ArrowSmallRightIcon, ArrowSmallUpIcon, ArrowTopRightOnSquareIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, ArrowTurnDownLeftIcon, ArrowTurnDownRightIcon, ArrowTurnLeftDownIcon, ArrowTurnLeftUpIcon, ArrowTurnRightDownIcon, ArrowTurnRightUpIcon, ArrowTurnUpLeftIcon, ArrowTurnUpRightIcon, ArrowUpCircleIcon, ArrowUpIcon, ArrowUpLeftIcon, ArrowUpOnSquareIcon, ArrowUpOnSquareStackIcon, ArrowUpRightIcon, ArrowUpTrayIcon, ArrowUturnDownIcon, ArrowUturnLeftIcon, ArrowUturnRightIcon, ArrowUturnUpIcon, ArrowsPointingInIcon, ArrowsPointingOutIcon, ArrowsRightLeftIcon, ArrowsUpDownIcon, AtSymbolIcon, BackspaceIcon, BackwardIcon, BanknotesIcon, Bars2Icon, Bars3BottomLeftIcon, Bars3BottomRightIcon, Bars3CenterLeftIcon, Bars3Icon, Bars4Icon, BarsArrowDownIcon, BarsArrowUpIcon, Battery0Icon, Battery100Icon, Battery50Icon, BeakerIcon, BellAlertIcon, BellIcon, BellSlashIcon, BellSnoozeIcon, BoldIcon, BoltIcon, BoltSlashIcon, BookOpenIcon, BookmarkIcon, BookmarkSlashIcon, BookmarkSquareIcon, BriefcaseIcon, BugAntIcon, BuildingLibraryIcon, BuildingOffice2Icon, BuildingOfficeIcon, BuildingStorefrontIcon, CakeIcon, CalculatorIcon, CalendarDateRangeIcon, CalendarDaysIcon, CalendarIcon, CameraIcon, ChartBarIcon, ChartBarSquareIcon, ChartPieIcon, ChatBubbleBottomCenterIcon, ChatBubbleBottomCenterTextIcon, ChatBubbleLeftEllipsisIcon, ChatBubbleLeftIcon, ChatBubbleLeftRightIcon, ChatBubbleOvalLeftEllipsisIcon, ChatBubbleOvalLeftIcon, CheckBadgeIcon, CheckCircleIcon, CheckIcon, ChevronDoubleDownIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronDoubleUpIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, ChevronUpDownIcon, ChevronUpIcon, CircleStackIcon, ClipboardDocumentCheckIcon, ClipboardDocumentIcon, ClipboardDocumentListIcon, ClipboardIcon, ClockIcon, CloudArrowDownIcon, CloudArrowUpIcon, CloudIcon, CodeBracketIcon, CodeBracketSquareIcon, Cog6ToothIcon, Cog8ToothIcon, CogIcon, CommandLineIcon, ComputerDesktopIcon, CpuChipIcon, CreditCardIcon, CubeIcon, CubeTransparentIcon, CurrencyBangladeshiIcon, CurrencyDollarIcon, CurrencyEuroIcon, CurrencyPoundIcon, CurrencyRupeeIcon, CurrencyYenIcon, CursorArrowRaysIcon, CursorArrowRippleIcon, DevicePhoneMobileIcon, DeviceTabletIcon, DivideIcon, DocumentArrowDownIcon, DocumentArrowUpIcon, DocumentChartBarIcon, DocumentCheckIcon, DocumentCurrencyBangladeshiIcon, DocumentCurrencyDollarIcon, DocumentCurrencyEuroIcon, DocumentCurrencyPoundIcon, DocumentCurrencyRupeeIcon, DocumentCurrencyYenIcon, DocumentDuplicateIcon, DocumentIcon, DocumentMagnifyingGlassIcon, DocumentMinusIcon, DocumentPlusIcon, DocumentTextIcon, EllipsisHorizontalCircleIcon, EllipsisHorizontalIcon, EllipsisVerticalIcon, EnvelopeIcon, EnvelopeOpenIcon, EqualsIcon, ExclamationCircleIcon, ExclamationTriangleIcon, EyeDropperIcon, EyeIcon, EyeSlashIcon, FaceFrownIcon, FaceSmileIcon, FilmIcon, FingerPrintIcon, FireIcon, FlagIcon, FolderArrowDownIcon, FolderIcon, FolderMinusIcon, FolderOpenIcon, FolderPlusIcon, ForwardIcon, FunnelIcon, GifIcon, GiftIcon, GiftTopIcon, GlobeAltIcon, GlobeAmericasIcon, GlobeAsiaAustraliaIcon, GlobeEuropeAfricaIcon, H1Icon, H2Icon, H3Icon, HandRaisedIcon, HandThumbDownIcon, HandThumbUpIcon, HashtagIcon, HeartIcon, HomeIcon, HomeModernIcon, IdentificationIcon, InboxArrowDownIcon, InboxIcon, InboxStackIcon, InformationCircleIcon, ItalicIcon, KeyIcon, LanguageIcon, LifebuoyIcon, LightBulbIcon, LinkIcon, LinkSlashIcon, ListBulletIcon, LockClosedIcon, LockOpenIcon, MagnifyingGlassCircleIcon, MagnifyingGlassIcon, MagnifyingGlassMinusIcon, MagnifyingGlassPlusIcon, MapIcon, MapPinIcon, MegaphoneIcon, MicrophoneIcon, MinusCircleIcon, MinusIcon, MinusSmallIcon, MoonIcon, MusicalNoteIcon, NewspaperIcon, NoSymbolIcon, NumberedListIcon, PaintBrushIcon, PaperAirplaneIcon, PaperClipIcon, PauseCircleIcon, PauseIcon, PencilIcon, PencilSquareIcon, PercentBadgeIcon, PhoneArrowDownLeftIcon, PhoneArrowUpRightIcon, PhoneIcon, PhoneXMarkIcon, PhotoIcon, PlayCircleIcon, PlayIcon, PlayPauseIcon, PlusCircleIcon, PlusIcon, PlusSmallIcon, PowerIcon, PresentationChartBarIcon, PresentationChartLineIcon, PrinterIcon, PuzzlePieceIcon, QrCodeIcon, QuestionMarkCircleIcon, QueueListIcon, RadioIcon, ReceiptPercentIcon, ReceiptRefundIcon, RectangleGroupIcon, RectangleStackIcon, RocketLaunchIcon, RssIcon, ScaleIcon, ScissorsIcon, ServerIcon, ServerStackIcon, ShareIcon, ShieldCheckIcon, ShieldExclamationIcon, ShoppingBagIcon, ShoppingCartIcon, SignalIcon, SignalSlashIcon, SlashIcon, SparklesIcon, SpeakerWaveIcon, SpeakerXMarkIcon, Square2StackIcon, Square3Stack3DIcon, Squares2X2Icon, SquaresPlusIcon, StarIcon, StopCircleIcon, StopIcon, StrikethroughIcon, SunIcon, SwatchIcon, TableCellsIcon, TagIcon, TicketIcon, TrashIcon, TrophyIcon, TruckIcon, TvIcon, UnderlineIcon, UserCircleIcon, UserGroupIcon, UserIcon, UserMinusIcon, UserPlusIcon, UsersIcon, VariableIcon, VideoCameraIcon, VideoCameraSlashIcon, ViewColumnsIcon, ViewfinderCircleIcon, WalletIcon, WifiIcon, WindowIcon, WrenchIcon, WrenchScrewdriverIcon, XCircleIcon, XMarkIcon)
+
+ERROR in ./src/pages/DashboardGentelella.tsx 529:45-59
+export 'TrendingUpIcon' (imported as 'TrendingUpIcon') was not found in '@heroicons/react/24/outline' (possible exports: AcademicCapIcon, AdjustmentsHorizontalIcon, AdjustmentsVerticalIcon, ArchiveBoxArrowDownIcon, ArchiveBoxIcon, ArchiveBoxXMarkIcon, ArrowDownCircleIcon, ArrowDownIcon, ArrowDownLeftIcon, ArrowDownOnSquareIcon, ArrowDownOnSquareStackIcon, ArrowDownRightIcon, ArrowDownTrayIcon, ArrowLeftCircleIcon, ArrowLeftEndOnRectangleIcon, ArrowLeftIcon, ArrowLeftOnRectangleIcon, ArrowLeftStartOnRectangleIcon, ArrowLongDownIcon, ArrowLongLeftIcon, ArrowLongRightIcon, ArrowLongUpIcon, ArrowPathIcon, ArrowPathRoundedSquareIcon, ArrowRightCircleIcon, ArrowRightEndOnRectangleIcon, ArrowRightIcon, ArrowRightOnRectangleIcon, ArrowRightStartOnRectangleIcon, ArrowSmallDownIcon, ArrowSmallLeftIcon, ArrowSmallRightIcon, ArrowSmallUpIcon, ArrowTopRightOnSquareIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, ArrowTurnDownLeftIcon, ArrowTurnDownRightIcon, ArrowTurnLeftDownIcon, ArrowTurnLeftUpIcon, ArrowTurnRightDownIcon, ArrowTurnRightUpIcon, ArrowTurnUpLeftIcon, ArrowTurnUpRightIcon, ArrowUpCircleIcon, ArrowUpIcon, ArrowUpLeftIcon, ArrowUpOnSquareIcon, ArrowUpOnSquareStackIcon, ArrowUpRightIcon, ArrowUpTrayIcon, ArrowUturnDownIcon, ArrowUturnLeftIcon, ArrowUturnRightIcon, ArrowUturnUpIcon, ArrowsPointingInIcon, ArrowsPointingOutIcon, ArrowsRightLeftIcon, ArrowsUpDownIcon, AtSymbolIcon, BackspaceIcon, BackwardIcon, BanknotesIcon, Bars2Icon, Bars3BottomLeftIcon, Bars3BottomRightIcon, Bars3CenterLeftIcon, Bars3Icon, Bars4Icon, BarsArrowDownIcon, BarsArrowUpIcon, Battery0Icon, Battery100Icon, Battery50Icon, BeakerIcon, BellAlertIcon, BellIcon, BellSlashIcon, BellSnoozeIcon, BoldIcon, BoltIcon, BoltSlashIcon, BookOpenIcon, BookmarkIcon, BookmarkSlashIcon, BookmarkSquareIcon, BriefcaseIcon, BugAntIcon, BuildingLibraryIcon, BuildingOffice2Icon, BuildingOfficeIcon, BuildingStorefrontIcon, CakeIcon, CalculatorIcon, CalendarDateRangeIcon, CalendarDaysIcon, CalendarIcon, CameraIcon, ChartBarIcon, ChartBarSquareIcon, ChartPieIcon, ChatBubbleBottomCenterIcon, ChatBubbleBottomCenterTextIcon, ChatBubbleLeftEllipsisIcon, ChatBubbleLeftIcon, ChatBubbleLeftRightIcon, ChatBubbleOvalLeftEllipsisIcon, ChatBubbleOvalLeftIcon, CheckBadgeIcon, CheckCircleIcon, CheckIcon, ChevronDoubleDownIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronDoubleUpIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, ChevronUpDownIcon, ChevronUpIcon, CircleStackIcon, ClipboardDocumentCheckIcon, ClipboardDocumentIcon, ClipboardDocumentListIcon, ClipboardIcon, ClockIcon, CloudArrowDownIcon, CloudArrowUpIcon, CloudIcon, CodeBracketIcon, CodeBracketSquareIcon, Cog6ToothIcon, Cog8ToothIcon, CogIcon, CommandLineIcon, ComputerDesktopIcon, CpuChipIcon, CreditCardIcon, CubeIcon, CubeTransparentIcon, CurrencyBangladeshiIcon, CurrencyDollarIcon, CurrencyEuroIcon, CurrencyPoundIcon, CurrencyRupeeIcon, CurrencyYenIcon, CursorArrowRaysIcon, CursorArrowRippleIcon, DevicePhoneMobileIcon, DeviceTabletIcon, DivideIcon, DocumentArrowDownIcon, DocumentArrowUpIcon, DocumentChartBarIcon, DocumentCheckIcon, DocumentCurrencyBangladeshiIcon, DocumentCurrencyDollarIcon, DocumentCurrencyEuroIcon, DocumentCurrencyPoundIcon, DocumentCurrencyRupeeIcon, DocumentCurrencyYenIcon, DocumentDuplicateIcon, DocumentIcon, DocumentMagnifyingGlassIcon, DocumentMinusIcon, DocumentPlusIcon, DocumentTextIcon, EllipsisHorizontalCircleIcon, EllipsisHorizontalIcon, EllipsisVerticalIcon, EnvelopeIcon, EnvelopeOpenIcon, EqualsIcon, ExclamationCircleIcon, ExclamationTriangleIcon, EyeDropperIcon, EyeIcon, EyeSlashIcon, FaceFrownIcon, FaceSmileIcon, FilmIcon, FingerPrintIcon, FireIcon, FlagIcon, FolderArrowDownIcon, FolderIcon, FolderMinusIcon, FolderOpenIcon, FolderPlusIcon, ForwardIcon, FunnelIcon, GifIcon, GiftIcon, GiftTopIcon, GlobeAltIcon, GlobeAmericasIcon, GlobeAsiaAustraliaIcon, GlobeEuropeAfricaIcon, H1Icon, H2Icon, H3Icon, HandRaisedIcon, HandThumbDownIcon, HandThumbUpIcon, HashtagIcon, HeartIcon, HomeIcon, HomeModernIcon, IdentificationIcon, InboxArrowDownIcon, InboxIcon, InboxStackIcon, InformationCircleIcon, ItalicIcon, KeyIcon, LanguageIcon, LifebuoyIcon, LightBulbIcon, LinkIcon, LinkSlashIcon, ListBulletIcon, LockClosedIcon, LockOpenIcon, MagnifyingGlassCircleIcon, MagnifyingGlassIcon, MagnifyingGlassMinusIcon, MagnifyingGlassPlusIcon, MapIcon, MapPinIcon, MegaphoneIcon, MicrophoneIcon, MinusCircleIcon, MinusIcon, MinusSmallIcon, MoonIcon, MusicalNoteIcon, NewspaperIcon, NoSymbolIcon, NumberedListIcon, PaintBrushIcon, PaperAirplaneIcon, PaperClipIcon, PauseCircleIcon, PauseIcon, PencilIcon, PencilSquareIcon, PercentBadgeIcon, PhoneArrowDownLeftIcon, PhoneArrowUpRightIcon, PhoneIcon, PhoneXMarkIcon, PhotoIcon, PlayCircleIcon, PlayIcon, PlayPauseIcon, PlusCircleIcon, PlusIcon, PlusSmallIcon, PowerIcon, PresentationChartBarIcon, PresentationChartLineIcon, PrinterIcon, PuzzlePieceIcon, QrCodeIcon, QuestionMarkCircleIcon, QueueListIcon, RadioIcon, ReceiptPercentIcon, ReceiptRefundIcon, RectangleGroupIcon, RectangleStackIcon, RocketLaunchIcon, RssIcon, ScaleIcon, ScissorsIcon, ServerIcon, ServerStackIcon, ShareIcon, ShieldCheckIcon, ShieldExclamationIcon, ShoppingBagIcon, ShoppingCartIcon, SignalIcon, SignalSlashIcon, SlashIcon, SparklesIcon, SpeakerWaveIcon, SpeakerXMarkIcon, Square2StackIcon, Square3Stack3DIcon, Squares2X2Icon, SquaresPlusIcon, StarIcon, StopCircleIcon, StopIcon, StrikethroughIcon, SunIcon, SwatchIcon, TableCellsIcon, TagIcon, TicketIcon, TrashIcon, TrophyIcon, TruckIcon, TvIcon, UnderlineIcon, UserCircleIcon, UserGroupIcon, UserIcon, UserMinusIcon, UserPlusIcon, UsersIcon, VariableIcon, VideoCameraIcon, VideoCameraSlashIcon, ViewColumnsIcon, ViewfinderCircleIcon, WalletIcon, WifiIcon, WindowIcon, WrenchIcon, WrenchScrewdriverIcon, XCircleIcon, XMarkIcon)
+
+ERROR in ./src/styles/royal-theme.scss (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[2]!./node_modules/resolve-url-loader/index.js??ruleSet[1].rules[1].oneOf[7].use[3]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[4]!./src/styles/royal-theme.scss)
+Module Error (from ./node_modules/sass-loader/dist/cjs.js):
+Cannot find module 'sass'
+Require stack:
+- /home/cadu/projeto_SPR/frontend/node_modules/sass-loader/dist/utils.js
+- /home/cadu/projeto_SPR/frontend/node_modules/sass-loader/dist/index.js
+- /home/cadu/projeto_SPR/frontend/node_modules/sass-loader/dist/cjs.js
+- /home/cadu/projeto_SPR/frontend/node_modules/loader-runner/lib/loadLoader.js
+- /home/cadu/projeto_SPR/frontend/node_modules/loader-runner/lib/LoaderRunner.js
+- /home/cadu/projeto_SPR/frontend/node_modules/webpack/lib/NormalModule.js
+- /home/cadu/projeto_SPR/frontend/node_modules/webpack-manifest-plugin/dist/index.js
+- /home/cadu/projeto_SPR/frontend/node_modules/react-scripts/config/webpack.config.js
+- /home/cadu/projeto_SPR/frontend/node_modules/react-scripts/scripts/start.js
+
+ERROR in ./src/styles/royal-theme.scss (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[2]!./node_modules/resolve-url-loader/index.js??ruleSet[1].rules[1].oneOf[7].use[3]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[4]!./src/styles/royal-theme.scss)
+Module build failed (from ./node_modules/resolve-url-loader/index.js):
+Error: resolve-url-loader: error processing CSS
+  PostCSS received undefined instead of CSS string
+  at new Input (/home/cadu/projeto_SPR/frontend/node_modules/resolve-url-loader/node_modules/postcss/lib/input.js:38:13)
+    at encodeError (/home/cadu/projeto_SPR/frontend/node_modules/resolve-url-loader/index.js:287:12)
+    at onFailure (/home/cadu/projeto_SPR/frontend/node_modules/resolve-url-loader/index.js:228:14)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at runNextTicks (node:internal/process/task_queues:69:3)
+    at process.processImmediate (node:internal/timers:473:9)
+
+webpack compiled with 8 errors and 1 warning
+Files successfully emitted, waiting for typecheck results...
+Issues checking in progress...
+ERROR in src/components/Dashboard/DashboardWidgets.tsx:7:3
+TS2305: Module '"@heroicons/react/24/outline"' has no exported member 'TrendingUpIcon'.
+     5 |   PaperAirplaneIcon,
+     6 |   ChartBarIcon,
+  >  7 |   TrendingUpIcon,
+       |   ^^^^^^^^^^^^^^
+     8 |   TrendingDownIcon,
+     9 |   ClockIcon,
+    10 |   CheckCircleIcon,
+
+ERROR in src/components/Dashboard/DashboardWidgets.tsx:8:3
+TS2724: '"@heroicons/react/24/outline"' has no exported member named 'TrendingDownIcon'. Did you mean 'ArrowTrendingDownIcon'?
+     6 |   ChartBarIcon,
+     7 |   TrendingUpIcon,
+  >  8 |   TrendingDownIcon,
+       |   ^^^^^^^^^^^^^^^^
+     9 |   ClockIcon,
+    10 |   CheckCircleIcon,
+    11 |   ExclamationTriangleIcon,
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:13:3
+TS2305: Module '"@heroicons/react/24/outline"' has no exported member 'CheckCheckIcon'.
+    11 |   UserCircleIcon,
+    12 |   CheckIcon,
+  > 13 |   CheckCheckIcon,
+       |   ^^^^^^^^^^^^^^
+    14 |   ClockIcon
+    15 | } from '@heroicons/react/24/outline';
+    16 | import { useWhatsAppStore } from '../../store/useWhatsAppStore';
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:29:5
+TS2339: Property 'selectedChatId' does not exist on type 'WhatsAppStore'.
+    27 |     contacts,
+    28 |     chats,
+  > 29 |     selectedChatId,
+       |     ^^^^^^^^^^^^^^
+    30 |     setSelectedChat,
+    31 |     sendMessage,
+    32 |     connect,
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:30:5
+TS2339: Property 'setSelectedChat' does not exist on type 'WhatsAppStore'.
+    28 |     chats,
+    29 |     selectedChatId,
+  > 30 |     setSelectedChat,
+       |     ^^^^^^^^^^^^^^^
+    31 |     sendMessage,
+    32 |     connect,
+    33 |     disconnect
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:32:5
+TS2339: Property 'connect' does not exist on type 'WhatsAppStore'.
+    30 |     setSelectedChat,
+    31 |     sendMessage,
+  > 32 |     connect,
+       |     ^^^^^^^
+    33 |     disconnect
+    34 |   } = useWhatsAppStore();
+    35 |
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:33:5
+TS2339: Property 'disconnect' does not exist on type 'WhatsAppStore'.
+    31 |     sendMessage,
+    32 |     connect,
+  > 33 |     disconnect
+       |     ^^^^^^^^^^
+    34 |   } = useWhatsAppStore();
+    35 |
+    36 |   const [newMessage, setNewMessage] = useState('');
+
+ERROR in src/pages/DashboardGentelella.tsx:7:3
+TS2305: Module '"@heroicons/react/24/outline"' has no exported member 'TrendingUpIcon'.
+     5 | import {
+     6 |   ChartBarIcon,
+  >  7 |   TrendingUpIcon,
+       |   ^^^^^^^^^^^^^^
+     8 |   UserGroupIcon,
+     9 |   CalendarDaysIcon
+    10 | } from '@heroicons/react/24/outline';
+
+Compiling...
+Failed to compile.
+
+Attempted import error: 'CheckCheckIcon' is not exported from '@heroicons/react/24/outline' (imported as 'CheckCheckIcon').
+WARNING in ./src/styles/royal-theme.scss (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[2]!./node_modules/resolve-url-loader/index.js??ruleSet[1].rules[1].oneOf[7].use[3]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[4]!./src/styles/royal-theme.scss)
+Module Warning (from ./node_modules/resolve-url-loader/index.js):
+resolve-url-loader: webpack misconfiguration
+  webpack or the upstream loader did not supply a source-map
+
+ERROR in ./src/components/WhatsApp/ModernWhatsAppInterface.tsx 51:36-50
+export 'CheckCheckIcon' (imported as 'CheckCheckIcon') was not found in '@heroicons/react/24/outline' (possible exports: AcademicCapIcon, AdjustmentsHorizontalIcon, AdjustmentsVerticalIcon, ArchiveBoxArrowDownIcon, ArchiveBoxIcon, ArchiveBoxXMarkIcon, ArrowDownCircleIcon, ArrowDownIcon, ArrowDownLeftIcon, ArrowDownOnSquareIcon, ArrowDownOnSquareStackIcon, ArrowDownRightIcon, ArrowDownTrayIcon, ArrowLeftCircleIcon, ArrowLeftEndOnRectangleIcon, ArrowLeftIcon, ArrowLeftOnRectangleIcon, ArrowLeftStartOnRectangleIcon, ArrowLongDownIcon, ArrowLongLeftIcon, ArrowLongRightIcon, ArrowLongUpIcon, ArrowPathIcon, ArrowPathRoundedSquareIcon, ArrowRightCircleIcon, ArrowRightEndOnRectangleIcon, ArrowRightIcon, ArrowRightOnRectangleIcon, ArrowRightStartOnRectangleIcon, ArrowSmallDownIcon, ArrowSmallLeftIcon, ArrowSmallRightIcon, ArrowSmallUpIcon, ArrowTopRightOnSquareIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, ArrowTurnDownLeftIcon, ArrowTurnDownRightIcon, ArrowTurnLeftDownIcon, ArrowTurnLeftUpIcon, ArrowTurnRightDownIcon, ArrowTurnRightUpIcon, ArrowTurnUpLeftIcon, ArrowTurnUpRightIcon, ArrowUpCircleIcon, ArrowUpIcon, ArrowUpLeftIcon, ArrowUpOnSquareIcon, ArrowUpOnSquareStackIcon, ArrowUpRightIcon, ArrowUpTrayIcon, ArrowUturnDownIcon, ArrowUturnLeftIcon, ArrowUturnRightIcon, ArrowUturnUpIcon, ArrowsPointingInIcon, ArrowsPointingOutIcon, ArrowsRightLeftIcon, ArrowsUpDownIcon, AtSymbolIcon, BackspaceIcon, BackwardIcon, BanknotesIcon, Bars2Icon, Bars3BottomLeftIcon, Bars3BottomRightIcon, Bars3CenterLeftIcon, Bars3Icon, Bars4Icon, BarsArrowDownIcon, BarsArrowUpIcon, Battery0Icon, Battery100Icon, Battery50Icon, BeakerIcon, BellAlertIcon, BellIcon, BellSlashIcon, BellSnoozeIcon, BoldIcon, BoltIcon, BoltSlashIcon, BookOpenIcon, BookmarkIcon, BookmarkSlashIcon, BookmarkSquareIcon, BriefcaseIcon, BugAntIcon, BuildingLibraryIcon, BuildingOffice2Icon, BuildingOfficeIcon, BuildingStorefrontIcon, CakeIcon, CalculatorIcon, CalendarDateRangeIcon, CalendarDaysIcon, CalendarIcon, CameraIcon, ChartBarIcon, ChartBarSquareIcon, ChartPieIcon, ChatBubbleBottomCenterIcon, ChatBubbleBottomCenterTextIcon, ChatBubbleLeftEllipsisIcon, ChatBubbleLeftIcon, ChatBubbleLeftRightIcon, ChatBubbleOvalLeftEllipsisIcon, ChatBubbleOvalLeftIcon, CheckBadgeIcon, CheckCircleIcon, CheckIcon, ChevronDoubleDownIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronDoubleUpIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, ChevronUpDownIcon, ChevronUpIcon, CircleStackIcon, ClipboardDocumentCheckIcon, ClipboardDocumentIcon, ClipboardDocumentListIcon, ClipboardIcon, ClockIcon, CloudArrowDownIcon, CloudArrowUpIcon, CloudIcon, CodeBracketIcon, CodeBracketSquareIcon, Cog6ToothIcon, Cog8ToothIcon, CogIcon, CommandLineIcon, ComputerDesktopIcon, CpuChipIcon, CreditCardIcon, CubeIcon, CubeTransparentIcon, CurrencyBangladeshiIcon, CurrencyDollarIcon, CurrencyEuroIcon, CurrencyPoundIcon, CurrencyRupeeIcon, CurrencyYenIcon, CursorArrowRaysIcon, CursorArrowRippleIcon, DevicePhoneMobileIcon, DeviceTabletIcon, DivideIcon, DocumentArrowDownIcon, DocumentArrowUpIcon, DocumentChartBarIcon, DocumentCheckIcon, DocumentCurrencyBangladeshiIcon, DocumentCurrencyDollarIcon, DocumentCurrencyEuroIcon, DocumentCurrencyPoundIcon, DocumentCurrencyRupeeIcon, DocumentCurrencyYenIcon, DocumentDuplicateIcon, DocumentIcon, DocumentMagnifyingGlassIcon, DocumentMinusIcon, DocumentPlusIcon, DocumentTextIcon, EllipsisHorizontalCircleIcon, EllipsisHorizontalIcon, EllipsisVerticalIcon, EnvelopeIcon, EnvelopeOpenIcon, EqualsIcon, ExclamationCircleIcon, ExclamationTriangleIcon, EyeDropperIcon, EyeIcon, EyeSlashIcon, FaceFrownIcon, FaceSmileIcon, FilmIcon, FingerPrintIcon, FireIcon, FlagIcon, FolderArrowDownIcon, FolderIcon, FolderMinusIcon, FolderOpenIcon, FolderPlusIcon, ForwardIcon, FunnelIcon, GifIcon, GiftIcon, GiftTopIcon, GlobeAltIcon, GlobeAmericasIcon, GlobeAsiaAustraliaIcon, GlobeEuropeAfricaIcon, H1Icon, H2Icon, H3Icon, HandRaisedIcon, HandThumbDownIcon, HandThumbUpIcon, HashtagIcon, HeartIcon, HomeIcon, HomeModernIcon, IdentificationIcon, InboxArrowDownIcon, InboxIcon, InboxStackIcon, InformationCircleIcon, ItalicIcon, KeyIcon, LanguageIcon, LifebuoyIcon, LightBulbIcon, LinkIcon, LinkSlashIcon, ListBulletIcon, LockClosedIcon, LockOpenIcon, MagnifyingGlassCircleIcon, MagnifyingGlassIcon, MagnifyingGlassMinusIcon, MagnifyingGlassPlusIcon, MapIcon, MapPinIcon, MegaphoneIcon, MicrophoneIcon, MinusCircleIcon, MinusIcon, MinusSmallIcon, MoonIcon, MusicalNoteIcon, NewspaperIcon, NoSymbolIcon, NumberedListIcon, PaintBrushIcon, PaperAirplaneIcon, PaperClipIcon, PauseCircleIcon, PauseIcon, PencilIcon, PencilSquareIcon, PercentBadgeIcon, PhoneArrowDownLeftIcon, PhoneArrowUpRightIcon, PhoneIcon, PhoneXMarkIcon, PhotoIcon, PlayCircleIcon, PlayIcon, PlayPauseIcon, PlusCircleIcon, PlusIcon, PlusSmallIcon, PowerIcon, PresentationChartBarIcon, PresentationChartLineIcon, PrinterIcon, PuzzlePieceIcon, QrCodeIcon, QuestionMarkCircleIcon, QueueListIcon, RadioIcon, ReceiptPercentIcon, ReceiptRefundIcon, RectangleGroupIcon, RectangleStackIcon, RocketLaunchIcon, RssIcon, ScaleIcon, ScissorsIcon, ServerIcon, ServerStackIcon, ShareIcon, ShieldCheckIcon, ShieldExclamationIcon, ShoppingBagIcon, ShoppingCartIcon, SignalIcon, SignalSlashIcon, SlashIcon, SparklesIcon, SpeakerWaveIcon, SpeakerXMarkIcon, Square2StackIcon, Square3Stack3DIcon, Squares2X2Icon, SquaresPlusIcon, StarIcon, StopCircleIcon, StopIcon, StrikethroughIcon, SunIcon, SwatchIcon, TableCellsIcon, TagIcon, TicketIcon, TrashIcon, TrophyIcon, TruckIcon, TvIcon, UnderlineIcon, UserCircleIcon, UserGroupIcon, UserIcon, UserMinusIcon, UserPlusIcon, UsersIcon, VariableIcon, VideoCameraIcon, VideoCameraSlashIcon, ViewColumnsIcon, ViewfinderCircleIcon, WalletIcon, WifiIcon, WindowIcon, WrenchIcon, WrenchScrewdriverIcon, XCircleIcon, XMarkIcon)
+
+ERROR in ./src/components/WhatsApp/ModernWhatsAppInterface.tsx 59:36-50
+export 'CheckCheckIcon' (imported as 'CheckCheckIcon') was not found in '@heroicons/react/24/outline' (possible exports: AcademicCapIcon, AdjustmentsHorizontalIcon, AdjustmentsVerticalIcon, ArchiveBoxArrowDownIcon, ArchiveBoxIcon, ArchiveBoxXMarkIcon, ArrowDownCircleIcon, ArrowDownIcon, ArrowDownLeftIcon, ArrowDownOnSquareIcon, ArrowDownOnSquareStackIcon, ArrowDownRightIcon, ArrowDownTrayIcon, ArrowLeftCircleIcon, ArrowLeftEndOnRectangleIcon, ArrowLeftIcon, ArrowLeftOnRectangleIcon, ArrowLeftStartOnRectangleIcon, ArrowLongDownIcon, ArrowLongLeftIcon, ArrowLongRightIcon, ArrowLongUpIcon, ArrowPathIcon, ArrowPathRoundedSquareIcon, ArrowRightCircleIcon, ArrowRightEndOnRectangleIcon, ArrowRightIcon, ArrowRightOnRectangleIcon, ArrowRightStartOnRectangleIcon, ArrowSmallDownIcon, ArrowSmallLeftIcon, ArrowSmallRightIcon, ArrowSmallUpIcon, ArrowTopRightOnSquareIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, ArrowTurnDownLeftIcon, ArrowTurnDownRightIcon, ArrowTurnLeftDownIcon, ArrowTurnLeftUpIcon, ArrowTurnRightDownIcon, ArrowTurnRightUpIcon, ArrowTurnUpLeftIcon, ArrowTurnUpRightIcon, ArrowUpCircleIcon, ArrowUpIcon, ArrowUpLeftIcon, ArrowUpOnSquareIcon, ArrowUpOnSquareStackIcon, ArrowUpRightIcon, ArrowUpTrayIcon, ArrowUturnDownIcon, ArrowUturnLeftIcon, ArrowUturnRightIcon, ArrowUturnUpIcon, ArrowsPointingInIcon, ArrowsPointingOutIcon, ArrowsRightLeftIcon, ArrowsUpDownIcon, AtSymbolIcon, BackspaceIcon, BackwardIcon, BanknotesIcon, Bars2Icon, Bars3BottomLeftIcon, Bars3BottomRightIcon, Bars3CenterLeftIcon, Bars3Icon, Bars4Icon, BarsArrowDownIcon, BarsArrowUpIcon, Battery0Icon, Battery100Icon, Battery50Icon, BeakerIcon, BellAlertIcon, BellIcon, BellSlashIcon, BellSnoozeIcon, BoldIcon, BoltIcon, BoltSlashIcon, BookOpenIcon, BookmarkIcon, BookmarkSlashIcon, BookmarkSquareIcon, BriefcaseIcon, BugAntIcon, BuildingLibraryIcon, BuildingOffice2Icon, BuildingOfficeIcon, BuildingStorefrontIcon, CakeIcon, CalculatorIcon, CalendarDateRangeIcon, CalendarDaysIcon, CalendarIcon, CameraIcon, ChartBarIcon, ChartBarSquareIcon, ChartPieIcon, ChatBubbleBottomCenterIcon, ChatBubbleBottomCenterTextIcon, ChatBubbleLeftEllipsisIcon, ChatBubbleLeftIcon, ChatBubbleLeftRightIcon, ChatBubbleOvalLeftEllipsisIcon, ChatBubbleOvalLeftIcon, CheckBadgeIcon, CheckCircleIcon, CheckIcon, ChevronDoubleDownIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronDoubleUpIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, ChevronUpDownIcon, ChevronUpIcon, CircleStackIcon, ClipboardDocumentCheckIcon, ClipboardDocumentIcon, ClipboardDocumentListIcon, ClipboardIcon, ClockIcon, CloudArrowDownIcon, CloudArrowUpIcon, CloudIcon, CodeBracketIcon, CodeBracketSquareIcon, Cog6ToothIcon, Cog8ToothIcon, CogIcon, CommandLineIcon, ComputerDesktopIcon, CpuChipIcon, CreditCardIcon, CubeIcon, CubeTransparentIcon, CurrencyBangladeshiIcon, CurrencyDollarIcon, CurrencyEuroIcon, CurrencyPoundIcon, CurrencyRupeeIcon, CurrencyYenIcon, CursorArrowRaysIcon, CursorArrowRippleIcon, DevicePhoneMobileIcon, DeviceTabletIcon, DivideIcon, DocumentArrowDownIcon, DocumentArrowUpIcon, DocumentChartBarIcon, DocumentCheckIcon, DocumentCurrencyBangladeshiIcon, DocumentCurrencyDollarIcon, DocumentCurrencyEuroIcon, DocumentCurrencyPoundIcon, DocumentCurrencyRupeeIcon, DocumentCurrencyYenIcon, DocumentDuplicateIcon, DocumentIcon, DocumentMagnifyingGlassIcon, DocumentMinusIcon, DocumentPlusIcon, DocumentTextIcon, EllipsisHorizontalCircleIcon, EllipsisHorizontalIcon, EllipsisVerticalIcon, EnvelopeIcon, EnvelopeOpenIcon, EqualsIcon, ExclamationCircleIcon, ExclamationTriangleIcon, EyeDropperIcon, EyeIcon, EyeSlashIcon, FaceFrownIcon, FaceSmileIcon, FilmIcon, FingerPrintIcon, FireIcon, FlagIcon, FolderArrowDownIcon, FolderIcon, FolderMinusIcon, FolderOpenIcon, FolderPlusIcon, ForwardIcon, FunnelIcon, GifIcon, GiftIcon, GiftTopIcon, GlobeAltIcon, GlobeAmericasIcon, GlobeAsiaAustraliaIcon, GlobeEuropeAfricaIcon, H1Icon, H2Icon, H3Icon, HandRaisedIcon, HandThumbDownIcon, HandThumbUpIcon, HashtagIcon, HeartIcon, HomeIcon, HomeModernIcon, IdentificationIcon, InboxArrowDownIcon, InboxIcon, InboxStackIcon, InformationCircleIcon, ItalicIcon, KeyIcon, LanguageIcon, LifebuoyIcon, LightBulbIcon, LinkIcon, LinkSlashIcon, ListBulletIcon, LockClosedIcon, LockOpenIcon, MagnifyingGlassCircleIcon, MagnifyingGlassIcon, MagnifyingGlassMinusIcon, MagnifyingGlassPlusIcon, MapIcon, MapPinIcon, MegaphoneIcon, MicrophoneIcon, MinusCircleIcon, MinusIcon, MinusSmallIcon, MoonIcon, MusicalNoteIcon, NewspaperIcon, NoSymbolIcon, NumberedListIcon, PaintBrushIcon, PaperAirplaneIcon, PaperClipIcon, PauseCircleIcon, PauseIcon, PencilIcon, PencilSquareIcon, PercentBadgeIcon, PhoneArrowDownLeftIcon, PhoneArrowUpRightIcon, PhoneIcon, PhoneXMarkIcon, PhotoIcon, PlayCircleIcon, PlayIcon, PlayPauseIcon, PlusCircleIcon, PlusIcon, PlusSmallIcon, PowerIcon, PresentationChartBarIcon, PresentationChartLineIcon, PrinterIcon, PuzzlePieceIcon, QrCodeIcon, QuestionMarkCircleIcon, QueueListIcon, RadioIcon, ReceiptPercentIcon, ReceiptRefundIcon, RectangleGroupIcon, RectangleStackIcon, RocketLaunchIcon, RssIcon, ScaleIcon, ScissorsIcon, ServerIcon, ServerStackIcon, ShareIcon, ShieldCheckIcon, ShieldExclamationIcon, ShoppingBagIcon, ShoppingCartIcon, SignalIcon, SignalSlashIcon, SlashIcon, SparklesIcon, SpeakerWaveIcon, SpeakerXMarkIcon, Square2StackIcon, Square3Stack3DIcon, Squares2X2Icon, SquaresPlusIcon, StarIcon, StopCircleIcon, StopIcon, StrikethroughIcon, SunIcon, SwatchIcon, TableCellsIcon, TagIcon, TicketIcon, TrashIcon, TrophyIcon, TruckIcon, TvIcon, UnderlineIcon, UserCircleIcon, UserGroupIcon, UserIcon, UserMinusIcon, UserPlusIcon, UsersIcon, VariableIcon, VideoCameraIcon, VideoCameraSlashIcon, ViewColumnsIcon, ViewfinderCircleIcon, WalletIcon, WifiIcon, WindowIcon, WrenchIcon, WrenchScrewdriverIcon, XCircleIcon, XMarkIcon)
+
+ERROR in ./src/pages/DashboardGentelella.tsx 351:43-57
+export 'TrendingUpIcon' (imported as 'TrendingUpIcon') was not found in '@heroicons/react/24/outline' (possible exports: AcademicCapIcon, AdjustmentsHorizontalIcon, AdjustmentsVerticalIcon, ArchiveBoxArrowDownIcon, ArchiveBoxIcon, ArchiveBoxXMarkIcon, ArrowDownCircleIcon, ArrowDownIcon, ArrowDownLeftIcon, ArrowDownOnSquareIcon, ArrowDownOnSquareStackIcon, ArrowDownRightIcon, ArrowDownTrayIcon, ArrowLeftCircleIcon, ArrowLeftEndOnRectangleIcon, ArrowLeftIcon, ArrowLeftOnRectangleIcon, ArrowLeftStartOnRectangleIcon, ArrowLongDownIcon, ArrowLongLeftIcon, ArrowLongRightIcon, ArrowLongUpIcon, ArrowPathIcon, ArrowPathRoundedSquareIcon, ArrowRightCircleIcon, ArrowRightEndOnRectangleIcon, ArrowRightIcon, ArrowRightOnRectangleIcon, ArrowRightStartOnRectangleIcon, ArrowSmallDownIcon, ArrowSmallLeftIcon, ArrowSmallRightIcon, ArrowSmallUpIcon, ArrowTopRightOnSquareIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, ArrowTurnDownLeftIcon, ArrowTurnDownRightIcon, ArrowTurnLeftDownIcon, ArrowTurnLeftUpIcon, ArrowTurnRightDownIcon, ArrowTurnRightUpIcon, ArrowTurnUpLeftIcon, ArrowTurnUpRightIcon, ArrowUpCircleIcon, ArrowUpIcon, ArrowUpLeftIcon, ArrowUpOnSquareIcon, ArrowUpOnSquareStackIcon, ArrowUpRightIcon, ArrowUpTrayIcon, ArrowUturnDownIcon, ArrowUturnLeftIcon, ArrowUturnRightIcon, ArrowUturnUpIcon, ArrowsPointingInIcon, ArrowsPointingOutIcon, ArrowsRightLeftIcon, ArrowsUpDownIcon, AtSymbolIcon, BackspaceIcon, BackwardIcon, BanknotesIcon, Bars2Icon, Bars3BottomLeftIcon, Bars3BottomRightIcon, Bars3CenterLeftIcon, Bars3Icon, Bars4Icon, BarsArrowDownIcon, BarsArrowUpIcon, Battery0Icon, Battery100Icon, Battery50Icon, BeakerIcon, BellAlertIcon, BellIcon, BellSlashIcon, BellSnoozeIcon, BoldIcon, BoltIcon, BoltSlashIcon, BookOpenIcon, BookmarkIcon, BookmarkSlashIcon, BookmarkSquareIcon, BriefcaseIcon, BugAntIcon, BuildingLibraryIcon, BuildingOffice2Icon, BuildingOfficeIcon, BuildingStorefrontIcon, CakeIcon, CalculatorIcon, CalendarDateRangeIcon, CalendarDaysIcon, CalendarIcon, CameraIcon, ChartBarIcon, ChartBarSquareIcon, ChartPieIcon, ChatBubbleBottomCenterIcon, ChatBubbleBottomCenterTextIcon, ChatBubbleLeftEllipsisIcon, ChatBubbleLeftIcon, ChatBubbleLeftRightIcon, ChatBubbleOvalLeftEllipsisIcon, ChatBubbleOvalLeftIcon, CheckBadgeIcon, CheckCircleIcon, CheckIcon, ChevronDoubleDownIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronDoubleUpIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, ChevronUpDownIcon, ChevronUpIcon, CircleStackIcon, ClipboardDocumentCheckIcon, ClipboardDocumentIcon, ClipboardDocumentListIcon, ClipboardIcon, ClockIcon, CloudArrowDownIcon, CloudArrowUpIcon, CloudIcon, CodeBracketIcon, CodeBracketSquareIcon, Cog6ToothIcon, Cog8ToothIcon, CogIcon, CommandLineIcon, ComputerDesktopIcon, CpuChipIcon, CreditCardIcon, CubeIcon, CubeTransparentIcon, CurrencyBangladeshiIcon, CurrencyDollarIcon, CurrencyEuroIcon, CurrencyPoundIcon, CurrencyRupeeIcon, CurrencyYenIcon, CursorArrowRaysIcon, CursorArrowRippleIcon, DevicePhoneMobileIcon, DeviceTabletIcon, DivideIcon, DocumentArrowDownIcon, DocumentArrowUpIcon, DocumentChartBarIcon, DocumentCheckIcon, DocumentCurrencyBangladeshiIcon, DocumentCurrencyDollarIcon, DocumentCurrencyEuroIcon, DocumentCurrencyPoundIcon, DocumentCurrencyRupeeIcon, DocumentCurrencyYenIcon, DocumentDuplicateIcon, DocumentIcon, DocumentMagnifyingGlassIcon, DocumentMinusIcon, DocumentPlusIcon, DocumentTextIcon, EllipsisHorizontalCircleIcon, EllipsisHorizontalIcon, EllipsisVerticalIcon, EnvelopeIcon, EnvelopeOpenIcon, EqualsIcon, ExclamationCircleIcon, ExclamationTriangleIcon, EyeDropperIcon, EyeIcon, EyeSlashIcon, FaceFrownIcon, FaceSmileIcon, FilmIcon, FingerPrintIcon, FireIcon, FlagIcon, FolderArrowDownIcon, FolderIcon, FolderMinusIcon, FolderOpenIcon, FolderPlusIcon, ForwardIcon, FunnelIcon, GifIcon, GiftIcon, GiftTopIcon, GlobeAltIcon, GlobeAmericasIcon, GlobeAsiaAustraliaIcon, GlobeEuropeAfricaIcon, H1Icon, H2Icon, H3Icon, HandRaisedIcon, HandThumbDownIcon, HandThumbUpIcon, HashtagIcon, HeartIcon, HomeIcon, HomeModernIcon, IdentificationIcon, InboxArrowDownIcon, InboxIcon, InboxStackIcon, InformationCircleIcon, ItalicIcon, KeyIcon, LanguageIcon, LifebuoyIcon, LightBulbIcon, LinkIcon, LinkSlashIcon, ListBulletIcon, LockClosedIcon, LockOpenIcon, MagnifyingGlassCircleIcon, MagnifyingGlassIcon, MagnifyingGlassMinusIcon, MagnifyingGlassPlusIcon, MapIcon, MapPinIcon, MegaphoneIcon, MicrophoneIcon, MinusCircleIcon, MinusIcon, MinusSmallIcon, MoonIcon, MusicalNoteIcon, NewspaperIcon, NoSymbolIcon, NumberedListIcon, PaintBrushIcon, PaperAirplaneIcon, PaperClipIcon, PauseCircleIcon, PauseIcon, PencilIcon, PencilSquareIcon, PercentBadgeIcon, PhoneArrowDownLeftIcon, PhoneArrowUpRightIcon, PhoneIcon, PhoneXMarkIcon, PhotoIcon, PlayCircleIcon, PlayIcon, PlayPauseIcon, PlusCircleIcon, PlusIcon, PlusSmallIcon, PowerIcon, PresentationChartBarIcon, PresentationChartLineIcon, PrinterIcon, PuzzlePieceIcon, QrCodeIcon, QuestionMarkCircleIcon, QueueListIcon, RadioIcon, ReceiptPercentIcon, ReceiptRefundIcon, RectangleGroupIcon, RectangleStackIcon, RocketLaunchIcon, RssIcon, ScaleIcon, ScissorsIcon, ServerIcon, ServerStackIcon, ShareIcon, ShieldCheckIcon, ShieldExclamationIcon, ShoppingBagIcon, ShoppingCartIcon, SignalIcon, SignalSlashIcon, SlashIcon, SparklesIcon, SpeakerWaveIcon, SpeakerXMarkIcon, Square2StackIcon, Square3Stack3DIcon, Squares2X2Icon, SquaresPlusIcon, StarIcon, StopCircleIcon, StopIcon, StrikethroughIcon, SunIcon, SwatchIcon, TableCellsIcon, TagIcon, TicketIcon, TrashIcon, TrophyIcon, TruckIcon, TvIcon, UnderlineIcon, UserCircleIcon, UserGroupIcon, UserIcon, UserMinusIcon, UserPlusIcon, UsersIcon, VariableIcon, VideoCameraIcon, VideoCameraSlashIcon, ViewColumnsIcon, ViewfinderCircleIcon, WalletIcon, WifiIcon, WindowIcon, WrenchIcon, WrenchScrewdriverIcon, XCircleIcon, XMarkIcon)
+
+ERROR in ./src/pages/DashboardGentelella.tsx 529:45-59
+export 'TrendingUpIcon' (imported as 'TrendingUpIcon') was not found in '@heroicons/react/24/outline' (possible exports: AcademicCapIcon, AdjustmentsHorizontalIcon, AdjustmentsVerticalIcon, ArchiveBoxArrowDownIcon, ArchiveBoxIcon, ArchiveBoxXMarkIcon, ArrowDownCircleIcon, ArrowDownIcon, ArrowDownLeftIcon, ArrowDownOnSquareIcon, ArrowDownOnSquareStackIcon, ArrowDownRightIcon, ArrowDownTrayIcon, ArrowLeftCircleIcon, ArrowLeftEndOnRectangleIcon, ArrowLeftIcon, ArrowLeftOnRectangleIcon, ArrowLeftStartOnRectangleIcon, ArrowLongDownIcon, ArrowLongLeftIcon, ArrowLongRightIcon, ArrowLongUpIcon, ArrowPathIcon, ArrowPathRoundedSquareIcon, ArrowRightCircleIcon, ArrowRightEndOnRectangleIcon, ArrowRightIcon, ArrowRightOnRectangleIcon, ArrowRightStartOnRectangleIcon, ArrowSmallDownIcon, ArrowSmallLeftIcon, ArrowSmallRightIcon, ArrowSmallUpIcon, ArrowTopRightOnSquareIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, ArrowTurnDownLeftIcon, ArrowTurnDownRightIcon, ArrowTurnLeftDownIcon, ArrowTurnLeftUpIcon, ArrowTurnRightDownIcon, ArrowTurnRightUpIcon, ArrowTurnUpLeftIcon, ArrowTurnUpRightIcon, ArrowUpCircleIcon, ArrowUpIcon, ArrowUpLeftIcon, ArrowUpOnSquareIcon, ArrowUpOnSquareStackIcon, ArrowUpRightIcon, ArrowUpTrayIcon, ArrowUturnDownIcon, ArrowUturnLeftIcon, ArrowUturnRightIcon, ArrowUturnUpIcon, ArrowsPointingInIcon, ArrowsPointingOutIcon, ArrowsRightLeftIcon, ArrowsUpDownIcon, AtSymbolIcon, BackspaceIcon, BackwardIcon, BanknotesIcon, Bars2Icon, Bars3BottomLeftIcon, Bars3BottomRightIcon, Bars3CenterLeftIcon, Bars3Icon, Bars4Icon, BarsArrowDownIcon, BarsArrowUpIcon, Battery0Icon, Battery100Icon, Battery50Icon, BeakerIcon, BellAlertIcon, BellIcon, BellSlashIcon, BellSnoozeIcon, BoldIcon, BoltIcon, BoltSlashIcon, BookOpenIcon, BookmarkIcon, BookmarkSlashIcon, BookmarkSquareIcon, BriefcaseIcon, BugAntIcon, BuildingLibraryIcon, BuildingOffice2Icon, BuildingOfficeIcon, BuildingStorefrontIcon, CakeIcon, CalculatorIcon, CalendarDateRangeIcon, CalendarDaysIcon, CalendarIcon, CameraIcon, ChartBarIcon, ChartBarSquareIcon, ChartPieIcon, ChatBubbleBottomCenterIcon, ChatBubbleBottomCenterTextIcon, ChatBubbleLeftEllipsisIcon, ChatBubbleLeftIcon, ChatBubbleLeftRightIcon, ChatBubbleOvalLeftEllipsisIcon, ChatBubbleOvalLeftIcon, CheckBadgeIcon, CheckCircleIcon, CheckIcon, ChevronDoubleDownIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronDoubleUpIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, ChevronUpDownIcon, ChevronUpIcon, CircleStackIcon, ClipboardDocumentCheckIcon, ClipboardDocumentIcon, ClipboardDocumentListIcon, ClipboardIcon, ClockIcon, CloudArrowDownIcon, CloudArrowUpIcon, CloudIcon, CodeBracketIcon, CodeBracketSquareIcon, Cog6ToothIcon, Cog8ToothIcon, CogIcon, CommandLineIcon, ComputerDesktopIcon, CpuChipIcon, CreditCardIcon, CubeIcon, CubeTransparentIcon, CurrencyBangladeshiIcon, CurrencyDollarIcon, CurrencyEuroIcon, CurrencyPoundIcon, CurrencyRupeeIcon, CurrencyYenIcon, CursorArrowRaysIcon, CursorArrowRippleIcon, DevicePhoneMobileIcon, DeviceTabletIcon, DivideIcon, DocumentArrowDownIcon, DocumentArrowUpIcon, DocumentChartBarIcon, DocumentCheckIcon, DocumentCurrencyBangladeshiIcon, DocumentCurrencyDollarIcon, DocumentCurrencyEuroIcon, DocumentCurrencyPoundIcon, DocumentCurrencyRupeeIcon, DocumentCurrencyYenIcon, DocumentDuplicateIcon, DocumentIcon, DocumentMagnifyingGlassIcon, DocumentMinusIcon, DocumentPlusIcon, DocumentTextIcon, EllipsisHorizontalCircleIcon, EllipsisHorizontalIcon, EllipsisVerticalIcon, EnvelopeIcon, EnvelopeOpenIcon, EqualsIcon, ExclamationCircleIcon, ExclamationTriangleIcon, EyeDropperIcon, EyeIcon, EyeSlashIcon, FaceFrownIcon, FaceSmileIcon, FilmIcon, FingerPrintIcon, FireIcon, FlagIcon, FolderArrowDownIcon, FolderIcon, FolderMinusIcon, FolderOpenIcon, FolderPlusIcon, ForwardIcon, FunnelIcon, GifIcon, GiftIcon, GiftTopIcon, GlobeAltIcon, GlobeAmericasIcon, GlobeAsiaAustraliaIcon, GlobeEuropeAfricaIcon, H1Icon, H2Icon, H3Icon, HandRaisedIcon, HandThumbDownIcon, HandThumbUpIcon, HashtagIcon, HeartIcon, HomeIcon, HomeModernIcon, IdentificationIcon, InboxArrowDownIcon, InboxIcon, InboxStackIcon, InformationCircleIcon, ItalicIcon, KeyIcon, LanguageIcon, LifebuoyIcon, LightBulbIcon, LinkIcon, LinkSlashIcon, ListBulletIcon, LockClosedIcon, LockOpenIcon, MagnifyingGlassCircleIcon, MagnifyingGlassIcon, MagnifyingGlassMinusIcon, MagnifyingGlassPlusIcon, MapIcon, MapPinIcon, MegaphoneIcon, MicrophoneIcon, MinusCircleIcon, MinusIcon, MinusSmallIcon, MoonIcon, MusicalNoteIcon, NewspaperIcon, NoSymbolIcon, NumberedListIcon, PaintBrushIcon, PaperAirplaneIcon, PaperClipIcon, PauseCircleIcon, PauseIcon, PencilIcon, PencilSquareIcon, PercentBadgeIcon, PhoneArrowDownLeftIcon, PhoneArrowUpRightIcon, PhoneIcon, PhoneXMarkIcon, PhotoIcon, PlayCircleIcon, PlayIcon, PlayPauseIcon, PlusCircleIcon, PlusIcon, PlusSmallIcon, PowerIcon, PresentationChartBarIcon, PresentationChartLineIcon, PrinterIcon, PuzzlePieceIcon, QrCodeIcon, QuestionMarkCircleIcon, QueueListIcon, RadioIcon, ReceiptPercentIcon, ReceiptRefundIcon, RectangleGroupIcon, RectangleStackIcon, RocketLaunchIcon, RssIcon, ScaleIcon, ScissorsIcon, ServerIcon, ServerStackIcon, ShareIcon, ShieldCheckIcon, ShieldExclamationIcon, ShoppingBagIcon, ShoppingCartIcon, SignalIcon, SignalSlashIcon, SlashIcon, SparklesIcon, SpeakerWaveIcon, SpeakerXMarkIcon, Square2StackIcon, Square3Stack3DIcon, Squares2X2Icon, SquaresPlusIcon, StarIcon, StopCircleIcon, StopIcon, StrikethroughIcon, SunIcon, SwatchIcon, TableCellsIcon, TagIcon, TicketIcon, TrashIcon, TrophyIcon, TruckIcon, TvIcon, UnderlineIcon, UserCircleIcon, UserGroupIcon, UserIcon, UserMinusIcon, UserPlusIcon, UsersIcon, VariableIcon, VideoCameraIcon, VideoCameraSlashIcon, ViewColumnsIcon, ViewfinderCircleIcon, WalletIcon, WifiIcon, WindowIcon, WrenchIcon, WrenchScrewdriverIcon, XCircleIcon, XMarkIcon)
+
+ERROR in ./src/styles/royal-theme.scss (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[2]!./node_modules/resolve-url-loader/index.js??ruleSet[1].rules[1].oneOf[7].use[3]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[4]!./src/styles/royal-theme.scss)
+Module Error (from ./node_modules/sass-loader/dist/cjs.js):
+Cannot find module 'sass'
+Require stack:
+- /home/cadu/projeto_SPR/frontend/node_modules/sass-loader/dist/utils.js
+- /home/cadu/projeto_SPR/frontend/node_modules/sass-loader/dist/index.js
+- /home/cadu/projeto_SPR/frontend/node_modules/sass-loader/dist/cjs.js
+- /home/cadu/projeto_SPR/frontend/node_modules/loader-runner/lib/loadLoader.js
+- /home/cadu/projeto_SPR/frontend/node_modules/loader-runner/lib/LoaderRunner.js
+- /home/cadu/projeto_SPR/frontend/node_modules/webpack/lib/NormalModule.js
+- /home/cadu/projeto_SPR/frontend/node_modules/webpack-manifest-plugin/dist/index.js
+- /home/cadu/projeto_SPR/frontend/node_modules/react-scripts/config/webpack.config.js
+- /home/cadu/projeto_SPR/frontend/node_modules/react-scripts/scripts/start.js
+
+ERROR in ./src/styles/royal-theme.scss (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[2]!./node_modules/resolve-url-loader/index.js??ruleSet[1].rules[1].oneOf[7].use[3]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[4]!./src/styles/royal-theme.scss)
+Module build failed (from ./node_modules/resolve-url-loader/index.js):
+Error: resolve-url-loader: error processing CSS
+  PostCSS received undefined instead of CSS string
+  at new Input (/home/cadu/projeto_SPR/frontend/node_modules/resolve-url-loader/node_modules/postcss/lib/input.js:38:13)
+    at encodeError (/home/cadu/projeto_SPR/frontend/node_modules/resolve-url-loader/index.js:287:12)
+    at onFailure (/home/cadu/projeto_SPR/frontend/node_modules/resolve-url-loader/index.js:228:14)
+
+webpack compiled with 6 errors and 1 warning
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:13:3
+TS2305: Module '"@heroicons/react/24/outline"' has no exported member 'CheckCheckIcon'.
+    11 |   UserCircleIcon,
+    12 |   CheckIcon,
+  > 13 |   CheckCheckIcon,
+       |   ^^^^^^^^^^^^^^
+    14 |   ClockIcon
+    15 | } from '@heroicons/react/24/outline';
+    16 | import { useWhatsAppStore } from '../../store/useWhatsAppStore';
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:29:5
+TS2339: Property 'selectedChatId' does not exist on type 'WhatsAppStore'.
+    27 |     contacts,
+    28 |     chats,
+  > 29 |     selectedChatId,
+       |     ^^^^^^^^^^^^^^
+    30 |     setSelectedChat,
+    31 |     sendMessage,
+    32 |     connect,
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:30:5
+TS2339: Property 'setSelectedChat' does not exist on type 'WhatsAppStore'.
+    28 |     chats,
+    29 |     selectedChatId,
+  > 30 |     setSelectedChat,
+       |     ^^^^^^^^^^^^^^^
+    31 |     sendMessage,
+    32 |     connect,
+    33 |     disconnect
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:32:5
+TS2339: Property 'connect' does not exist on type 'WhatsAppStore'.
+    30 |     setSelectedChat,
+    31 |     sendMessage,
+  > 32 |     connect,
+       |     ^^^^^^^
+    33 |     disconnect
+    34 |   } = useWhatsAppStore();
+    35 |
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:33:5
+TS2339: Property 'disconnect' does not exist on type 'WhatsAppStore'.
+    31 |     sendMessage,
+    32 |     connect,
+  > 33 |     disconnect
+       |     ^^^^^^^^^^
+    34 |   } = useWhatsAppStore();
+    35 |
+    36 |   const [newMessage, setNewMessage] = useState('');
+
+ERROR in src/pages/DashboardGentelella.tsx:7:3
+TS2305: Module '"@heroicons/react/24/outline"' has no exported member 'TrendingUpIcon'.
+     5 | import {
+     6 |   ChartBarIcon,
+  >  7 |   TrendingUpIcon,
+       |   ^^^^^^^^^^^^^^
+     8 |   UserGroupIcon,
+     9 |   CalendarDaysIcon
+    10 | } from '@heroicons/react/24/outline';
+
+Compiling...
+Failed to compile.
+
+Attempted import error: 'CheckCheckIcon' is not exported from '@heroicons/react/24/outline' (imported as 'CheckCheckIcon').
+WARNING in ./src/styles/royal-theme.scss (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[2]!./node_modules/resolve-url-loader/index.js??ruleSet[1].rules[1].oneOf[7].use[3]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[4]!./src/styles/royal-theme.scss)
+Module Warning (from ./node_modules/resolve-url-loader/index.js):
+resolve-url-loader: webpack misconfiguration
+  webpack or the upstream loader did not supply a source-map
+
+ERROR in ./src/components/WhatsApp/ModernWhatsAppInterface.tsx 51:36-50
+export 'CheckCheckIcon' (imported as 'CheckCheckIcon') was not found in '@heroicons/react/24/outline' (possible exports: AcademicCapIcon, AdjustmentsHorizontalIcon, AdjustmentsVerticalIcon, ArchiveBoxArrowDownIcon, ArchiveBoxIcon, ArchiveBoxXMarkIcon, ArrowDownCircleIcon, ArrowDownIcon, ArrowDownLeftIcon, ArrowDownOnSquareIcon, ArrowDownOnSquareStackIcon, ArrowDownRightIcon, ArrowDownTrayIcon, ArrowLeftCircleIcon, ArrowLeftEndOnRectangleIcon, ArrowLeftIcon, ArrowLeftOnRectangleIcon, ArrowLeftStartOnRectangleIcon, ArrowLongDownIcon, ArrowLongLeftIcon, ArrowLongRightIcon, ArrowLongUpIcon, ArrowPathIcon, ArrowPathRoundedSquareIcon, ArrowRightCircleIcon, ArrowRightEndOnRectangleIcon, ArrowRightIcon, ArrowRightOnRectangleIcon, ArrowRightStartOnRectangleIcon, ArrowSmallDownIcon, ArrowSmallLeftIcon, ArrowSmallRightIcon, ArrowSmallUpIcon, ArrowTopRightOnSquareIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, ArrowTurnDownLeftIcon, ArrowTurnDownRightIcon, ArrowTurnLeftDownIcon, ArrowTurnLeftUpIcon, ArrowTurnRightDownIcon, ArrowTurnRightUpIcon, ArrowTurnUpLeftIcon, ArrowTurnUpRightIcon, ArrowUpCircleIcon, ArrowUpIcon, ArrowUpLeftIcon, ArrowUpOnSquareIcon, ArrowUpOnSquareStackIcon, ArrowUpRightIcon, ArrowUpTrayIcon, ArrowUturnDownIcon, ArrowUturnLeftIcon, ArrowUturnRightIcon, ArrowUturnUpIcon, ArrowsPointingInIcon, ArrowsPointingOutIcon, ArrowsRightLeftIcon, ArrowsUpDownIcon, AtSymbolIcon, BackspaceIcon, BackwardIcon, BanknotesIcon, Bars2Icon, Bars3BottomLeftIcon, Bars3BottomRightIcon, Bars3CenterLeftIcon, Bars3Icon, Bars4Icon, BarsArrowDownIcon, BarsArrowUpIcon, Battery0Icon, Battery100Icon, Battery50Icon, BeakerIcon, BellAlertIcon, BellIcon, BellSlashIcon, BellSnoozeIcon, BoldIcon, BoltIcon, BoltSlashIcon, BookOpenIcon, BookmarkIcon, BookmarkSlashIcon, BookmarkSquareIcon, BriefcaseIcon, BugAntIcon, BuildingLibraryIcon, BuildingOffice2Icon, BuildingOfficeIcon, BuildingStorefrontIcon, CakeIcon, CalculatorIcon, CalendarDateRangeIcon, CalendarDaysIcon, CalendarIcon, CameraIcon, ChartBarIcon, ChartBarSquareIcon, ChartPieIcon, ChatBubbleBottomCenterIcon, ChatBubbleBottomCenterTextIcon, ChatBubbleLeftEllipsisIcon, ChatBubbleLeftIcon, ChatBubbleLeftRightIcon, ChatBubbleOvalLeftEllipsisIcon, ChatBubbleOvalLeftIcon, CheckBadgeIcon, CheckCircleIcon, CheckIcon, ChevronDoubleDownIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronDoubleUpIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, ChevronUpDownIcon, ChevronUpIcon, CircleStackIcon, ClipboardDocumentCheckIcon, ClipboardDocumentIcon, ClipboardDocumentListIcon, ClipboardIcon, ClockIcon, CloudArrowDownIcon, CloudArrowUpIcon, CloudIcon, CodeBracketIcon, CodeBracketSquareIcon, Cog6ToothIcon, Cog8ToothIcon, CogIcon, CommandLineIcon, ComputerDesktopIcon, CpuChipIcon, CreditCardIcon, CubeIcon, CubeTransparentIcon, CurrencyBangladeshiIcon, CurrencyDollarIcon, CurrencyEuroIcon, CurrencyPoundIcon, CurrencyRupeeIcon, CurrencyYenIcon, CursorArrowRaysIcon, CursorArrowRippleIcon, DevicePhoneMobileIcon, DeviceTabletIcon, DivideIcon, DocumentArrowDownIcon, DocumentArrowUpIcon, DocumentChartBarIcon, DocumentCheckIcon, DocumentCurrencyBangladeshiIcon, DocumentCurrencyDollarIcon, DocumentCurrencyEuroIcon, DocumentCurrencyPoundIcon, DocumentCurrencyRupeeIcon, DocumentCurrencyYenIcon, DocumentDuplicateIcon, DocumentIcon, DocumentMagnifyingGlassIcon, DocumentMinusIcon, DocumentPlusIcon, DocumentTextIcon, EllipsisHorizontalCircleIcon, EllipsisHorizontalIcon, EllipsisVerticalIcon, EnvelopeIcon, EnvelopeOpenIcon, EqualsIcon, ExclamationCircleIcon, ExclamationTriangleIcon, EyeDropperIcon, EyeIcon, EyeSlashIcon, FaceFrownIcon, FaceSmileIcon, FilmIcon, FingerPrintIcon, FireIcon, FlagIcon, FolderArrowDownIcon, FolderIcon, FolderMinusIcon, FolderOpenIcon, FolderPlusIcon, ForwardIcon, FunnelIcon, GifIcon, GiftIcon, GiftTopIcon, GlobeAltIcon, GlobeAmericasIcon, GlobeAsiaAustraliaIcon, GlobeEuropeAfricaIcon, H1Icon, H2Icon, H3Icon, HandRaisedIcon, HandThumbDownIcon, HandThumbUpIcon, HashtagIcon, HeartIcon, HomeIcon, HomeModernIcon, IdentificationIcon, InboxArrowDownIcon, InboxIcon, InboxStackIcon, InformationCircleIcon, ItalicIcon, KeyIcon, LanguageIcon, LifebuoyIcon, LightBulbIcon, LinkIcon, LinkSlashIcon, ListBulletIcon, LockClosedIcon, LockOpenIcon, MagnifyingGlassCircleIcon, MagnifyingGlassIcon, MagnifyingGlassMinusIcon, MagnifyingGlassPlusIcon, MapIcon, MapPinIcon, MegaphoneIcon, MicrophoneIcon, MinusCircleIcon, MinusIcon, MinusSmallIcon, MoonIcon, MusicalNoteIcon, NewspaperIcon, NoSymbolIcon, NumberedListIcon, PaintBrushIcon, PaperAirplaneIcon, PaperClipIcon, PauseCircleIcon, PauseIcon, PencilIcon, PencilSquareIcon, PercentBadgeIcon, PhoneArrowDownLeftIcon, PhoneArrowUpRightIcon, PhoneIcon, PhoneXMarkIcon, PhotoIcon, PlayCircleIcon, PlayIcon, PlayPauseIcon, PlusCircleIcon, PlusIcon, PlusSmallIcon, PowerIcon, PresentationChartBarIcon, PresentationChartLineIcon, PrinterIcon, PuzzlePieceIcon, QrCodeIcon, QuestionMarkCircleIcon, QueueListIcon, RadioIcon, ReceiptPercentIcon, ReceiptRefundIcon, RectangleGroupIcon, RectangleStackIcon, RocketLaunchIcon, RssIcon, ScaleIcon, ScissorsIcon, ServerIcon, ServerStackIcon, ShareIcon, ShieldCheckIcon, ShieldExclamationIcon, ShoppingBagIcon, ShoppingCartIcon, SignalIcon, SignalSlashIcon, SlashIcon, SparklesIcon, SpeakerWaveIcon, SpeakerXMarkIcon, Square2StackIcon, Square3Stack3DIcon, Squares2X2Icon, SquaresPlusIcon, StarIcon, StopCircleIcon, StopIcon, StrikethroughIcon, SunIcon, SwatchIcon, TableCellsIcon, TagIcon, TicketIcon, TrashIcon, TrophyIcon, TruckIcon, TvIcon, UnderlineIcon, UserCircleIcon, UserGroupIcon, UserIcon, UserMinusIcon, UserPlusIcon, UsersIcon, VariableIcon, VideoCameraIcon, VideoCameraSlashIcon, ViewColumnsIcon, ViewfinderCircleIcon, WalletIcon, WifiIcon, WindowIcon, WrenchIcon, WrenchScrewdriverIcon, XCircleIcon, XMarkIcon)
+
+ERROR in ./src/components/WhatsApp/ModernWhatsAppInterface.tsx 59:36-50
+export 'CheckCheckIcon' (imported as 'CheckCheckIcon') was not found in '@heroicons/react/24/outline' (possible exports: AcademicCapIcon, AdjustmentsHorizontalIcon, AdjustmentsVerticalIcon, ArchiveBoxArrowDownIcon, ArchiveBoxIcon, ArchiveBoxXMarkIcon, ArrowDownCircleIcon, ArrowDownIcon, ArrowDownLeftIcon, ArrowDownOnSquareIcon, ArrowDownOnSquareStackIcon, ArrowDownRightIcon, ArrowDownTrayIcon, ArrowLeftCircleIcon, ArrowLeftEndOnRectangleIcon, ArrowLeftIcon, ArrowLeftOnRectangleIcon, ArrowLeftStartOnRectangleIcon, ArrowLongDownIcon, ArrowLongLeftIcon, ArrowLongRightIcon, ArrowLongUpIcon, ArrowPathIcon, ArrowPathRoundedSquareIcon, ArrowRightCircleIcon, ArrowRightEndOnRectangleIcon, ArrowRightIcon, ArrowRightOnRectangleIcon, ArrowRightStartOnRectangleIcon, ArrowSmallDownIcon, ArrowSmallLeftIcon, ArrowSmallRightIcon, ArrowSmallUpIcon, ArrowTopRightOnSquareIcon, ArrowTrendingDownIcon, ArrowTrendingUpIcon, ArrowTurnDownLeftIcon, ArrowTurnDownRightIcon, ArrowTurnLeftDownIcon, ArrowTurnLeftUpIcon, ArrowTurnRightDownIcon, ArrowTurnRightUpIcon, ArrowTurnUpLeftIcon, ArrowTurnUpRightIcon, ArrowUpCircleIcon, ArrowUpIcon, ArrowUpLeftIcon, ArrowUpOnSquareIcon, ArrowUpOnSquareStackIcon, ArrowUpRightIcon, ArrowUpTrayIcon, ArrowUturnDownIcon, ArrowUturnLeftIcon, ArrowUturnRightIcon, ArrowUturnUpIcon, ArrowsPointingInIcon, ArrowsPointingOutIcon, ArrowsRightLeftIcon, ArrowsUpDownIcon, AtSymbolIcon, BackspaceIcon, BackwardIcon, BanknotesIcon, Bars2Icon, Bars3BottomLeftIcon, Bars3BottomRightIcon, Bars3CenterLeftIcon, Bars3Icon, Bars4Icon, BarsArrowDownIcon, BarsArrowUpIcon, Battery0Icon, Battery100Icon, Battery50Icon, BeakerIcon, BellAlertIcon, BellIcon, BellSlashIcon, BellSnoozeIcon, BoldIcon, BoltIcon, BoltSlashIcon, BookOpenIcon, BookmarkIcon, BookmarkSlashIcon, BookmarkSquareIcon, BriefcaseIcon, BugAntIcon, BuildingLibraryIcon, BuildingOffice2Icon, BuildingOfficeIcon, BuildingStorefrontIcon, CakeIcon, CalculatorIcon, CalendarDateRangeIcon, CalendarDaysIcon, CalendarIcon, CameraIcon, ChartBarIcon, ChartBarSquareIcon, ChartPieIcon, ChatBubbleBottomCenterIcon, ChatBubbleBottomCenterTextIcon, ChatBubbleLeftEllipsisIcon, ChatBubbleLeftIcon, ChatBubbleLeftRightIcon, ChatBubbleOvalLeftEllipsisIcon, ChatBubbleOvalLeftIcon, CheckBadgeIcon, CheckCircleIcon, CheckIcon, ChevronDoubleDownIcon, ChevronDoubleLeftIcon, ChevronDoubleRightIcon, ChevronDoubleUpIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, ChevronUpDownIcon, ChevronUpIcon, CircleStackIcon, ClipboardDocumentCheckIcon, ClipboardDocumentIcon, ClipboardDocumentListIcon, ClipboardIcon, ClockIcon, CloudArrowDownIcon, CloudArrowUpIcon, CloudIcon, CodeBracketIcon, CodeBracketSquareIcon, Cog6ToothIcon, Cog8ToothIcon, CogIcon, CommandLineIcon, ComputerDesktopIcon, CpuChipIcon, CreditCardIcon, CubeIcon, CubeTransparentIcon, CurrencyBangladeshiIcon, CurrencyDollarIcon, CurrencyEuroIcon, CurrencyPoundIcon, CurrencyRupeeIcon, CurrencyYenIcon, CursorArrowRaysIcon, CursorArrowRippleIcon, DevicePhoneMobileIcon, DeviceTabletIcon, DivideIcon, DocumentArrowDownIcon, DocumentArrowUpIcon, DocumentChartBarIcon, DocumentCheckIcon, DocumentCurrencyBangladeshiIcon, DocumentCurrencyDollarIcon, DocumentCurrencyEuroIcon, DocumentCurrencyPoundIcon, DocumentCurrencyRupeeIcon, DocumentCurrencyYenIcon, DocumentDuplicateIcon, DocumentIcon, DocumentMagnifyingGlassIcon, DocumentMinusIcon, DocumentPlusIcon, DocumentTextIcon, EllipsisHorizontalCircleIcon, EllipsisHorizontalIcon, EllipsisVerticalIcon, EnvelopeIcon, EnvelopeOpenIcon, EqualsIcon, ExclamationCircleIcon, ExclamationTriangleIcon, EyeDropperIcon, EyeIcon, EyeSlashIcon, FaceFrownIcon, FaceSmileIcon, FilmIcon, FingerPrintIcon, FireIcon, FlagIcon, FolderArrowDownIcon, FolderIcon, FolderMinusIcon, FolderOpenIcon, FolderPlusIcon, ForwardIcon, FunnelIcon, GifIcon, GiftIcon, GiftTopIcon, GlobeAltIcon, GlobeAmericasIcon, GlobeAsiaAustraliaIcon, GlobeEuropeAfricaIcon, H1Icon, H2Icon, H3Icon, HandRaisedIcon, HandThumbDownIcon, HandThumbUpIcon, HashtagIcon, HeartIcon, HomeIcon, HomeModernIcon, IdentificationIcon, InboxArrowDownIcon, InboxIcon, InboxStackIcon, InformationCircleIcon, ItalicIcon, KeyIcon, LanguageIcon, LifebuoyIcon, LightBulbIcon, LinkIcon, LinkSlashIcon, ListBulletIcon, LockClosedIcon, LockOpenIcon, MagnifyingGlassCircleIcon, MagnifyingGlassIcon, MagnifyingGlassMinusIcon, MagnifyingGlassPlusIcon, MapIcon, MapPinIcon, MegaphoneIcon, MicrophoneIcon, MinusCircleIcon, MinusIcon, MinusSmallIcon, MoonIcon, MusicalNoteIcon, NewspaperIcon, NoSymbolIcon, NumberedListIcon, PaintBrushIcon, PaperAirplaneIcon, PaperClipIcon, PauseCircleIcon, PauseIcon, PencilIcon, PencilSquareIcon, PercentBadgeIcon, PhoneArrowDownLeftIcon, PhoneArrowUpRightIcon, PhoneIcon, PhoneXMarkIcon, PhotoIcon, PlayCircleIcon, PlayIcon, PlayPauseIcon, PlusCircleIcon, PlusIcon, PlusSmallIcon, PowerIcon, PresentationChartBarIcon, PresentationChartLineIcon, PrinterIcon, PuzzlePieceIcon, QrCodeIcon, QuestionMarkCircleIcon, QueueListIcon, RadioIcon, ReceiptPercentIcon, ReceiptRefundIcon, RectangleGroupIcon, RectangleStackIcon, RocketLaunchIcon, RssIcon, ScaleIcon, ScissorsIcon, ServerIcon, ServerStackIcon, ShareIcon, ShieldCheckIcon, ShieldExclamationIcon, ShoppingBagIcon, ShoppingCartIcon, SignalIcon, SignalSlashIcon, SlashIcon, SparklesIcon, SpeakerWaveIcon, SpeakerXMarkIcon, Square2StackIcon, Square3Stack3DIcon, Squares2X2Icon, SquaresPlusIcon, StarIcon, StopCircleIcon, StopIcon, StrikethroughIcon, SunIcon, SwatchIcon, TableCellsIcon, TagIcon, TicketIcon, TrashIcon, TrophyIcon, TruckIcon, TvIcon, UnderlineIcon, UserCircleIcon, UserGroupIcon, UserIcon, UserMinusIcon, UserPlusIcon, UsersIcon, VariableIcon, VideoCameraIcon, VideoCameraSlashIcon, ViewColumnsIcon, ViewfinderCircleIcon, WalletIcon, WifiIcon, WindowIcon, WrenchIcon, WrenchScrewdriverIcon, XCircleIcon, XMarkIcon)
+
+ERROR in ./src/styles/royal-theme.scss (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[2]!./node_modules/resolve-url-loader/index.js??ruleSet[1].rules[1].oneOf[7].use[3]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[4]!./src/styles/royal-theme.scss)
+Module Error (from ./node_modules/sass-loader/dist/cjs.js):
+Cannot find module 'sass'
+Require stack:
+- /home/cadu/projeto_SPR/frontend/node_modules/sass-loader/dist/utils.js
+- /home/cadu/projeto_SPR/frontend/node_modules/sass-loader/dist/index.js
+- /home/cadu/projeto_SPR/frontend/node_modules/sass-loader/dist/cjs.js
+- /home/cadu/projeto_SPR/frontend/node_modules/loader-runner/lib/loadLoader.js
+- /home/cadu/projeto_SPR/frontend/node_modules/loader-runner/lib/LoaderRunner.js
+- /home/cadu/projeto_SPR/frontend/node_modules/webpack/lib/NormalModule.js
+- /home/cadu/projeto_SPR/frontend/node_modules/webpack-manifest-plugin/dist/index.js
+- /home/cadu/projeto_SPR/frontend/node_modules/react-scripts/config/webpack.config.js
+- /home/cadu/projeto_SPR/frontend/node_modules/react-scripts/scripts/start.js
+
+ERROR in ./src/styles/royal-theme.scss (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[2]!./node_modules/resolve-url-loader/index.js??ruleSet[1].rules[1].oneOf[7].use[3]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[4]!./src/styles/royal-theme.scss)
+Module build failed (from ./node_modules/resolve-url-loader/index.js):
+Error: resolve-url-loader: error processing CSS
+  PostCSS received undefined instead of CSS string
+  at new Input (/home/cadu/projeto_SPR/frontend/node_modules/resolve-url-loader/node_modules/postcss/lib/input.js:38:13)
+    at encodeError (/home/cadu/projeto_SPR/frontend/node_modules/resolve-url-loader/index.js:287:12)
+    at onFailure (/home/cadu/projeto_SPR/frontend/node_modules/resolve-url-loader/index.js:228:14)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at runNextTicks (node:internal/process/task_queues:69:3)
+    at process.processImmediate (node:internal/timers:473:9)
+
+webpack compiled with 4 errors and 1 warning
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:13:3
+TS2305: Module '"@heroicons/react/24/outline"' has no exported member 'CheckCheckIcon'.
+    11 |   UserCircleIcon,
+    12 |   CheckIcon,
+  > 13 |   CheckCheckIcon,
+       |   ^^^^^^^^^^^^^^
+    14 |   ClockIcon
+    15 | } from '@heroicons/react/24/outline';
+    16 | import { useWhatsAppStore } from '../../store/useWhatsAppStore';
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:29:5
+TS2339: Property 'selectedChatId' does not exist on type 'WhatsAppStore'.
+    27 |     contacts,
+    28 |     chats,
+  > 29 |     selectedChatId,
+       |     ^^^^^^^^^^^^^^
+    30 |     setSelectedChat,
+    31 |     sendMessage,
+    32 |     connect,
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:30:5
+TS2339: Property 'setSelectedChat' does not exist on type 'WhatsAppStore'.
+    28 |     chats,
+    29 |     selectedChatId,
+  > 30 |     setSelectedChat,
+       |     ^^^^^^^^^^^^^^^
+    31 |     sendMessage,
+    32 |     connect,
+    33 |     disconnect
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:32:5
+TS2339: Property 'connect' does not exist on type 'WhatsAppStore'.
+    30 |     setSelectedChat,
+    31 |     sendMessage,
+  > 32 |     connect,
+       |     ^^^^^^^
+    33 |     disconnect
+    34 |   } = useWhatsAppStore();
+    35 |
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:33:5
+TS2339: Property 'disconnect' does not exist on type 'WhatsAppStore'.
+    31 |     sendMessage,
+    32 |     connect,
+  > 33 |     disconnect
+       |     ^^^^^^^^^^
+    34 |   } = useWhatsAppStore();
+    35 |
+    36 |   const [newMessage, setNewMessage] = useState('');
+
+Compiling...
+Failed to compile.
+
+Cannot find module 'sass'
+Require stack:
+- /home/cadu/projeto_SPR/frontend/node_modules/sass-loader/dist/utils.js
+- /home/cadu/projeto_SPR/frontend/node_modules/sass-loader/dist/index.js
+- /home/cadu/projeto_SPR/frontend/node_modules/sass-loader/dist/cjs.js
+- /home/cadu/projeto_SPR/frontend/node_modules/loader-runner/lib/loadLoader.js
+- /home/cadu/projeto_SPR/frontend/node_modules/loader-runner/lib/LoaderRunner.js
+- /home/cadu/projeto_SPR/frontend/node_modules/webpack/lib/NormalModule.js
+- /home/cadu/projeto_SPR/frontend/node_modules/webpack-manifest-plugin/dist/index.js
+- /home/cadu/projeto_SPR/frontend/node_modules/react-scripts/config/webpack.config.js
+- /home/cadu/projeto_SPR/frontend/node_modules/react-scripts/scripts/start.js
+WARNING in ./src/styles/royal-theme.scss (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[2]!./node_modules/resolve-url-loader/index.js??ruleSet[1].rules[1].oneOf[7].use[3]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[4]!./src/styles/royal-theme.scss)
+Module Warning (from ./node_modules/resolve-url-loader/index.js):
+resolve-url-loader: webpack misconfiguration
+  webpack or the upstream loader did not supply a source-map
+
+ERROR in ./src/styles/royal-theme.scss (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[2]!./node_modules/resolve-url-loader/index.js??ruleSet[1].rules[1].oneOf[7].use[3]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[4]!./src/styles/royal-theme.scss)
+Module Error (from ./node_modules/sass-loader/dist/cjs.js):
+Cannot find module 'sass'
+Require stack:
+- /home/cadu/projeto_SPR/frontend/node_modules/sass-loader/dist/utils.js
+- /home/cadu/projeto_SPR/frontend/node_modules/sass-loader/dist/index.js
+- /home/cadu/projeto_SPR/frontend/node_modules/sass-loader/dist/cjs.js
+- /home/cadu/projeto_SPR/frontend/node_modules/loader-runner/lib/loadLoader.js
+- /home/cadu/projeto_SPR/frontend/node_modules/loader-runner/lib/LoaderRunner.js
+- /home/cadu/projeto_SPR/frontend/node_modules/webpack/lib/NormalModule.js
+- /home/cadu/projeto_SPR/frontend/node_modules/webpack-manifest-plugin/dist/index.js
+- /home/cadu/projeto_SPR/frontend/node_modules/react-scripts/config/webpack.config.js
+- /home/cadu/projeto_SPR/frontend/node_modules/react-scripts/scripts/start.js
+
+ERROR in ./src/styles/royal-theme.scss (./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[2]!./node_modules/resolve-url-loader/index.js??ruleSet[1].rules[1].oneOf[7].use[3]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[4]!./src/styles/royal-theme.scss)
+Module build failed (from ./node_modules/resolve-url-loader/index.js):
+Error: resolve-url-loader: error processing CSS
+  PostCSS received undefined instead of CSS string
+  at new Input (/home/cadu/projeto_SPR/frontend/node_modules/resolve-url-loader/node_modules/postcss/lib/input.js:38:13)
+    at encodeError (/home/cadu/projeto_SPR/frontend/node_modules/resolve-url-loader/index.js:287:12)
+    at onFailure (/home/cadu/projeto_SPR/frontend/node_modules/resolve-url-loader/index.js:228:14)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at runNextTicks (node:internal/process/task_queues:69:3)
+    at process.processImmediate (node:internal/timers:473:9)
+
+webpack compiled with 2 errors and 1 warning
+Files successfully emitted, waiting for typecheck results...
+Issues checking in progress...
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:29:5
+TS2339: Property 'selectedChatId' does not exist on type 'WhatsAppStore'.
+    27 |     contacts,
+    28 |     chats,
+  > 29 |     selectedChatId,
+       |     ^^^^^^^^^^^^^^
+    30 |     setSelectedChat,
+    31 |     sendMessage,
+    32 |     connect,
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:30:5
+TS2339: Property 'setSelectedChat' does not exist on type 'WhatsAppStore'.
+    28 |     chats,
+    29 |     selectedChatId,
+  > 30 |     setSelectedChat,
+       |     ^^^^^^^^^^^^^^^
+    31 |     sendMessage,
+    32 |     connect,
+    33 |     disconnect
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:32:5
+TS2339: Property 'connect' does not exist on type 'WhatsAppStore'.
+    30 |     setSelectedChat,
+    31 |     sendMessage,
+  > 32 |     connect,
+       |     ^^^^^^^
+    33 |     disconnect
+    34 |   } = useWhatsAppStore();
+    35 |
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:33:5
+TS2339: Property 'disconnect' does not exist on type 'WhatsAppStore'.
+    31 |     sendMessage,
+    32 |     connect,
+  > 33 |     disconnect
+       |     ^^^^^^^^^^
+    34 |   } = useWhatsAppStore();
+    35 |
+    36 |   const [newMessage, setNewMessage] = useState('');
+
+Compiling...
+Compiled successfully!
+LOG from ./node_modules/sass-loader/dist/cjs.js sass-loader ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[2]!./node_modules/resolve-url-loader/index.js??ruleSet[1].rules[1].oneOf[7].use[3]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[7].use[4]!./src/styles/royal-theme.scss
+<w> Deprecation The legacy JS API is deprecated and will be removed in Dart Sass 2.0.0.
+<w> 
+<w> More info: https://sass-lang.com/d/legacy-js-api
+<w> 
+<w> null
+
+webpack compiled successfully
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:29:5
+TS2339: Property 'selectedChatId' does not exist on type 'WhatsAppStore'.
+    27 |     contacts,
+    28 |     chats,
+  > 29 |     selectedChatId,
+       |     ^^^^^^^^^^^^^^
+    30 |     setSelectedChat,
+    31 |     sendMessage,
+    32 |     connect,
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:30:5
+TS2339: Property 'setSelectedChat' does not exist on type 'WhatsAppStore'.
+    28 |     chats,
+    29 |     selectedChatId,
+  > 30 |     setSelectedChat,
+       |     ^^^^^^^^^^^^^^^
+    31 |     sendMessage,
+    32 |     connect,
+    33 |     disconnect
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:32:5
+TS2339: Property 'connect' does not exist on type 'WhatsAppStore'.
+    30 |     setSelectedChat,
+    31 |     sendMessage,
+  > 32 |     connect,
+       |     ^^^^^^^
+    33 |     disconnect
+    34 |   } = useWhatsAppStore();
+    35 |
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:33:5
+TS2339: Property 'disconnect' does not exist on type 'WhatsAppStore'.
+    31 |     sendMessage,
+    32 |     connect,
+  > 33 |     disconnect
+       |     ^^^^^^^^^^
+    34 |   } = useWhatsAppStore();
+    35 |
+    36 |   const [newMessage, setNewMessage] = useState('');
+
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:37:55
+TS2552: Cannot find name 'selectedChatId'. Did you mean 'selectedChat'?
+    35 |   const [searchTerm, setSearchTerm] = useState('');
+    36 |
+  > 37 |   const selectedChat = chats.find(chat => chat.id === selectedChatId);
+       |                                                       ^^^^^^^^^^^^^^
+    38 |   const filteredChats = chats.filter(chat => 
+    39 |     chat.contact.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    40 |     chat.lastMessage?.content.toLowerCase().includes(searchTerm.toLowerCase())
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:44:32
+TS2552: Cannot find name 'selectedChatId'. Did you mean 'selectedChat'?
+    42 |
+    43 |   const handleSendMessage = async () => {
+  > 44 |     if (!newMessage.trim() || !selectedChatId) return;
+       |                                ^^^^^^^^^^^^^^
+    45 |     
+    46 |     try {
+    47 |       await sendMessage(selectedChatId, newMessage);
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:47:25
+TS2552: Cannot find name 'selectedChatId'. Did you mean 'selectedChat'?
+    45 |     
+    46 |     try {
+  > 47 |       await sendMessage(selectedChatId, newMessage);
+       |                         ^^^^^^^^^^^^^^
+    48 |       setNewMessage('');
+    49 |     } catch (error) {
+    50 |       console.error('Erro ao enviar mensagem:', error);
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:146:34
+TS2552: Cannot find name 'setSelectedChat'. Did you mean 'selectedChat'?
+    144 |                 <div
+    145 |                   key={chat.id}
+  > 146 |                   onClick={() => setSelectedChat(chat.id)}
+        |                                  ^^^^^^^^^^^^^^^
+    147 |                   className={`p-4 border-b border-royal-gray-100 cursor-pointer hover:bg-royal-gray-50 transition-colors ${
+    148 |                     selectedChatId === chat.id ? 'bg-royal-primary-light bg-opacity-10 border-l-4 border-l-royal-primary' : ''
+    149 |                   }`}
+
+ERROR in src/components/WhatsApp/ModernWhatsAppInterface.tsx:148:21
+TS2552: Cannot find name 'selectedChatId'. Did you mean 'selectedChat'?
+    146 |                   onClick={() => setSelectedChat(chat.id)}
+    147 |                   className={`p-4 border-b border-royal-gray-100 cursor-pointer hover:bg-royal-gray-50 transition-colors ${
+  > 148 |                     selectedChatId === chat.id ? 'bg-royal-primary-light bg-opacity-10 border-l-4 border-l-royal-primary' : ''
+        |                     ^^^^^^^^^^^^^^
+    149 |                   }`}
+    150 |                 >
+    151 |                   <div className="flex items-start space-x-3">
+
+Compiling...
+Compiled successfully!
+webpack compiled successfully
+No issues found.
